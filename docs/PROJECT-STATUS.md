@@ -1,8 +1,8 @@
 # ATHAR Project Status
 
 **Last audited:** 2026-09-19  
-**Current phase:** Phase 2 — Homepage Migration — Complete  
-**Overall status:** **PHASE 2 COMPLETE WITH PRE-EXISTING REPOSITORY LINT DEBT.** The full static homepage is componentized in Next.js; functional catalog and commerce behavior remain deferred.
+**Current phase:** Phase 3 — Catalog Foundation, locally closed
+**Overall status:** **PHASE 3 — TECHNICALLY COMPLETE LOCALLY.** Live Atlas connectivity, reads, discovery, production catalog data, and licensed media remain pending. Phase 4 has not started.
 
 ## Verified baseline
 
@@ -13,6 +13,7 @@
 - Google Fonts are loaded externally: Cormorant Garamond, DM Sans, and Playfair Display.
 - The original prototype is now accompanied by a Next.js 16.3 App Router foundation with TypeScript, ESLint, Zod, and Playwright.
 - `next.config.ts` enables Cache Components and Partial Prefetching. The production testing API is conditionally enabled only for local test builds through `EXPOSE_TESTING_API=1`.
+- Stage 3.3 adds server-rendered public catalog browse routes backed by a server-only catalog read model. Development/test uses fictional fixtures; production without configured data renders an unavailable state rather than fake catalog content.
 - No missing local asset reference was found from the current `index.html` scan.
 
 ## Baseline evidence
@@ -20,10 +21,10 @@
 | Check | Result | Evidence |
 | --- | --- | --- |
 | Repository inventory | Pass | Static entry point, five stylesheets, local imagery, and a standalone banner experiment identified. |
-| Git history | Pass | Four commits; latest is `4f5ec7e`. |
+| Git history | Pass | Local and remote `master` currently point to owner checkpoint `68500a7`; Stage 2 maintenance and Stage 3.1 work remain uncommitted locally by owner request. |
 | Local asset reference scan | Pass | No unresolved local `src`/`href` reference from `index.html`. |
 | TypeScript | Pass | `npm run typecheck` completed with zero errors. |
-| Repository-wide lint | Fail (known baseline debt) | Only `test_bottle_size.js`, `test_final_bottle.js`, and `test_nojump.js` fail `@typescript-eslint/no-require-imports`; they are pre-existing, untracked root scripts. |
+| Repository-wide lint | Pass | `npm run lint` completes with zero findings after obsolete root screenshot scripts were removed. |
 | Production build | Pass | Next.js 16.3.0-preview.10 built via Turbopack with Cache Components and Partial Prefetching enabled. |
 | Browser/runtime verification | Pass | Agent Browser and `/_next/mcp` verified the public route, React runtime, route map, and zero compile/runtime errors. |
 | Production navigation rig | Pass | Playwright's public homepage check and `instant()` smoke check both passed against the freshly built local artifact on port 3100. |
@@ -45,7 +46,7 @@ The prototype contains a static hero, header/navigation, mobile menu, fragrance-
 
 1. Obtain owner full-homepage visual approval before considering any Phase 3 catalog/product-discovery scope.
 2. Confirm production licensing for the reused Hero imagery and third-party brand/product references before any production launch.
-3. Select MongoDB/media-provider credentials before database-backed catalog work; no external data service has been configured.
+3. Provide a least-privilege development/test MongoDB Atlas URI and final database name for non-destructive live connectivity verification.
 4. `npm audit` reports two dependency vulnerabilities. They are not remediated automatically because an audit fix may change the dependency graph; address them in the dependency-security stage.
 
 ## Stage 2.2 status
@@ -88,4 +89,44 @@ The prototype contains a static hero, header/navigation, mobile menu, fragrance-
 - Final integration also corrected accessibility defects in the existing Hero notes rail: valid definition-list grouping, keyboard access for an intentional nested scroller, and labelled groups for static action/value clusters.
 - The homepage order is Header → Hero → Collections → Bestsellers → Story → Fragrance Guide → Footer, with one `main` landmark and no page-level overflow across 360, 430, 768, 1280, and 1600px.
 - Prototype imagery, story/value copy, product brands/prices, performance copy, bestsellers/new-arrivals language, and Guide imagery remain **PROTOTYPE / DEVELOPMENT-ONLY — LICENSE VERIFICATION REQUIRED**.
-- **PHASE 2 — IMPLEMENTED AND TECHNICALLY VERIFIED. OWNER FULL-HOMEPAGE VISUAL APPROVAL REQUIRED.** Phase 3 has not begun.
+- **PHASE 2 — COMPLETE. OWNER FULL-HOMEPAGE VISUAL APPROVAL REQUIRED.** Phase 3 has not begun.
+
+## Stage 3.1 status
+
+- `src/server/env.ts` validates `MONGODB_URI` and `MONGODB_DB_NAME` only when a database operation is requested; no secret is bundled into client code.
+- `src/server/db/` owns a reused MongoDB client, named collections, and controlled idempotent index definitions. `src/server/catalog/` owns canonical domain types, schemas, persistence mapping, repositories, and public-read services.
+- Products have a lifecycle (`draft`, `active`, `archived`), normalized unique slugs, integer minor-unit variant prices, explicit currency, structured notes, extensible fragrance-family keys, provider-reference media, and variant-level inventory foundations. Brand and Collection records have separate IDs, unique slugs, lifecycle, timestamps, and optional media.
+- Public read methods return active records only. No public route handler exists yet, no prototype visual content is canonical data, and no catalog seed, Shop, Product Detail, Admin, or Phase 4 work has begun.
+- Focused Playwright catalog-domain tests use `ATHAR Test No. 01` fictional fixtures only. Atlas connectivity remains **NOT YET VERIFIED** until safe owner-provided development/test configuration is tested.
+
+## Stage 3.2 status
+
+- A development-only bootstrap pipeline now separates fictional fixture data, validation, plan/conflict detection, dry-run reporting, and guarded write execution.
+- The dataset contains only fictional ATHAR Test / Study records. It covers active, draft, and archived lifecycle states; different audiences/families; structured notes; one and multiple variants; positive and zero stock; inactive variants; multi-media; and a valid comparison price. No homepage prototype commercial content is canonical data.
+- Fixture relationships are authored with readable seed keys and resolved to actual canonical Brand/Collection IDs only at write time. Identical reruns are unchanged; fixture changes update seed-owned fields; non-seed or differently owned matching slugs fail before writes. No seed operation deletes data.
+- `npm run catalog:seed:dry` works without Atlas credentials and prints a no-write summary. `npm run catalog:seed` requires a non-production environment, valid MongoDB configuration, and `CATALOG_SEED_ALLOW_WRITE=1`.
+- **STAGE 3.2 IMPLEMENTED — LIVE DATABASE EXECUTION NOT YET VERIFIED.** No database write has been performed.
+
+## Stage 3.3 status
+
+- Added public Server Component catalog browsing at `/shop`, `/shop/women`, `/shop/men`, `/shop/unisex`, and `/collections/[slug]`, including active-only results, validated params, accessible empty/unavailable states, and no Product Detail route.
+- Catalog cards consume a narrow public read model that formats integer minor-unit prices and does not expose persistence IDs, variants, inventory, lifecycle, or seed metadata. Placeholder media remains deliberate until canonical assets are approved.
+- Development/test browsing uses only fictional Stage 3.2 fixtures. Production does not fall back to them: unavailable configuration/read failures render a safe unavailable state. No Atlas read or write has occurred.
+- Homepage Shop and supported audience collection links now target real routes; New Arrivals and unsupported destinations remain deferred. The Hero, navbar styling, responsive Hero ranges, and below-Hero visual style were not changed.
+- **STAGE 3.3 IMPLEMENTED — LIVE ATLAS READ/WRITE NOT YET VERIFIED.**
+
+## Stage 3.4 status
+
+- Added server-rendered `/brands` and `/brands/[slug]` pages on the existing catalog service/repository boundary. Brand cards are narrow public DTOs; Brand pages reuse the existing ProductCard and CatalogGrid for active public products.
+- Public visibility includes active Brands only. Draft/archived/missing or malformed Brand slugs render not-found when the data source is available; a valid active Brand with zero eligible products renders an accessible empty state.
+- Development/test uses only fictional Stage 3.2 Brands, including an active empty fixture Brand. Production without configured/readable canonical data renders a safe unavailable state and never reveals fixture Brands. **LIVE ATLAS BRAND READS — NOT YET VERIFIED.**
+- No Product Detail, search, filtering, sorting, pagination, cart, wishlist, Admin, third-party logos/media, or commercial prototype Brand data was added. Brand membership does not claim retailer, partner, distributor, or authorization status.
+- **STAGE 3.4 IMPLEMENTED LOCALLY — OWNER APPROVAL PENDING.**
+
+## Stage 3.5 status
+
+- `/shop` now has server-rendered GET discovery controls backed by one Zod-validated query model: bounded `q`, public audience/Brand/family/collection filters, and name/lowest-active-price sorting. The URL is the source of truth; ProductCard and CatalogGrid remain shared.
+- Route scope is authoritative: audience and collection paths inject their fixed scope and URL values cannot escape it. Valid zero matches use a distinct resettable empty state; unavailable production data remains unavailable and never exposes fixtures.
+- Query matching is a bounded portable literal substring operation over public fields only; raw Mongo operators and regex execution are not accepted. Price range and pagination are deferred as disproportionate to the current bounded listing.
+- Query URLs use `noindex, follow` plus canonical browse metadata. **LIVE ATLAS SEARCH/FILTER/SORT QUERIES — NOT YET VERIFIED.**
+- **STAGE 3.5 IMPLEMENTED LOCALLY — OWNER APPROVAL PENDING.**

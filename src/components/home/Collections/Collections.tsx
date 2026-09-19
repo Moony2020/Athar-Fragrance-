@@ -17,7 +17,7 @@ type CollectionCard = {
 const collections: readonly CollectionCard[] = [
   {
     description: ["Elegant.", "Feminine.", "Timeless."],
-    href: "#collections",
+    href: "/shop/women",
     shape: "M32 44 C52 25 79 24 103 33 C127 42 147 26 172 26 C201 25 226 41 232 67 C237 92 231 117 233 145 C235 174 226 214 202 224 C181 233 159 207 136 210 C110 213 93 238 68 235 C40 232 21 213 14 186 C8 159 12 130 14 105 C15 76 17 59 32 44 Z",
     slug: "her",
     title: "For Her",
@@ -25,7 +25,7 @@ const collections: readonly CollectionCard[] = [
   },
   {
     description: ["Bold.", "Refined.", "Distinctive."],
-    href: "#collections",
+    href: "/shop/men",
     shape: "M112 16 C145 7 170 11 201 27 C225 43 236 70 237 101 C235 133 235 162 238 188 C241 213 236 232 214 242 C190 250 158 255 128 255 C98 255 66 250 43 238 C27 228 21 207 22 180 C23 151 20 124 26 99 C30 82 38 68 50 58 C67 38 90 23 112 16 Z",
     slug: "him",
     title: "For Him",
@@ -33,7 +33,7 @@ const collections: readonly CollectionCard[] = [
   },
   {
     description: ["Beyond", "Boundaries."],
-    href: "#collections",
+    href: "/shop/unisex",
     shape: "M42 50 C75 20 115 6 150 12 C190 18 218 42 232 78 C242 110 240 145 230 180 C220 215 198 240 165 250 C130 260 88 255 60 240 C35 225 20 198 18 165 C16 130 20 95 30 70 C34 60 38 54 42 50 Z",
     slug: "unisex",
     title: "Unisex",

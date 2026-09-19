@@ -83,7 +83,7 @@ export function MobileMenu() {
           <nav className={styles.mobileMenuNav} aria-label="Mobile Navigation">
             <Link
               className={styles.mobileMenuItem}
-              href="#collections"
+              href="/shop"
               onClick={closeMenu}
             >
               <span>SHOP</span>

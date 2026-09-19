@@ -1,7 +1,58 @@
 # Database
 
-No database is currently implemented.
+## Stage 3.1 status
 
-Pending approval, MongoDB Atlas will store canonical domains: Product, ProductVariant, ProductMedia, Brand, Collection, fragrance family/notes, Inventory, User, Address, Cart, Wishlist, PaymentAttempt, provider-event inbox, Order, and Discount.
+**IMPLEMENTED — LIVE DATABASE CONNECTIVITY NOT YET VERIFIED.** MongoDB Atlas is the approved direction. The repository contains a server-only connection contract and catalog persistence layer, but no Atlas credentials are committed or configured for this verification run.
 
-Prices are integer minor units. Product media stores provider URL, public ID, dimensions, alt text, position, and type—not image binary data. Schema and indexes are a Phase 1 design deliverable, not implemented in Phase 0.
+## Connection contract
+
+- `MONGODB_URI` must use `mongodb://` or `mongodb+srv://` and is read only by `src/server/env.ts`.
+- `MONGODB_DB_NAME` selects the database and accepts only letters, numbers, `_`, and `-`.
+- `getDatabase()` reuses one `MongoClient` connection per server process. Development keeps the cache on `globalThis` so Fast Refresh does not create a connection per reload.
+- Environment validation runs when a database operation is requested, not while the static homepage is built. Missing configuration produces a clear server-only error without leaking a URI.
+
+## Canonical catalog records
+
+`Product` has a MongoDB `_id` and separate unique public `slug`; it references a `Brand` by `brandId` and Collections by `collectionIds`. Product visibility is governed by explicit `draft`, `active`, or `archived` status. Public repository methods always filter on `active`.
+
+Products use `women`, `men`, or `unisex` audience values. Fragrance family is a normalized taxonomy key such as `floral` or `amber-woody`, rather than a premature managed taxonomy collection. Notes are structured as `top`, `heart`, and `base` string arrays with per-level duplicate protection.
+
+Each Product contains variants. A variant has a persistence-generated stable id, uppercase SKU, positive `sizeMl`, integer `priceMinor`, optional `compareAtPriceMinor`, non-negative `inventoryQuantity`, and `isActive`. SKU values must be unique within a Product; a comparison price, when present, must exceed the selling price. Availability can later be derived from active variants with inventory, without adding reservation or checkout logic in this stage.
+
+All money uses integer minor units. For example, `1299 SEK` is stored as `129900` in `priceMinor`. A Product has an explicit ISO 4217 `currency` (default `SEK`) shared by its variants.
+
+`Brand` and `Collection` each have separate IDs, unique URL-safe slugs, explicit lifecycle status, timestamps, and optional media metadata. Collections additionally have a non-negative `sortOrder`. Neither prototype brands nor homepage collection labels were seeded.
+
+## Media and indexes
+
+Media stores provider references only: URL, optional provider public ID, alt text, optional dimensions, position, and `image` type. Image binaries are not stored in MongoDB.
+
+`ensureCatalogIndexes()` is a controlled, idempotent deployment/migration operation, not a homepage side effect. It defines unique slugs for products, brands, and collections plus Product indexes for public listings, brand, collection membership, audience, and fragrance family.
+
+The current layer has no seed script and performs no writes without an explicit repository create call. Test data uses fictional ATHAR records only.
+
+## Development catalog bootstrap
+
+Stage 3.2 adds a controlled development-only seed pipeline under `src/server/catalog/seed/`. `developmentCatalogSeed` contains fictional ATHAR-only records, never the homepage prototype brands, products, imagery, or prices. Its human-readable references use fixture keys such as `athar-atelier` and `test-unisex`; execution resolves them to the canonical MongoDB IDs created or found for that run.
+
+The pipeline validates the full fixture dataset before any persistence begins. It uses the same Zod brand, collection, product, variant, money, media, note, audience, family, slug, and SKU rules as normal catalog writes. It rejects duplicate fixture keys/slugs, duplicate SKUs across the dataset, and unknown brand/collection references before a write phase begins.
+
+Each seed-owned record persists operational metadata (`seed.key`, a deterministic fixture fingerprint, and version) that is omitted from public domain objects. A rerun with the same fingerprint is unchanged; a changed owned fixture is updated through explicit owned fields; a matching slug owned by another seed or by a non-seed record fails as a conflict. The seed never deletes records and does not perform full-document replacement, preserving future fields outside its ownership.
+
+`npm run catalog:seed:dry` validates and plans in memory, makes no database connection or write, and prints a DRY RUN summary. `npm run catalog:seed` is a write command only when `NODE_ENV` is not `production`, `CATALOG_SEED_ALLOW_WRITE=1`, and valid MongoDB configuration is supplied. Production writes are always rejected. No database write has occurred in this stage.
+
+## Public browsing boundary
+
+Stage 3.3 reads only active public records and maps them to a narrow catalog-card model before rendering. Browser-facing cards do not receive MongoDB IDs, lifecycle values, seed metadata, inventory quantities, or raw variant collections. The displayed price is derived from active variant integer minor units; products with multiple active sizes use the lowest price prefixed by `From`.
+
+In development/test, the service may use the validated fictional Stage 3.2 fixture source without Atlas. In production it never substitutes fixtures: missing configuration or a failed read produces a deliberate unavailable result. No live Atlas read or write has been verified.
+
+## Brand browsing
+
+Stage 3.4 adds active Brand discovery and products-by-active-Brand queries through the existing repositories. `BrandRepository.listPublic()` selects active Brands; product listing accepts an internal `brandId` filter and retains the same active Product visibility. The server maps a Brand to only public route/card fields before rendering. A valid active Brand with no eligible Products remains public and receives an empty state, while private/missing Brands are not-found when a catalog source is available.
+
+Brand records classify catalog membership only. They do not establish authorization, retail, distribution, partnership, or trademark claims. No real commercial Brand, official logo, or media was written, read, or imported.
+
+## Discovery reads
+
+Stage 3.5 uses one server-side allow-listed discovery query. It filters only active public records and applies bounded literal search over public Product/Brand fields before mapping to the existing public product card DTO. URL values never become Mongo operators or regular expressions. The current bounded public listing makes price-range UI and pagination unnecessary; future scale can evaluate indexed repository filters or Atlas Search only after live requirements are verified.

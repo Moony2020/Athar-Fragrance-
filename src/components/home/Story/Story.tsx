@@ -55,14 +55,14 @@ export function Story() {
 function StoryContent({ className, headingId }: { className: string; headingId: string }) {
   return <div className={className}>
     <p className={styles.eyebrow}>Our Story</p>
-    <h2 className={styles.title} id={headingId}>More Than a Perfume,<br />It's a Feeling</h2>
+    <h2 className={styles.title} id={headingId}>More Than a Perfume,<br />{"It's a Feeling"}</h2>
     <p className={styles.description}>{storyCopy}</p>
     <TextLink className={styles.cta} href="#story">Discover Our Story <span aria-hidden="true"> </span></TextLink>
   </div>;
 }
 
 function Quote() {
-  return <><span className={styles.quoteDash} aria-hidden="true" /><blockquote className={styles.quote}>"Fragrance turns moments into memories."</blockquote><span className={styles.quoteDash} aria-hidden="true" /></>;
+  return <><span className={styles.quoteDash} aria-hidden="true" /><blockquote className={styles.quote}>{"“Fragrance turns moments into memories.”"}</blockquote><span className={styles.quoteDash} aria-hidden="true" /></>;
 }
 
 function Pillars() {

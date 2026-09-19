@@ -1,0 +1,76 @@
+.card {
+  min-width: 0;
+}
+
+.link { color: inherit; display: block; text-decoration: none; }
+.link:focus-visible { outline: 2px solid var(--color-focus-ring); outline-offset: var(--space-2); }
+
+.media {
+  position: relative;
+  display: grid;
+  min-height: clamp(13rem, 25vw, 21rem);
+  place-items: center;
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+  border-radius: 48% 52% 44% 56% / 53% 42% 58% 47%;
+  background:
+    radial-gradient(circle at 48% 42%, rgba(223, 202, 157, 0.68), transparent 28%),
+    linear-gradient(145deg, #f9f1e7 0%, #e6d2b5 100%);
+  color: var(--color-text);
+}
+
+.media span:first-child {
+  font-family: var(--font-display);
+  font-size: clamp(1.65rem, 3vw, 2.5rem);
+  letter-spacing: 0.18em;
+  transform: translateX(0.09em);
+}
+
+.mediaLine {
+  position: absolute;
+  width: 48%;
+  height: 1px;
+  background: var(--color-accent);
+  transform: translateY(2.8rem);
+}
+
+.body {
+  padding: var(--space-4) var(--space-2) var(--space-2);
+}
+
+.brand,
+.details {
+  font-family: var(--font-ui);
+  font-size: var(--text-ui-xs);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+}
+
+.brand {
+  margin: 0 0 var(--space-2);
+  color: var(--color-text-muted);
+}
+
+.name {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.75rem, 2.4vw, 2.35rem);
+  font-weight: 500;
+  line-height: 1;
+}
+
+.details {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+  color: var(--color-text-muted);
+  letter-spacing: 0.06em;
+  text-transform: none;
+}
+
+.price {
+  color: var(--color-text);
+  font-weight: 700;
+}

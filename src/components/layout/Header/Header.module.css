@@ -20,11 +20,13 @@
 }
 
 .wordmark {
-  font-family: var(--font-display);
-  font-size: clamp(1.55rem, 2.25vw, 2.1rem);
-  font-weight: 600;
-  letter-spacing: 0.3em;
-  margin-right: -0.3em;
+  font-family: var(--font-logo);
+  font-size: clamp(1.1rem, 1.6vw, 1.5rem);
+  font-weight: 900;
+  letter-spacing: 0.18em;
+  margin-right: -0.18em;
+  text-transform: uppercase;
+  -webkit-text-stroke: 0.5px currentColor;
 }
 
 .descriptor {
@@ -163,17 +165,17 @@
 
 .mobileMenuRailText {
   color: #8d743d;
-  font-family: "Cormorant Garamond", Georgia, serif;
-  font-size: 1.72rem;
-  font-weight: 800;
-  letter-spacing: 0.34em;
+  font-family: var(--font-logo);
+  font-size: 1.3rem;
+  font-weight: 900;
+  letter-spacing: 0.28em;
   line-height: 1;
   margin-top: auto;
   margin-bottom: auto;
   pointer-events: none;
   transform: rotate(180deg);
   writing-mode: vertical-rl;
-  -webkit-text-stroke: 0.35px #8d743d;
+  -webkit-text-stroke: 0.4px #8d743d;
 }
 
 .railBadge {
@@ -339,7 +341,7 @@
 
 .aboutText {
   color: #5c5245;
-  font-size: 0.1088px;
+  font-size: 0.72rem;
   letter-spacing: 0.14em;
   text-transform: uppercase;
 }
@@ -456,8 +458,8 @@
   }
 
   .wordmark {
-    font-size: 1.35rem;
-    letter-spacing: 0.22em;
+    font-size: 0.95rem;
+    letter-spacing: 0.14em;
   }
 
   .descriptor {
@@ -471,5 +473,22 @@
 
   .action {
     padding: var(--space-1);
+  }
+}
+
+@media (min-width: 377px) and (max-width: 430px) {
+  .actions {
+    gap: 0;
+  }
+
+  .action {
+    height: 2.2rem;
+    padding: 0.25rem;
+    width: 2.2rem;
+  }
+
+  .action svg {
+    height: 1.35rem;
+    width: 1.35rem;
   }
 }

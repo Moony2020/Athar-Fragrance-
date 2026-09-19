@@ -187,7 +187,7 @@ The migrated Hero was compared with `reference.png` and inspected live at deskto
 
 ## Stage 2.6 — Footer Migration and Final Homepage Integration & QA
 
-**Status:** PHASE 2 — COMPLETE WITH PRE-EXISTING REPOSITORY LINT DEBT
+**Status:** PHASE 2 — COMPLETE
 
 ### Footer architecture and deferred destinations
 
@@ -211,5 +211,5 @@ The migrated Hero was compared with `reference.png` and inspected live at deskto
 ### Verification and completion
 
 - TypeScript, Stage 2.6 changed-file lint, production build, runtime inspection, full Playwright suite, `instant()`, and responsive overflow checks pass.
-- Repository-wide `npm run lint` remains **FAIL** only because of the pre-existing untracked root scripts `test_bottle_size.js`, `test_final_bottle.js`, and `test_nojump.js`, each triggering `@typescript-eslint/no-require-imports` on `require()`.
-- **PHASE 2 — COMPLETE WITH PRE-EXISTING REPOSITORY LINT DEBT.** Owner full-homepage visual approval remains required. Phase 3 has not begun.
+- The legacy root screenshot scripts that previously caused `@typescript-eslint/no-require-imports` findings were removed after confirming that no package script, test, or production path referenced them. Repository-wide `npm run lint` now passes.
+- **PHASE 2 — COMPLETE.** Owner full-homepage visual approval remains required. Phase 3 has not begun.

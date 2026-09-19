@@ -4,8 +4,8 @@ import { MobileMenu } from "./MobileMenu";
 import styles from "./Header.module.css";
 
 const navigationItems = [
-  { label: "Shop", href: "#collections" },
-  { label: "Collections", href: "#collections" },
+  { label: "Shop", href: "/shop" },
+  { label: "Collections", href: "/shop" },
   { label: "Our Story", href: "#story" },
 ];
 
@@ -29,7 +29,7 @@ export function Header() {
           ))}
         </nav>
 
-        <div className={styles.actions} aria-label="Header actions">
+        <div className={styles.actions}>
           <button className={styles.action} aria-label="Search" type="button">
             <svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="10.8" cy="10.8" r="6.7" /><path d="m16 16 4.5 4.5" /></svg>
           </button>

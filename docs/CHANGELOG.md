@@ -1,12 +1,56 @@
 # Changelog
 
+## 2026-09-20 — Phase 3 / Stage 3.6 Catalog Integration & Closure
+
+- Reconciled public discovery into one server-only flow, added authoritative Brand route scope, independent malformed-field handling, scoped canonical/noindex metadata, and consistent clean-empty versus filtered-zero-result semantics.
+- Re-ran the local Phase 3 gate: typecheck, lint, production build, no-write seed dry run, production fixture-isolation suite, fixture discovery suite, `instant()`, Turbopack runtime checks, and representative axe checks. Phase 3 is technically complete locally; live Atlas and owner production data/media remain pending.
+
+## 2026-09-19 — Phase 3 / Stage 3.5 Catalog Discovery
+
+- Added server-first GET search, active public filters, deterministic factual sorting, URL state, scoped route precedence, query-safe empty/unavailable handling, and noindex query metadata while reusing ProductCard/CatalogGrid.
+- Added discovery verification coverage and Stage-specific command record; Product Detail, commerce, Admin, price-range UI, pagination, and Atlas Search remain deferred.
+
+## 2026-09-19 — Phase 3 / Stage 3.4 Brands Browsing & Brand Pages
+
+- Added `/brands` and `/brands/[slug]` over the existing server-only catalog boundary, including narrow public Brand cards, active-only Brand visibility, products-by-Brand, not-found, empty, and production-unavailable states.
+- Reused ProductCard, CatalogGrid, money formatting, fixture isolation, and production safety; no Product Detail, search, filters, sorting, Admin, external media, or real commercial Brand data was introduced.
+- Added fictional Brand browsing coverage and documentation. Brand classification conveys no authorization, distribution, partnership, or retailer claim.
+
+## 2026-09-19 — Phase 3 / Stage 3.3 Public Catalog Browsing
+
+- Added server-rendered Shop, audience, and collection browse routes with validated route parameters, active-only public visibility, not-found handling, and accessible empty/unavailable states.
+- Added a server-only public card read model, development/test fixture source, responsive catalog cards/grid, and intentional placeholder-media treatment; production never falls back to fictional fixtures when catalog configuration is absent.
+- Activated only homepage catalog links with implemented destinations and left unsupported destinations deferred.
+- Preserved Hero/navbar/under-Hero visual styling and the protected 430–545px responsive range; no Git commit or remote update was made.
+
+## 2026-09-19 — Phase 3 / Stage 3.2 Catalog Bootstrap and Development Dataset
+
+- Added a fictional, validated catalog bootstrap dataset and a deterministic `validate → plan/dry-run → guarded write` pipeline.
+- Added seed ownership/fingerprint metadata, idempotent update handling, explicit slug conflicts, readable fixture reference resolution, and development/test-only production guards.
+- Added `catalog:seed:dry` and guarded `catalog:seed` commands using development-only `tsx`; no database write or Atlas connectivity claim was made.
+- Added seed-pipeline test coverage and documentation. **No production catalog data has been approved or seeded.**
+
+## 2026-09-19 — Phase 3 / Stage 3.1 Catalog Domain & Database Foundation
+
+- Added the official MongoDB Node.js driver, a server-only environment/connection boundary, named collection ownership, and controlled idempotent catalog indexes.
+- Added canonical Product, ProductVariant, Brand, Collection, media, notes, money, slug, lifecycle, document-mapping, repository, and public service contracts using Zod validation.
+- Added fictional catalog-domain coverage without seeding any homepage prototype brands, products, or prices.
+- Added the Phase 3 ledger and reconciled database, architecture, API, security, testing, environment, and status documentation.
+- **IMPLEMENTED — LIVE DATABASE CONNECTIVITY NOT YET VERIFIED. No Shop, Product Detail, Admin, public API, or seed work was started.**
+
+## 2026-09-19 — Maintenance: obsolete test-script cleanup
+
+- Removed three unreferenced root screenshot scripts that injected temporary Hero CSS and wrote to stale local paths.
+- Preserved the current Story presentation while correcting JSX escaping and aligning its automated assertion with current copy.
+- Repository-wide lint, TypeScript, production build, and all 12 Playwright checks now pass.
+
 ## 2026-09-19 — Phase 2 / Stage 2.6 Footer Migration and Final Integration
 
 - Replaced the final legacy Footer with the dedicated server-rendered `Footer` component and made the homepage composition explicit.
 - Removed `HomeSections`, the migration-only legacy homepage stylesheet, and its global import after confirming no production component depended on them; original static prototype/reference files remain preserved.
 - Preserved prototype Footer content and fragment navigation while keeping non-existent Boutiques and Contact destinations visibly deferred rather than fake links.
 - Corrected final integration accessibility defects in the Hero definition list and nested scroller, then completed full responsive/runtime QA.
-- **PHASE 2 — COMPLETE WITH PRE-EXISTING REPOSITORY LINT DEBT. OWNER FULL-HOMEPAGE VISUAL APPROVAL REQUIRED.**
+- **PHASE 2 — COMPLETE. OWNER FULL-HOMEPAGE VISUAL APPROVAL REQUIRED.**
 
 ## 2026-09-19 — Phase 2 / Stage 2.5 Fragrance Guide
 

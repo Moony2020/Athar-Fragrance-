@@ -2,12 +2,22 @@
 
 ## Current state
 
-ATHAR currently has no server-side application architecture. It is a browser-delivered HTML prototype with inline SVG, local imagery, CSS, and small inline JavaScript behaviours.
+ATHAR is a Next.js App Router application with React, TypeScript, Cache Components, and Partial Prefetching. The homepage remains a static, componentized presentation route. Its original HTML/CSS/vanilla-JavaScript prototype remains in the repository as reference material.
 
-## Proposed production architecture (pending approval)
+## Application and catalog architecture
 
-- Next.js App Router with React and TypeScript; server components, route handlers, and server actions form the application boundary.
-- MongoDB Atlas for canonical business data.
+- Next.js App Router with React and TypeScript; Server Components are the default boundary for future catalog reads.
+- MongoDB Atlas is the approved canonical catalog database. Stage 3.1 uses the official MongoDB Node.js driver rather than an ODM because no prior persistence pattern existed and the current scope needs a small, explicit data-access layer.
+- `src/server/env.ts` owns server-only database environment validation.
+- `src/server/db/` owns the reusable MongoDB client, named collections, and idempotent index initialization.
+- `src/server/catalog/` owns domain types, Zod boundary schemas, database-document mapping, repositories, public-read services, a development/test fixture source, and public browse-card mapping.
+- `src/server/catalog/seed/` separates fictional fixture authoring, all-fixture validation, deterministic planning/conflict detection, dry-run reporting, and guarded server-only execution. `scripts/catalog-seed.ts` is an operational entry point, not a public API.
+- Persistence modules import `server-only`; client components must never import them.
+
+Phase 3 closes over one public flow: **route → validated scope + validated GET discovery query → server-only service → repository or development fixture source → narrow public DTO → ProductCard/BrandCard → shared grid**. Scoped audience, collection, and Brand routes replace conflicting matching query values and retain their own clean canonical URLs. Production returns an explicit unavailable state rather than fixtures when configuration/reads are unavailable. There is still no route handler, client API, Product Detail, Admin, or client-side database access.
+
+## Planned integrations
+
 - Auth.js for customer authentication.
 - Stripe Payment Element for card collection; direct PayPal Orders API for PayPal.
 - Verified webhooks for payment state.

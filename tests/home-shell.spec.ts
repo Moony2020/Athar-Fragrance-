@@ -61,7 +61,7 @@ test("Our Story preserves the prototype narrative and a deferred story link", as
   await page.setViewportSize({ width: 360, height: 900 });
   await page.goto("/");
 
-  await expect(page.getByRole("heading", { name: "More Than a Perfume, It’s a Feeling" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "More Than a Perfume, It's a Feeling" })).toBeVisible();
   await expect(page.locator("blockquote").last()).toHaveText("“Fragrance turns moments into memories.”");
   await expect(page.locator("#story svg").last()).toBeVisible();
   await expect(page.getByRole("link", { name: "Discover Our Story" })).toBeVisible();

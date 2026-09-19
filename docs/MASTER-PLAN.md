@@ -15,7 +15,7 @@ Each phase has a goal contract, implementation ledger, evidence, documentation, 
 | 0 | Repository audit, baseline, documentation | In progress |
 | 1 | Application architecture, design system, domain foundation | Pending owner sign-off |
 | 2 | Homepage | Planned |
-| 3 | Catalog, brands, collections, discovery | Planned |
+| 3 | Catalog, brands, collections, discovery | Stages 3.1–3.5 implemented locally; live Atlas execution and Stage 3.6 final integration/QA pending |
 | 4 | Product detail and merchandising | Planned |
 | 5 | Cart and wishlist | Planned |
 | 6 | Authentication and customer account | Planned |
