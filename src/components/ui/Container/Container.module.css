@@ -1,0 +1,4 @@
+.root {
+  width: min(100% - (var(--layout-gutter) * 2), var(--layout-max-width));
+  margin-inline: auto;
+}

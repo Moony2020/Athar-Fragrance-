@@ -1,0 +1,55 @@
+@import "tailwindcss";
+@import "./tokens.css";
+@import "./typography.css";
+@import "./animations.css";
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  min-width: 360px;
+  overflow-x: hidden;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  min-width: 360px;
+  background: var(--color-background);
+  color: var(--color-text);
+  font-family: var(--font-ui);
+  overflow-x: hidden;
+}
+
+/* Prototype sections can retain their own intentional horizontal scrollers.
+   Clip only escaped decorative geometry at the homepage shell boundary. */
+main { overflow-x: clip; }
+
+button,
+a {
+  color: inherit;
+  font: inherit;
+}
+
+button {
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+
+a {
+  text-decoration: none;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-focus-ring);
+  outline-offset: 3px;
+}
+
+body.menu-open {
+  overflow: hidden;
+  position: fixed;
+  width: 100%;
+}

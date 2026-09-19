@@ -1,0 +1,2 @@
+.root { display: grid; gap: var(--space-3); max-width: 42rem; }
+.description { color: var(--color-text-muted); font-size: var(--text-body-lg); line-height: var(--leading-body); margin: 0; }
