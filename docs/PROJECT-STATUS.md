@@ -1,8 +1,8 @@
 # ATHAR Project Status
 
 **Last audited:** 2026-09-19  
-**Current phase:** Phase 4 — Product Detail & Merchandising, Stage 4.3 closed locally
-**Overall status:** **STAGE 4.3 COMPLETE — LIVE ATLAS PRODUCT VARIANT READS NOT YET VERIFIED.**
+**Current phase:** Phase 4 — Product Detail & Merchandising, Stage 4.4 closed locally
+**Overall status:** **STAGE 4.4 COMPLETE — LIVE ATLAS PRODUCT CONTENT READS NOT YET VERIFIED.**
 
 ### Stage 4.3 closure boundary (2026-09-20)
 
@@ -10,6 +10,12 @@
 - The existing PDP quantity, Add to bag, Wishlist, and Shop-card bag/Wishlist controls are preserved as owner-designed visual boundaries. They are disabled/non-persistent previews; no cart, wishlist, cookie, localStorage, or mutation request was added.
 - Related fragrances remain catalog-backed merchandising. Product gallery media remains independent from variant selection and no URL variant parameter was introduced.
 - The live Atlas adapter and licensed production media are intentionally not claimed as verified in this stage.
+
+### Stage 4.4 audit boundary (2026-09-20)
+
+- Existing Product content is preserved and audited through the public PDP DTO. Descriptions, family, audience, structured notes, variants, brand, media, and Related fragrances remain domain-backed.
+- Family and audience are display-mapped only; empty note groups are omitted. Ingredients and concentration remain pending canonical data and are not fabricated.
+- Unsupported static operational/authenticity/gifting wording was neutralized without removing the visual service layout. Commerce controls remain disabled and non-persistent.
 
 ## Verified baseline
 

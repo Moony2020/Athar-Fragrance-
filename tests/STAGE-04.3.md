@@ -6,7 +6,7 @@ Stage 4.3 adds PDP-only client-side selection of already server-rendered active 
 
 ## Deterministic selection rule
 
-The initial selected variant is the lowest-size available active variant; if none is available, it is the first active variant by size. The server-rendered `Eau de parfum` note follows the same rule, avoiding a hydration mismatch.
+The initial selected variant is the lowest-size available active variant; if none is available, it is the first active variant by size. The PDP size note follows the same rule without asserting an unmodeled concentration field.
 
 ## Intentional deferrals
 

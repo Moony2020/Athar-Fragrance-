@@ -141,3 +141,9 @@
 - Added catalog-backed Product variant read mapping with stable public IDs, deterministic initial-size rules, price/compare-at values, availability labels, and disabled unavailable-size semantics.
 - Preserved the owner-designed PDP and Shop purchase/Wishlist UI as disabled, non-persistent visual boundaries; no commerce mutations or persistence were introduced.
 - Preserved catalog-backed Related fragrances and independent Product gallery behavior; documented the live Atlas verification boundary.
+## 2026-09-20 — Phase 4 / Stage 4.4 Product Content Audit
+
+- Audited and preserved the canonical PDP content layer and public DTO boundary.
+- Added display-only family/audience mappings and graceful omission of empty note groups.
+- Removed unsupported hard-coded concentration/how-to-wear content and neutralized service wording while preserving the owner UI.
+- Added Stage 4.4 focused coverage and documented the pending ingredients/Live Atlas boundaries.

@@ -32,8 +32,8 @@ export function ProductPurchasePanel({ currency, presentationOnly = false, varia
       <button className={styles.addToBag} disabled={presentationOnly || selected.availability !== "available"} type="button"><span>Add to bag</span><BagIcon /></button>
       <button aria-label={`${isWishlisted ? "Remove from" : "Add to"} wishlist`} aria-pressed={isWishlisted} className={styles.wishlist} disabled={presentationOnly} onClick={() => setWishlisted((current) => !current)} type="button"><HeartIcon /></button>
     </div>
-    <p className={styles.status}>{selected.availability === "available" ? "Complimentary delivery on this fragrance." : "This size is currently unavailable."}</p>
-    <div aria-label="Purchase benefits" className={styles.benefits} role="group"><BenefitIcon type="delivery" label={<>Complimentary<br />delivery</>} /><BenefitIcon type="authenticity" label={<>Authenticity<br />guaranteed</>} /><BenefitIcon type="gift" label={<>A thoughtful<br />gift, always</>} /></div>
+    <p className={styles.status}>{selected.availability === "available" ? "Delivery information varies by order." : "This size is currently unavailable."}</p>
+    <div aria-label="Service information" className={styles.benefits} role="group"><BenefitIcon type="delivery" label={<>Delivery<br />options</>} /><BenefitIcon type="authenticity" label={<>House<br />standards</>} /><BenefitIcon type="gift" label={<>Gift<br />options</>} /></div>
   </section>;
 }
 

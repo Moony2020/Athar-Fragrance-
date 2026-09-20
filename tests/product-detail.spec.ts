@@ -8,7 +8,7 @@ test.describe("Stage 4.3 Product Detail variant selection", () => {
   test("renders a deterministic initial size and updates the selected price and availability", async ({ page }) => {
     await page.goto("/products/athar-test-no-01");
     await expect(page.getByRole("heading", { name: "ATHAR Test No. 01" })).toBeVisible();
-    await expect(page.getByText("Eau de parfum", { exact: true })).toBeVisible();
+    await expect(page.getByText("Size · 50 ml", { exact: true })).toBeVisible();
     const selector = page.getByRole("region", { name: "Product size and availability" });
     await expect(selector).toContainText(/1\s?299 kr/);
     await expect(selector.getByRole("radio", { name: /50 ml/i })).toBeChecked();

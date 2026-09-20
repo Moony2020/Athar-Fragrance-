@@ -17,11 +17,11 @@ export function ProductDetails({ product, relatedProducts }: { product: CatalogP
       <ProductGallery media={product.media} productName={product.name} />
       <section className={styles.purchaseColumn} aria-label={`${product.name} purchase information`}>
         <Link className={styles.brand} href={`/brands/${product.brand.slug}`}>{product.brand.name}</Link>
-        <p className={styles.taxNote}>{initialVariant ? `Eau de parfum · ${initialVariant.sizeMl} ml` : "Eau de parfum"}</p>
+        {initialVariant ? <p className={styles.taxNote}>Size · {initialVariant.sizeMl} ml</p> : null}
         <h1>{product.name}</h1>
         {product.shortDescription ? <p className={styles.short}>{product.shortDescription}</p> : null}
         <div className={styles.reviewRow} aria-label="Product rating and fragrance notes" role="group"><span className={styles.stars} aria-hidden="true">★★★★★</span><span>0.0 <span className={styles.reviewCount}>(0 reviews)</span></span><i aria-hidden="true" /><span>{product.notes.top.concat(product.notes.heart).slice(0, 3).join(" · ")}</span></div>
-        <div className={styles.qualityRow} aria-label="Fragrance qualities" role="group"><span>◌ Long-lasting composition</span><span>✦ Crafted in small editions</span><span>◇ Composed in Stockholm</span></div>
+        <div className={styles.qualityRow} aria-label="Product details" role="group"><span>◌ Composition details</span><span>✦ Edition details</span><span>◇ House details</span></div>
         <ProductVariantSelector currency={product.currency} variants={product.variants} />
         <ProductPurchasePanel currency={product.currency} presentationOnly variants={product.variants} />
       </section>

@@ -53,4 +53,8 @@ The Stage 4.3 read boundary is implemented locally. Product variants are mapped 
 
 The pre-existing PDP purchase controls (quantity, Add to bag, Wishlist) and Shop-card bag/Wishlist controls are intentionally preserved as disabled, visual-only owner UI. They have no persistence, cookies, localStorage, request, or mutation behavior. Related fragrances remain catalog-backed. Live Atlas Product reads and licensed production media are outside the verified local boundary.
 
+## Stage 4.4 — Product Content, Fragrance Story & Details
+
+Stage 4.4 audits and preserves the existing content layer. The public PDP DTO remains the source for descriptions, family, audience, structured top/heart/base notes, variants, media, brand, and Related fragrances. Family and audience receive display-only mappings; note groups with no canonical values are omitted. No ingredients or concentration field exists in the domain, so neither is fabricated. Unsupported static concentration, wear instructions, delivery, authenticity, gifting, and longevity-style claims were removed or neutralized while preserving the owner layout.
+
 **LIVE ATLAS PRODUCT MEDIA READS — NOT YET VERIFIED.**

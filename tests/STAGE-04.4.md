@@ -1,25 +1,26 @@
-# Stage 4.4 — Shop Card and PDP Responsive Composition
+# Stage 4.4 — Product Content, Fragrance Story & Details
 
-## Scope
+## Audit result
 
-Local-only visual and interaction refinement for the Shop product card and Product Detail layout. This stage introduces project-local ATHAR product visuals, contained product-card actions, exact variant-size selection, and responsive gallery composition. No cart, wishlist, review, payment, or external media persistence is added.
+The existing PDP was audited before editing. Product name, short description, long description, family, audience, structured notes, variants, prices, availability, media, brand, and related products are supplied by the public `CatalogProductDetail` DTO. `ProductGallery`, `ProductVariantSelector`, purchase preview controls, and Related fragrances were preserved.
 
-## Acceptance rules exercised
+| Content area | Result |
+|---|---|
+| Short description | Reuses canonical `shortDescription`; omitted when empty |
+| Description / fragrance story | Reuses canonical `description`; no parallel hard-coded story added |
+| Family | Canonical taxonomy key mapped for display (`amber-woody` → `Amber Woody`) |
+| Audience | Canonical value mapped to `For Her`, `For Him`, or `Unisex` |
+| Top / heart / base | Remain structured; empty groups are omitted |
+| Ingredients | No canonical field exists; no ingredients section fabricated |
+| Concentration | No canonical field exists; unsupported hard-coded value removed |
+| How to wear | Unsupported static instruction removed |
+| Product details | Size, availability, family, audience, and house come from public data |
+| Service copy | Unsupported delivery/authenticity/gifting promises neutralized while layout preserved |
+| Related fragrances | Preserved as pre-implemented catalog-backed merchandising |
+| Commerce controls | Quantity/Add to bag/Wishlist preserved and inert |
 
-- A Shop card contains its wishlist and bag actions within its own visual bounds.
-- A card exposes the exact selected size and matching price; a multi-size product is not reduced to an ambiguous `From` label alone.
-- The PDP displays a single-variant size once in its product identity line; it does not render a redundant size-choice control.
-- The PDP uses horizontal thumbnails on wide displays, vertical thumbnails beside the image at medium widths, and a stacked mobile composition only on small screens.
-- Gallery and product layout remain free of horizontal page overflow at the supported test widths.
+## Focused verification
 
-## Commands run
+`STAGE-04.4.spec.ts` covers canonical copy, mapped family/audience, structured notes, omission of unsupported fields, neutral service wording, Related fragrances, and inert commerce controls.
 
-| Command | Purpose | Result |
-| --- | --- | --- |
-| `& 'C:\Program Files\nodejs\npm.cmd' run typecheck` | Verify read-model, product cards, PDP, and client components | Pass |
-| `& 'C:\Program Files\nodejs\npm.cmd' run lint` | Verify source and test linting | Pass |
-| `CATALOG_FIXTURE_RUNTIME=1 BASE_URL=http://127.0.0.1:3000 npx playwright test tests/product-gallery.spec.ts tests/product-detail.spec.ts` | Exercise fixture PDP/gallery flows and responsive overflow assertions | Started locally; rerun after final visual sign-off |
-
-## Deliberate boundaries
-
-The bag and wishlist controls remain local client-preview controls until a persistent commerce state is explicitly introduced. Generated ATHAR imagery is stored in `public/images/catalog/`; no third-party commercial perfume imagery or remote provider is used.
+Live Atlas Product-content reads remain unverified; no database write was performed.

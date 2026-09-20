@@ -27,6 +27,10 @@ Stage 4.3 adds fixture coverage for deterministic initial variant selection, sta
 
 The reconciled full fixture regression completed at **54 passed, 5 skipped, 0 failed**. Production fixture-isolation checks completed at **2 passed, 0 failed**. The `instant()` homepage smoke test passed in isolation and remains part of the suite.
 
+Stage 4.4 adds focused coverage for canonical descriptions, family/audience display mapping, structured notes and empty-group handling, absence of fabricated ingredients/concentration, neutral service wording, Related fragrances, and inert future-commerce controls.
+
+After the Stage 4.4 changes, the complete fixture regression completed at **57 passed, 5 skipped, 0 failed** (62 tests total). The isolated catalog-discovery timeout was rerun successfully; no implementation regression was found.
+
 ## Atlas integration testing
 
 No automated test connects to a production Atlas database. When an owner-provided development/test URI is available, a future non-destructive connectivity check may call the server connection layer and read server metadata only. It must not reset, seed, or delete an arbitrary database.
