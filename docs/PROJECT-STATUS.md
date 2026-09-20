@@ -1,8 +1,8 @@
 # ATHAR Project Status
 
 **Last audited:** 2026-09-19  
-**Current phase:** Phase 4 — Product Detail & Merchandising, Stage 4.5 complete
-**Overall status:** **STAGE 4.5 COMPLETE — LIVE ATLAS RELATED PRODUCT READS NOT YET VERIFIED.**
+**Current phase:** Phase 4 — Product Detail & Merchandising, Stage 4.6 complete
+**Overall status:** **PHASE 4 — TECHNICALLY COMPLETE LOCALLY. LIVE ATLAS PRODUCT DETAIL / MEDIA / VARIANT / CONTENT / RELATED READS NOT YET VERIFIED.**
 
 ### Stage 4.3 closure boundary (2026-09-20)
 
@@ -25,6 +25,13 @@
 - Fixture verification: 59 passed, 6 skipped, 0 failed in the full Playwright suite; the focused Stage 4.5/PDP/gallery/content set passed with one isolated 30-second navigation timeout rerunning green.
 - Production isolation: 3 passed against the fresh production build; unavailable production reads may return the framework's 200 unavailable shell or 404, but never fictional product or Related content.
 - TypeScript, ESLint, Turbopack production build, catalog seed dry-run, runtime compilation/error checks, responsive overflow, and accessibility checks are green within the documented environment limits.
+
+### Stage 4.6 closure boundary (complete locally)
+
+- Phase 4 architecture was audited and preserved: server-first PDP route, public DTO, canonical repositories/fixtures, ProductGallery and ProductVariantSelector client islands, and server-rendered Product content plus Related ProductCards.
+- No new commerce, recommendation, authentication, CMS, upload, structured-data, or Phase 5 feature was introduced.
+- Production fixture isolation, unavailable/not-found distinction, canonical metadata, responsive PDP/Shop behavior, security/privacy boundaries, and future-commerce UI classification were re-verified.
+- Live Atlas Product Detail, media, variant, content, and Related reads remain unverified; owner production catalog/media/business-policy decisions remain pending.
 
 ## Verified baseline
 

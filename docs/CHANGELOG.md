@@ -152,3 +152,8 @@
 - Preserved the existing Related fragrances section and shared ProductCard.
 - Added a bounded server-side deterministic merchandising read using canonical family, audience, Brand, and collection signals.
 - Enforced public eligibility, current-product exclusion, deduplication, stable ordering, canonical PDP links, and empty-section omission without recommendation or commerce systems.
+## 2026-09-20 — Phase 4 / Stage 4.6 Final Integration & Closure
+
+- Audited and preserved the complete Product Detail architecture without adding new product features or commerce behavior.
+- Re-verified visibility, DTO privacy, gallery, variants, pricing, availability, content, Related merchandising, responsive behavior, production fixture isolation, and future-commerce UI boundaries.
+- Closed Phase 4 locally; live Atlas catalog/media/variant/content/Related reads and owner production policy decisions remain pending.
