@@ -15,5 +15,5 @@ export async function generateMetadata({ searchParams }: ShopPageProps): Promise
 export default async function ShopPage({ searchParams }: ShopPageProps) {
   const query = parsePublicDiscoveryQuery(await searchParams);
   const browse = await getCatalogDiscoveryData(query);
-  return <CatalogPage browse={browse} discovery={browse} eyebrow="The collection" title="Shop ATHAR" description="Browse the current fragrance selection by audience or collection." emptyMessage="No public fragrances are available at the moment." showCollections />;
+  return <CatalogPage browse={browse} discovery={browse} eyebrow="The collection" title="Shop ATHAR" description="Fragrances composed for presence, intimacy and the moments that remain." emptyMessage="No public fragrances are available at the moment." />;
 }

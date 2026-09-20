@@ -1,8 +1,8 @@
 # ATHAR Project Status
 
 **Last audited:** 2026-09-19  
-**Current phase:** Phase 3 — Catalog Foundation, locally closed
-**Overall status:** **PHASE 3 — TECHNICALLY COMPLETE LOCALLY.** Live Atlas connectivity, reads, discovery, production catalog data, and licensed media remain pending. Phase 4 has not started.
+**Current phase:** Phase 4 — Product Detail & Merchandising, Stage 4.2 locally implemented
+**Overall status:** **STAGE 4.2 IMPLEMENTED LOCALLY.** Live Atlas Product media reads, production catalog data, and licensed media remain pending.
 
 ## Verified baseline
 
@@ -13,7 +13,7 @@
 - Google Fonts are loaded externally: Cormorant Garamond, DM Sans, and Playfair Display.
 - The original prototype is now accompanied by a Next.js 16.3 App Router foundation with TypeScript, ESLint, Zod, and Playwright.
 - `next.config.ts` enables Cache Components and Partial Prefetching. The production testing API is conditionally enabled only for local test builds through `EXPOSE_TESTING_API=1`.
-- Stage 3.3 adds server-rendered public catalog browse routes backed by a server-only catalog read model. Development/test uses fictional fixtures; production without configured data renders an unavailable state rather than fake catalog content.
+- Stage 4.1 adds the server-rendered `/products/[slug]` foundation through the same server-only catalog read model. Development/test uses fictional fixtures; production without configured data renders an unavailable state rather than fake catalog content.
 - No missing local asset reference was found from the current `index.html` scan.
 
 ## Baseline evidence

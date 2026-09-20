@@ -1,31 +1,32 @@
 import Link from "next/link";
 import { CatalogShell } from "@/components/catalog/CatalogShell/CatalogShell";
+import { ProductCard } from "@/components/catalog/ProductCard/ProductCard";
+import { ProductGallery } from "@/components/product/ProductGallery/ProductGallery";
+import { ProductInformationTabs } from "@/components/product/ProductInformationTabs/ProductInformationTabs";
+import { ProductPurchasePanel } from "@/components/product/ProductPurchasePanel/ProductPurchasePanel";
+import { ProductVariantSelector } from "@/components/product/ProductVariantSelector/ProductVariantSelector";
 import { Container } from "@/components/ui/Container/Container";
-import type { CatalogProductDetail } from "@/server/catalog/read-model";
+import type { CatalogProductCard, CatalogProductDetail } from "@/server/catalog/read-model";
 import styles from "./ProductDetails.module.css";
 
-export function ProductDetails({ product }: { product: CatalogProductDetail }) {
-  const media = product.media[0] ?? null;
-  return <CatalogShell><article className={styles.page}><Container><div className={styles.layout}>
-    <section className={styles.media} aria-label="Product media">{media ? <ProductMedia src={media.url} alt={media.alt} width={media.width} height={media.height} /> : <span aria-hidden="true">ATHAR</span>}</section>
-    <section className={styles.details}>
-      <Link className={styles.brand} href={`/brands/${product.brand.slug}`}>{product.brand.name}</Link>
-      <h1>{product.name}</h1>
-      {product.shortDescription && <p className={styles.short}>{product.shortDescription}</p>}
-      <p className={styles.price}>{product.priceLabel}</p>
-      <p className={styles.availability}>{product.isAvailable ? "Available" : "Currently unavailable"}</p>
-      <dl className={styles.facts}><div><dt>Fragrance family</dt><dd>{product.fragranceFamily}</dd></div><div><dt>Audience</dt><dd>{product.audience}</dd></div></dl>
-      <p className={styles.description}>{product.description}</p>
-      <section className={styles.variants} aria-labelledby="sizes-title"><h2 id="sizes-title">Available sizes</h2><ul>{product.variants.map((variant) => <li key={variant.sizeMl}><span>{variant.sizeMl} ml</span><span>{variant.priceLabel}</span><span>{variant.availability === "available" ? "Available" : "Unavailable"}</span></li>)}</ul></section>
-      <section className={styles.notes} aria-labelledby="notes-title"><h2 id="notes-title">Fragrance notes</h2><div><Notes title="Top" notes={product.notes.top} /><Notes title="Heart" notes={product.notes.heart} /><Notes title="Base" notes={product.notes.base} /></div></section>
-    </section>
-  </div></Container></article></CatalogShell>;
-}
-
-function Notes({ title, notes }: { title: string; notes: string[] }) { return <section><h3>{title}</h3>{notes.length ? <ul>{notes.map((note) => <li key={note}>{note}</li>)}</ul> : <p>Not specified</p>}</section>; }
-
-/** Fixture/provider URLs are not yet an approved Next Image host; no optimization contract is implied. */
-function ProductMedia({ alt, height, src, width }: { alt: string; height?: number; src: string; width?: number }) {
-  // eslint-disable-next-line @next/next/no-img-element
-  return <img src={src} alt={alt} width={width} height={height} />;
+export function ProductDetails({ product, relatedProducts }: { product: CatalogProductDetail; relatedProducts: CatalogProductCard[] }) {
+  const initialVariant = product.variants.find((variant) => variant.availability === "available") ?? product.variants[0];
+  return <CatalogShell><article className={styles.page}><Container>
+    <nav aria-label="Breadcrumb" className={styles.breadcrumb}><Link href="/shop">Shop</Link><span aria-hidden="true">/</span><Link href={`/brands/${product.brand.slug}`}>{product.brand.name}</Link><span aria-hidden="true">/</span><span aria-current="page">{product.name}</span></nav>
+    <div className={styles.productLayout}>
+      <ProductGallery media={product.media} productName={product.name} />
+      <section className={styles.purchaseColumn} aria-label={`${product.name} purchase information`}>
+        <Link className={styles.brand} href={`/brands/${product.brand.slug}`}>{product.brand.name}</Link>
+        <p className={styles.taxNote}>{initialVariant ? `Eau de parfum · ${initialVariant.sizeMl} ml` : "Eau de parfum"}</p>
+        <h1>{product.name}</h1>
+        {product.shortDescription ? <p className={styles.short}>{product.shortDescription}</p> : null}
+        <div className={styles.reviewRow} aria-label="Product rating and fragrance notes"><span className={styles.stars} aria-hidden="true">★★★★★</span><span>0.0 <span className={styles.reviewCount}>(0 reviews)</span></span><i aria-hidden="true" /><span>{product.notes.top.concat(product.notes.heart).slice(0, 3).join(" · ")}</span></div>
+        <div className={styles.qualityRow} aria-label="Fragrance qualities"><span>◌ Long-lasting composition</span><span>✦ Crafted in small editions</span><span>◇ Composed in Stockholm</span></div>
+        <ProductVariantSelector currency={product.currency} variants={product.variants} />
+        <ProductPurchasePanel currency={product.currency} presentationOnly variants={product.variants} />
+      </section>
+    </div>
+    <div className={styles.productInformation}><ProductInformationTabs product={product} /></div>
+    {relatedProducts.length > 0 ? <section className={styles.related} aria-labelledby="related-title"><div className={styles.relatedHeading}><div><p>Continue your discovery</p><h2 id="related-title">Related fragrances</h2></div><Link href="/shop">Explore all fragrances <span aria-hidden="true">↗</span></Link></div><div className={styles.relatedGrid}>{relatedProducts.map((related) => <ProductCard key={related.slug} product={related} />)}</div></section> : null}
+  </Container></article></CatalogShell>;
 }

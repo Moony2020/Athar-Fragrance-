@@ -11,6 +11,7 @@ There is no authentication, payment handling, public API, or configured live dat
 - Zod validates product, variant, brand, collection, media, slug, money, and bounded public-list inputs before persistence/query use.
 - Repositories construct fixed MongoDB filters from validated values; arbitrary client-provided Mongo operators are not accepted.
 - Discovery accepts only allow-listed scalar URL fields; `q` is normalized and capped at 80 characters, uses literal substring matching, and never becomes a Mongo `$` operator or a regular expression.
+- PDP slug input is validated before the server-only Product repository read. Its public DTO omits Mongo IDs, seed/lifecycle fields, timestamps, raw inventory quantities, and internal repository metadata. Private/missing Products remain indistinguishable to public routing; unavailable infrastructure is represented separately without a fixture fallback.
 - Database errors are allowed to surface to trusted server-side callers, but connection strings are not interpolated into application errors or logs.
 - `ensureCatalogIndexes()` is not a public endpoint and must be run only through a controlled deployment/migration process.
 - The catalog seed is developer/operations tooling, not a route handler. Its write path rejects `NODE_ENV=production`, requires `CATALOG_SEED_ALLOW_WRITE=1`, and validates every fixture before the first write.

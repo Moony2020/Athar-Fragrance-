@@ -17,7 +17,7 @@ test("fictional development fixtures validate and produce a deterministic dry-ru
   expect(result.summary).toContain("DRY RUN — no database writes performed");
   expect(result.plan.summary.brand).toEqual({ create: 3, update: 0, unchanged: 0 });
   expect(result.plan.summary.collection).toEqual({ create: 4, update: 0, unchanged: 0 });
-  expect(result.plan.summary.product).toEqual({ create: 4, update: 0, unchanged: 0 });
+  expect(result.plan.summary.product).toEqual({ create: 5, update: 0, unchanged: 0 });
   expect(result.plan.dataset.products.find((product) => product.key === "athar-test-no-01")?.brandKey).toBe("athar-atelier");
 });
 
@@ -63,7 +63,7 @@ test("fixture validation catches bad references and cross-product SKU duplicatio
 
 test("fictional fixture lifecycle covers public and non-public catalog states", () => {
   const statuses = developmentCatalogSeed.products.map((fixture) => fixture.input.status);
-  expect(statuses.filter((status) => isPublicCatalogStatus(status)).length).toBe(2);
+  expect(statuses.filter((status) => isPublicCatalogStatus(status)).length).toBe(3);
   expect(isPublicCatalogStatus("draft")).toBe(false);
   expect(isPublicCatalogStatus("archived")).toBe(false);
 });

@@ -1,11 +1,18 @@
 import type { Brand, Collection, FragranceNotes, Product, ProductMedia } from "@/server/catalog/domain";
+import { createHash } from "node:crypto";
+import { formatMoneyMinor } from "@/lib/money";
 
 export type CatalogProductCard = {
   slug: string;
   brandName: string;
   name: string;
+  shortDescription: string;
+  fragranceFamily: string;
+  scentNotes: string[];
   priceLabel: string;
   variantLabel: string;
+  badge: "New" | "Bestseller" | null;
+  variants: Array<{ sizeMl: number; priceLabel: string; availability: "available" | "unavailable" }>;
   mediaAlt: string | null;
   isAvailable: boolean;
 };
@@ -25,10 +32,10 @@ export type CatalogBrandCard = {
 };
 
 export type CatalogProductDetailVariant = {
+  id: string;
   sizeMl: number;
   priceMinor: number;
   compareAtPriceMinor: number | null;
-  priceLabel: string;
   availability: "available" | "unavailable";
 };
 
@@ -36,6 +43,7 @@ export type CatalogProductDetailVariant = {
 export type CatalogProductDetail = {
   slug: string;
   name: string;
+  currency: string;
   brand: Pick<CatalogBrandCard, "slug" | "name">;
   shortDescription: string | null;
   description: string;
@@ -48,12 +56,29 @@ export type CatalogProductDetail = {
   isAvailable: boolean;
 };
 
-export function formatMoneyMinor(value: number, currency: string): string {
-  const major = value / 100;
-  if (currency === "SEK") {
-    return `${new Intl.NumberFormat("sv-SE", { maximumFractionDigits: 0 }).format(major)} kr`;
-  }
-  return new Intl.NumberFormat("en", { style: "currency", currency, maximumFractionDigits: 0 }).format(major);
+function toPublicProductMedia(product: Product): CatalogProductDetail["media"] {
+  return product.media
+    .filter((media) => {
+      try {
+        const url = new URL(media.url);
+        return media.type === "image" && (url.protocol === "https:" || url.protocol === "http:");
+      } catch {
+        return false;
+      }
+    })
+    .slice()
+    .sort((left, right) => left.position - right.position || left.url.localeCompare(right.url) || left.alt.localeCompare(right.alt))
+    .map(({ url, alt, width, height, position }) => ({
+      url,
+      alt: alt.trim() || `${product.name}`,
+      ...(width ? { width } : {}),
+      ...(height ? { height } : {}),
+      position,
+    }));
+}
+
+function publicVariantId(product: Product, variantId: string) {
+  return createHash("sha256").update(`${product.slug}:${variantId}`).digest("base64url").slice(0, 18);
 }
 
 export function toCatalogProductCard(product: Product, brand: Brand | null): CatalogProductCard {
@@ -62,15 +87,32 @@ export function toCatalogProductCard(product: Product, brand: Brand | null): Cat
     (lowest, variant) => (lowest === null || variant.priceMinor < lowest ? variant.priceMinor : lowest),
     null,
   );
-  const variantLabel = activeVariants.length === 1 ? `${activeVariants[0].sizeMl} ml` : activeVariants.length > 1 ? `${activeVariants.length} sizes` : "Unavailable";
+  const variantLabel = activeVariants.length === 1
+    ? `${activeVariants[0].sizeMl} ml`
+    : activeVariants.length > 1
+      ? `${Math.min(...activeVariants.map((variant) => variant.sizeMl))}–${Math.max(...activeVariants.map((variant) => variant.sizeMl))} ml`
+      : "Unavailable";
   const price = lowestPrice === null ? "Unavailable" : formatMoneyMinor(lowestPrice, product.currency);
+  const variants = activeVariants
+    .slice()
+    .sort((left, right) => left.sizeMl - right.sizeMl)
+    .map((variant) => ({
+      sizeMl: variant.sizeMl,
+      priceLabel: formatMoneyMinor(variant.priceMinor, product.currency),
+      availability: variant.inventoryQuantity > 0 ? "available" as const : "unavailable" as const,
+    }));
 
   return {
     slug: product.slug,
     brandName: brand?.name ?? "ATHAR",
     name: product.name,
+    shortDescription: product.shortDescription?.trim() || product.description,
+    fragranceFamily: product.fragranceFamily,
+    scentNotes: [...product.notes.top, ...product.notes.heart, ...product.notes.base].slice(0, 3),
     priceLabel: activeVariants.length > 1 && lowestPrice !== null ? `From ${price}` : price,
     variantLabel,
+    badge: product.bestseller ? "Bestseller" : product.featured ? "New" : null,
+    variants,
     mediaAlt: product.media.at(0)?.alt ?? null,
     isAvailable: activeVariants.length > 0,
   };
@@ -81,28 +123,26 @@ export function toCatalogProductDetail(product: Product, brand: Brand): CatalogP
     .filter((variant) => variant.isActive)
     .sort((left, right) => left.sizeMl - right.sizeMl)
     .map((variant) => ({
+      id: publicVariantId(product, variant.id),
       sizeMl: variant.sizeMl,
       priceMinor: variant.priceMinor,
       compareAtPriceMinor: variant.compareAtPriceMinor ?? null,
-      priceLabel: formatMoneyMinor(variant.priceMinor, product.currency),
       availability: variant.inventoryQuantity > 0 ? "available" as const : "unavailable" as const,
     }));
   const lowestPrice = Math.min(...variants.map((variant) => variant.priceMinor));
   return {
     slug: product.slug,
     name: product.name,
+    currency: product.currency,
     brand: { slug: brand.slug, name: brand.name },
     shortDescription: product.shortDescription ?? null,
     description: product.description,
     audience: product.audience,
     fragranceFamily: product.fragranceFamily,
     notes: product.notes,
-    media: product.media
-      .slice()
-      .sort((left, right) => left.position - right.position)
-      .map(({ url, alt, width, height, position }) => ({ url, alt, width, height, position })),
+    media: toPublicProductMedia(product),
     variants,
-    priceLabel: variants.length > 1 ? `From ${formatMoneyMinor(lowestPrice, product.currency)}` : variants[0].priceLabel,
+    priceLabel: variants.length > 1 ? `From ${formatMoneyMinor(lowestPrice, product.currency)}` : formatMoneyMinor(variants[0].priceMinor, product.currency),
     isAvailable: variants.some((variant) => variant.availability === "available"),
   };
 }

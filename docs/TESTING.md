@@ -9,7 +9,7 @@
 
 ## Stage verification records
 
-Every implementation stage must add a dedicated, versioned verification record in `tests/` named `STAGE-XX.X.md`. The record must state the exact commands used (including `npm run` commands and any required local environment variables), what each command verifies, the expected result, the recorded pass/skip count, and any intentional separation between development fixtures and production. The current Phase 3 closure record is [Stage 3.6 Catalog Integration & QA](../tests/STAGE-03.6.md).
+Every implementation stage must add a dedicated, versioned verification record in `tests/` named `STAGE-XX.X.md`. The record must state the exact commands used (including `npm run` commands and any required local environment variables), what each command verifies, the expected result, the recorded pass/skip count, and any intentional separation between development fixtures and production. The current records include [Stage 3.6 Catalog Integration & QA](../tests/STAGE-03.6.md) and Stage 4.1 Product Detail (added with its final verification evidence).
 
 The Playwright suite includes homepage visual/semantic regression coverage and Stage 3.1 catalog-domain tests. Catalog tests use clearly fictional `ATHAR Test No. 01` data and verify normalization/defaults, money and variant constraints, slug/identifier separation, and database-document mapping. They never contact Atlas.
 
@@ -18,6 +18,10 @@ Stage 3.2 adds seed-pipeline tests for fictional fixture validation, reference r
 Stage 3.3 adds browser coverage for Shop, validated audience and collection routes, active-only fixture visibility, empty states, homepage catalog links, not-found responses, and responsive page overflow. Fixture assertions run against the development runtime (`CATALOG_FIXTURE_RUNTIME=1` selects them in Playwright); the local production suite instead proves missing database configuration renders the explicit unavailable state and never exposes fixture products.
 
 Stage 3.4 adds the same separated evidence for `/brands` and `/brands/[slug]`: active-only fictional Brand discovery, semantic Brand links, products-by-Brand through the existing product grid, non-public/malformed Brand not-found behavior, active empty Brand state, responsive overflow, and safe production unavailability without fixture leakage.
+
+Stage 4.1 adds development-fixture PDP coverage for name, Brand link, shared lowest-active-price presentation, active public variants, family/structured notes, ProductCard navigation, and non-public/malformed Product routes. Its production-style assertion proves a fictional PDP is never shown when canonical access is unavailable.
+
+Stage 4.2 adds fixture coverage for deterministic ordered multi-media selection, button/keyboard selected state, single-media restraint, zero-media placeholders, viewport overflow, and production media isolation. It also exercises equal media positions at the read-model boundary.
 
 ## Atlas integration testing
 

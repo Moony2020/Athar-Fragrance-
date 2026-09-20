@@ -1,13 +1,8 @@
 import Link from "next/link";
 import { Container } from "@/components/ui/Container/Container";
 import { MobileMenu } from "./MobileMenu";
+import { HeaderNavigation } from "./HeaderNavigation";
 import styles from "./Header.module.css";
-
-const navigationItems = [
-  { label: "Shop", href: "/shop" },
-  { label: "Collections", href: "/shop" },
-  { label: "Our Story", href: "#story" },
-];
 
 export function Header() {
   return (
@@ -18,16 +13,7 @@ export function Header() {
           <span className={styles.descriptor}>Haute Parfumerie</span>
         </Link>
 
-        <nav className={styles.navigation} aria-label="Main navigation">
-          <Link className={styles.activeLink} href="/" aria-current="page">
-            Home
-          </Link>
-          {navigationItems.map((item) => (
-            <Link className={styles.navigationLink} href={item.href} key={item.label}>
-              {item.label}
-            </Link>
-          ))}
-        </nav>
+        <HeaderNavigation />
 
         <div className={styles.actions}>
           <button className={styles.action} aria-label="Search" type="button">

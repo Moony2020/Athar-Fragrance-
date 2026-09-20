@@ -47,6 +47,10 @@ Stage 3.3 reads only active public records and maps them to a narrow catalog-car
 
 In development/test, the service may use the validated fictional Stage 3.2 fixture source without Atlas. In production it never substitutes fixtures: missing configuration or a failed read produces a deliberate unavailable result. No live Atlas read or write has been verified.
 
+## Product Detail public boundary
+
+Stage 4.1 maps Product and its active public Brand to a separate `CatalogProductDetail` read model before rendering `/products/[slug]`. This richer model is still deliberately narrow: it includes public identity/copy, family, structured notes, ordered public media fields, and active variant size/price/safe availability. It omits Mongo IDs, seed/lifecycle metadata, timestamps, raw inventory quantities, and persistence objects. The PDP's displayed default price follows the same lowest-active-variant integer-minor-unit rule as catalog cards. Missing/private products are not-found when the source is available; unavailable infrastructure is a distinct safe state. Production never serves development fixtures.
+
 ## Brand browsing
 
 Stage 3.4 adds active Brand discovery and products-by-active-Brand queries through the existing repositories. `BrandRepository.listPublic()` selects active Brands; product listing accepts an internal `brandId` filter and retains the same active Product visibility. The server maps a Brand to only public route/card fields before rendering. A valid active Brand with no eligible Products remains public and receives an empty state, while private/missing Brands are not-found when a catalog source is available.

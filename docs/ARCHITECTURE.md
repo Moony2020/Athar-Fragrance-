@@ -14,7 +14,9 @@ ATHAR is a Next.js App Router application with React, TypeScript, Cache Componen
 - `src/server/catalog/seed/` separates fictional fixture authoring, all-fixture validation, deterministic planning/conflict detection, dry-run reporting, and guarded server-only execution. `scripts/catalog-seed.ts` is an operational entry point, not a public API.
 - Persistence modules import `server-only`; client components must never import them.
 
-Phase 3 closes over one public flow: **route → validated scope + validated GET discovery query → server-only service → repository or development fixture source → narrow public DTO → ProductCard/BrandCard → shared grid**. Scoped audience, collection, and Brand routes replace conflicting matching query values and retain their own clean canonical URLs. Production returns an explicit unavailable state rather than fixtures when configuration/reads are unavailable. There is still no route handler, client API, Product Detail, Admin, or client-side database access.
+Phase 3 closes over one public discovery flow: **route → validated scope + validated GET discovery query → server-only service → repository or development fixture source → narrow public DTO → ProductCard/BrandCard → shared grid**. Stage 4.1 adds the analogous PDP flow: **`/products/[slug]` → validated slug → server-only detail service → public Product + Brand repository reads → `CatalogProductDetail` → server-rendered ProductDetails**. Scoped audience, collection, and Brand routes replace conflicting matching query values and retain their own clean canonical URLs. Production returns an explicit unavailable state rather than fixtures when configuration/reads are unavailable. There is no route handler, client API, Cart, Wishlist, checkout, Admin, or client-side database access.
+
+Stage 4.2 adds one deliberately small client island: `ProductGallery`. It receives already-mapped public media from the Server Component and owns only selected-thumbnail presentation state; it does not fetch Product data or own variants, prices, availability, Cart, or Wishlist state.
 
 ## Planned integrations
 

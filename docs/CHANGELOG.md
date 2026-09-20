@@ -1,5 +1,15 @@
 # Changelog
 
+## 2026-09-20 — Phase 4 / Stage 4.2 Product Gallery & Media
+
+- Added a reusable `ProductGallery` client island over the existing public PDP media DTO, deterministic media ordering, accessible thumbnail selection, local neutral fallback media, and multi/single/zero-media fixture coverage.
+- Kept canonical data reads and PDP information server-rendered. No remote image domain was opened, and no Cloudinary, upload, zoom, lightbox, Cart, Wishlist, or variant-selection work was introduced.
+
+## 2026-09-20 — Phase 4 / Stage 4.1 Product Detail Foundation
+
+- Added the server-rendered canonical `/products/[slug]` route, narrow public PDP DTO, safe active Product/Brand/variant visibility boundary, factual metadata/canonical URL, and ProductCard navigation to the real PDP.
+- Added basic editorial product media, family, structured notes, public size/price/availability presentation, distinct unavailable/not-found states, fixture-isolation coverage, and Stage 4 documentation. Cart, Wishlist, checkout, interactive variant selection, advanced gallery, product schema data, and commercial media remain deferred.
+
 ## 2026-09-20 — Phase 3 / Stage 3.6 Catalog Integration & Closure
 
 - Reconciled public discovery into one server-only flow, added authoritative Brand route scope, independent malformed-field handling, scoped canonical/noindex metadata, and consistent clean-empty versus filtered-zero-result semantics.

@@ -30,14 +30,17 @@ export function CatalogPage({ browse, eyebrow, title, description, emptyMessage,
       <section className={styles.page} aria-labelledby="catalog-title">
         <Container>
           <header className={styles.header}>
-            <p className={styles.eyebrow}>{eyebrow}</p>
-            <h1 id="catalog-title">{title}</h1>
-            <p className={styles.description}>{description}</p>
+            <div className={styles.headerCopy}>
+              <p className={styles.eyebrow}>{eyebrow}</p>
+              <h1 id="catalog-title">{title}</h1>
+              <p className={styles.description}>{description}</p>
+              <p className={styles.headerNote}>A considered edit of lasting impressions.</p>
+            </div>
           </header>
 
           {showAudienceNavigation && (
             <nav className={styles.audienceNav} aria-label="Browse by audience">
-              {audiences.map((audience) => <Link href={audience.href} key={audience.href}>{audience.label}</Link>)}
+              <span className={styles.navLabel}>Discover by</span>{audiences.map((audience) => <Link href={audience.href} key={audience.href}>{audience.label}</Link>)}
             </nav>
           )}
 

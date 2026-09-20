@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { ProductDetails } from "@/components/product/ProductDetails/ProductDetails";
 import { CatalogShell } from "@/components/catalog/CatalogShell/CatalogShell";
 import { Container } from "@/components/ui/Container/Container";
-import { getProductDetailData } from "@/server/catalog/services";
+import { getCatalogBrowseData, getProductDetailData } from "@/server/catalog/services";
 
 export const instant = false;
 type Props = { params: Promise<{ slug: string }> };
@@ -20,7 +20,9 @@ export default async function ProductPage({ params }: Props) {
   const result = await getProductDetailData(slug);
   if (result.availability === "unavailable") return <ProductUnavailable />;
   if (!result.product) notFound();
-  return <ProductDetails product={result.product} />;
+  const catalog = await getCatalogBrowseData();
+  const relatedProducts = catalog.products.filter((product) => product.slug !== result.product?.slug).slice(0, 4);
+  return <ProductDetails product={result.product} relatedProducts={relatedProducts} />;
 }
 
 function ProductUnavailable() { return <CatalogShell><main><Container><p role="status">Product browsing is temporarily unavailable.</p></Container></main></CatalogShell>; }

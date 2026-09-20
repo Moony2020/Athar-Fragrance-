@@ -1,6 +1,7 @@
 import { expect, test } from "@playwright/test";
 
 import { toProduct, toProductDocument } from "../src/server/catalog/documents";
+import { toCatalogProductDetail } from "../src/server/catalog/read-model";
 import { productCreateInputSchema } from "../src/server/catalog/schemas";
 
 const fictionalProductInput = {
@@ -84,4 +85,30 @@ test("catalog persistence mapping keeps database identifiers separate from publi
   expect(product.brandId).toBe(fictionalProductInput.brandId);
   expect(product.variants[0].id).toMatch(/^[a-f\d]{24}$/);
   expect(product.createdAt).toEqual(now);
+});
+
+test("public PDP media ordering uses position then a stable factual fallback", () => {
+  const input = productCreateInputSchema.parse({
+    ...fictionalProductInput,
+    media: [
+      { url: "https://media.example.test/z.jpg", alt: "Z view", position: 1, type: "image" },
+      { url: "https://media.example.test/a.jpg", alt: "A view", position: 1, type: "image" },
+      { url: "https://media.example.test/front.jpg", alt: "Front view", position: 0, type: "image" },
+    ],
+  });
+  const product = toProduct(toProductDocument(input));
+  const detail = toCatalogProductDetail(product, {
+    id: "64b64c5f8b0e2d9f4d3b2a11",
+    name: "ATHAR Atelier",
+    slug: "athar-atelier",
+    status: "active",
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  });
+
+  expect(detail.media.map((media) => media.url)).toEqual([
+    "https://media.example.test/front.jpg",
+    "https://media.example.test/a.jpg",
+    "https://media.example.test/z.jpg",
+  ]);
 });

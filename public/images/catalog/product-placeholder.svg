@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" role="img" aria-label="ATHAR product media placeholder">
+  <rect width="800" height="1000" fill="#f4eadb"/>
+  <path d="M190 760C285 670 300 505 400 350c100 155 115 320 210 410" fill="none" stroke="#b7976d" stroke-width="8"/>
+  <text x="400" y="490" fill="#161413" font-family="serif" font-size="88" letter-spacing="18" text-anchor="middle">ATHAR</text>
+  <path d="M290 535h220" stroke="#b7976d" stroke-width="4"/>
+</svg>

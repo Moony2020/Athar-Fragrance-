@@ -1,0 +1,18 @@
+.section { border-top: 1px solid var(--color-border); margin-top: var(--space-6); }
+.tabs { display: grid; grid-template-columns: repeat(3, 1fr); }
+.tab { background: transparent; border: 0; border-bottom: 1px solid var(--color-border); color: var(--color-text-muted); cursor: pointer; font-family: var(--font-ui); font-size: var(--text-ui-xs); letter-spacing: var(--tracking-label); padding: var(--space-3) var(--space-2); text-align: left; text-transform: uppercase; }
+.tab[aria-selected="true"] { border-bottom: 2px solid var(--color-accent); color: var(--color-text); font-weight: 700; }
+.panel { padding-top: var(--space-5); }
+.details h2, .empty h2 { font-family: var(--font-display); font-size: clamp(1.8rem, 2.8vw, 2.5rem); font-weight: 500; margin: 0; }
+.details h2 + p, .wear p, .empty p { color: var(--color-text-muted); font-family: var(--font-ui); font-size: var(--text-body-sm); line-height: var(--leading-body); margin: var(--space-3) 0 0; }
+.facts { border-block: 1px solid var(--color-border); display: grid; gap: var(--space-4) var(--space-3); grid-template-columns: repeat(3, 1fr); margin: var(--space-5) 0; padding-block: var(--space-4); }
+.facts dt, .notes h3, .wear h3, .notes span { font-family: var(--font-ui); font-size: var(--text-ui-xs); letter-spacing: var(--tracking-label); text-transform: uppercase; }
+.facts dd { font-family: var(--font-ui); margin: var(--space-2) 0 0; text-transform: capitalize; }
+.notes h3, .wear h3 { color: var(--color-text); margin: 0; }
+.notes > div { display: grid; gap: var(--space-3); grid-template-columns: repeat(3, 1fr); margin-top: var(--space-3); }
+.notes span { color: var(--color-accent); }
+.notes p { font-family: var(--font-ui); font-size: var(--text-body-sm); line-height: 1.45; margin: var(--space-2) 0 0; }
+.wear { border-top: 1px solid var(--color-border); margin-top: var(--space-5); padding-top: var(--space-5); }
+.empty { min-height: 12rem; }
+@media (max-width: 720px) { .facts { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 420px) { .tabs { overflow-x: auto; grid-template-columns: repeat(3, max-content); }.tab { min-width: 7rem; }.facts,.notes > div { grid-template-columns: 1fr; } }
