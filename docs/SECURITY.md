@@ -17,6 +17,7 @@ There is no authentication, payment handling, public API, or configured live dat
 - The catalog seed is developer/operations tooling, not a route handler. Its write path rejects `NODE_ENV=production`, requires `CATALOG_SEED_ALLOW_WRITE=1`, and validates every fixture before the first write.
 - Matching an existing slug is insufficient authority to overwrite it: seed records must carry the expected operational seed key. Conflicts fail rather than replacing unrelated records, and the pipeline deletes nothing.
 - Stage 5.1 commerce inputs are Zod-validated and use canonical Product slug plus public Variant ID and a bounded integer quantity. The server-only commerce adapter resolves current public Product/Variant eligibility, price, and safe availability; browser-supplied prices, totals, stock, and Product records are not accepted. No Cart/Wishlist persistence, cookie, localStorage, public API, mutation, or inventory reservation exists yet.
+- Stage 5.2 adds one strict Server Action for PDP Add-to-bag. Its payload permits only Product slug, public Variant ID, and bounded integer quantity; unexpected price/total fields are rejected. The `athar_guest_cart` cookie is an opaque, session-scoped identifier with `httpOnly`, `SameSite=Lax`, `Path=/`, and production `Secure`; it conveys no cart state or customer identity. Public canonical data is re-read for every mutation. Development/test memory storage is disabled in production, avoiding an accidental non-durable production Cart fallback.
 
 ## Future baseline
 

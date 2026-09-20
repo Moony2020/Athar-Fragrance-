@@ -27,10 +27,10 @@ test.describe("Stage 4.4 Product content audit", () => {
     await expect(page.getByRole("region", { name: "Purchase options" })).not.toContainText("guaranteed");
   });
 
-  test("preserves related catalog links and inert future-commerce controls", async ({ page }) => {
+  test("preserves related catalog links and the deferred PDP Wishlist boundary", async ({ page }) => {
     await page.goto("/products/athar-test-no-01");
     await expect(page.getByRole("region", { name: "Related fragrances" })).toBeVisible();
-    await expect(page.getByRole("region", { name: "Purchase options" }).getByRole("button", { name: "ADD TO BAG" })).toBeDisabled();
-    await expect(page.getByRole("region", { name: "Purchase options" }).getByRole("button", { name: "Add to wishlist" })).toBeDisabled();
+    await expect(page.getByRole("region", { name: "Purchase options" }).getByRole("button", { name: "ADD TO BAG" })).toBeEnabled();
+    await expect(page.getByRole("region", { name: "Purchase options" }).getByRole("button", { name: "Wishlist is not available yet" })).toBeDisabled();
   });
 });

@@ -24,9 +24,9 @@ test.describe("Stage 4.3 Product Detail variant selection", () => {
     await expect(selector.getByRole("radio", { name: /50 ml/i })).toBeChecked();
     await expect(selector.getByRole("radio", { name: /100 ml/i })).toBeDisabled();
     const purchasePreview = page.getByRole("region", { name: "Purchase options" });
-    await expect(purchasePreview.getByRole("button", { name: "ADD TO BAG" })).toBeDisabled();
-    await expect(purchasePreview.getByRole("button", { name: "Increase quantity" })).toBeDisabled();
-    await expect(purchasePreview.getByRole("button", { name: "Add to wishlist" })).toBeDisabled();
+    await expect(purchasePreview.getByRole("button", { name: "ADD TO BAG" })).toBeEnabled();
+    await expect(purchasePreview.getByRole("button", { name: "Increase quantity" })).toBeEnabled();
+    await expect(purchasePreview.getByRole("button", { name: "Wishlist is not available yet" })).toBeDisabled();
   });
 
   test("keeps a single-variant product concise and preserves its public PDP identity", async ({ page }) => {

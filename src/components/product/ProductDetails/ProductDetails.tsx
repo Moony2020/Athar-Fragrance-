@@ -3,8 +3,7 @@ import { CatalogShell } from "@/components/catalog/CatalogShell/CatalogShell";
 import { ProductCard } from "@/components/catalog/ProductCard/ProductCard";
 import { ProductGallery } from "@/components/product/ProductGallery/ProductGallery";
 import { ProductInformationTabs } from "@/components/product/ProductInformationTabs/ProductInformationTabs";
-import { ProductPurchasePanel } from "@/components/product/ProductPurchasePanel/ProductPurchasePanel";
-import { ProductVariantSelector } from "@/components/product/ProductVariantSelector/ProductVariantSelector";
+import { ProductPurchaseArea } from "@/components/product/ProductPurchaseArea/ProductPurchaseArea";
 import { Container } from "@/components/ui/Container/Container";
 import type { CatalogProductCard, CatalogProductDetail } from "@/server/catalog/read-model";
 import styles from "./ProductDetails.module.css";
@@ -22,8 +21,7 @@ export function ProductDetails({ product, relatedProducts }: { product: CatalogP
         {product.shortDescription ? <p className={styles.short}>{product.shortDescription}</p> : null}
         <div className={styles.reviewRow} aria-label="Product rating and fragrance notes" role="group"><span className={styles.stars} aria-hidden="true">★★★★★</span><span>0.0 <span className={styles.reviewCount}>(0 reviews)</span></span><i aria-hidden="true" /><span>{product.notes.top.concat(product.notes.heart).slice(0, 3).join(" · ")}</span></div>
         <div className={styles.qualityRow} aria-label="Product details" role="group"><span>◌ Composition details</span><span>✦ Edition details</span><span>◇ House details</span></div>
-        <ProductVariantSelector currency={product.currency} variants={product.variants} />
-        <ProductPurchasePanel currency={product.currency} presentationOnly variants={product.variants} />
+        <ProductPurchaseArea currency={product.currency} productSlug={product.slug} variants={product.variants} />
       </section>
     </div>
     <div className={styles.productInformation}><ProductInformationTabs product={product} /></div>

@@ -5,11 +5,11 @@ const fixture = process.env.CATALOG_FIXTURE_RUNTIME === "1";
 test.describe("Stage 5.1 commerce-boundary audit", () => {
   test.skip(!fixture, "Owner-UI assertions run against the fictional development catalog.");
 
-  test("preserves PDP purchase controls as disabled UI-only boundaries", async ({ page }) => {
+  test("preserves the PDP control design before the later bounded Add-to-bag activation", async ({ page }) => {
     await page.goto("/products/cedar-study");
     const purchase = page.getByRole("region", { name: "Purchase options" });
-    await expect(purchase.getByRole("button", { name: "Increase quantity" })).toBeDisabled();
-    await expect(purchase.getByRole("button", { name: "Add to bag" })).toBeDisabled();
+    await expect(purchase.getByRole("button", { name: "Increase quantity" })).toBeEnabled();
+    await expect(purchase.getByRole("button", { name: "Add to bag" })).toBeEnabled();
     await expect(purchase.getByRole("button", { name: /wishlist/i })).toBeDisabled();
     await expect(purchase.getByRole("group", { name: "Quantity" })).toBeVisible();
   });

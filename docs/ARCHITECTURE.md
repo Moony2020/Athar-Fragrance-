@@ -24,6 +24,8 @@ Stage 4.5 keeps Related selection server-side in `getRelatedProductsData`. It re
 
 Stage 5.1 introduces a persistence-free commerce domain under `src/commerce/` and a server-only canonical resolver under `src/server/commerce/`. Future Cart lines are `productSlug + publicVariantId + quantity`; Wishlist entries are Product slugs. The domain accepts no client price or availability values and resolves public PDP data server-side before accepting a line or deriving an integer-minor-unit subtotal. No cookie, localStorage, database schema, API route, server action, or client provider is introduced yet.
 
+Stage 5.2 adds a narrow `ProductPurchaseArea` client island that coordinates selected public Variant state between the existing size selector and PDP purchase panel. Its Add-to-bag mutation crosses one Server Action boundary to a server-only guest Cart adapter. Development/test storage is a process-memory `GuestCartStore`; it serializes writes per opaque guest ID and is deliberately unavailable in production until a durable adapter is designed. The cookie stores only that session guest ID; canonical resolution remains the authority for eligibility and price.
+
 ## Planned integrations
 
 - Auth.js for customer authentication.

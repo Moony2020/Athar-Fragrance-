@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-09-20 — Phase 5 / Stage 5.2 PDP Add-to-bag & Ephemeral Guest Cart
+
+- Activated only PDP Quantity and Add to bag through a strict Server Action, canonical public Product/Variant revalidation, and server-derived integer-minor pricing.
+- Added a development/test-only in-memory guest Cart keyed by an opaque httpOnly session cookie; production safely reports unavailable until a durable adapter exists.
+- Preserved the owner PDP design and deferred Cart UI, Header count, ProductCard interactions, Wishlist persistence, Checkout, Orders, payment, and inventory mutation.
+
 ## 2026-09-20 — Phase 4 / Stage 4.2 Product Gallery & Media
 
 - Added a reusable `ProductGallery` client island over the existing public PDP media DTO, deterministic media ordering, accessible thumbnail selection, local neutral fallback media, and multi/single/zero-media fixture coverage.

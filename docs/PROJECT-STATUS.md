@@ -1,8 +1,15 @@
 # ATHAR Project Status
 
-**Last audited:** 2026-09-19  
-**Current phase:** Phase 5 — Cart & Wishlist, Stage 5.1 complete
-**Overall status:** **STAGE 5.1 COMPLETE — CART/WISHLIST FOUNDATION IMPLEMENTED LOCALLY.**
+**Last audited:** 2026-09-20
+**Current phase:** Phase 5 — Cart & Wishlist, Stage 5.2 complete
+**Overall status:** **STAGE 5.2 COMPLETE — PDP ADD-TO-BAG + EPHEMERAL GUEST CART IMPLEMENTED LOCALLY.**
+
+## Current project state
+
+- ATHAR is a Next.js 16.3 App Router application with a server-first Phase 3 catalog and a locally complete Phase 4 Product Detail flow.
+- Stage 5.1 provides the Cart/Wishlist domain foundation. Stage 5.2 activates only PDP Quantity and Add to bag through canonical server revalidation and an ephemeral development/test guest Cart.
+- Durable production Cart persistence, Wishlist persistence, a Cart page/drawer, Checkout, payment, Orders, inventory reservation, and live Atlas Cart/Wishlist verification are not implemented.
+- The original static prototype and local assets are preserved as historical visual reference material; they are not the current application architecture.
 
 ### Stage 4.3 closure boundary (2026-09-20)
 
@@ -33,30 +40,36 @@
 - Production fixture isolation, unavailable/not-found distinction, canonical metadata, responsive PDP/Shop behavior, security/privacy boundaries, and future-commerce UI classification were re-verified.
 - Live Atlas Product Detail, media, variant, content, and Related reads remain unverified; owner production catalog/media/business-policy decisions remain pending.
 
-### Stage 5.1 commerce-foundation boundary (complete locally)
+### Stage 5.1 commerce-foundation boundary (historical closure)
 
 - Existing owner commerce-looking UI was inventoried and preserved. PDP purchase controls remain disabled UI-only; gallery and ProductCard hearts/bags remain local presentation-only controls; Header affordances remain static.
 - Cart domain lines use canonical Product slug plus public Variant ID and bounded integer quantity; Wishlist is Product-level. Both resolve public Product/Variant eligibility and current integer-minor-unit price through a server-only adapter.
 - No persistence, cookie, localStorage, server action, API route, Cart page, Checkout, payment, Order, reservation, or inventory mutation was added. Live Atlas Cart/Wishlist persistence remains not yet verified.
 
-## Verified baseline
+### Stage 5.2 PDP guest-cart boundary (complete locally)
 
-- The repository is a static HTML/CSS/vanilla-JavaScript homepage prototype, not an established application.
+- PDP Quantity and Add to bag now submit only public Product/Variant identity plus a bounded integer quantity through a Next Server Action. The server re-resolves public eligibility and current integer-minor price before mutating a Cart.
+- Development/test uses an explicitly ephemeral server-memory guest Cart keyed by an opaque, httpOnly session cookie. It is not durable and intentionally has no production memory fallback.
+- ProductGallery, ProductCard bag/hearts, Header counter, and Wishlist persistence remain outside this activation. No Cart route/drawer, Checkout, payment, Order, account merge, inventory reservation, or Atlas Cart read/write was added or claimed.
+
+## Historical Phase 0 baseline
+
+- At the Phase 0 audit, the repository was a static HTML/CSS/vanilla-JavaScript homepage prototype.
 - Entry point: `index.html`.
 - Styling is split across `styles.css`, `hero-details.css`, `sections.css`, `index-overrides.css`, and `responsive-rebuild.css`.
 - Assets are local PNG/JPG files in the repository root and `assets/`.
 - Google Fonts are loaded externally: Cormorant Garamond, DM Sans, and Playfair Display.
-- The original prototype is now accompanied by a Next.js 16.3 App Router foundation with TypeScript, ESLint, Zod, and Playwright.
+- This baseline predates the current Next.js 16.3 App Router, catalog, PDP, and Stage 5 implementation.
 - `next.config.ts` enables Cache Components and Partial Prefetching. The production testing API is conditionally enabled only for local test builds through `EXPOSE_TESTING_API=1`.
 - Stage 4.1 adds the server-rendered `/products/[slug]` foundation through the same server-only catalog read model. Development/test uses fictional fixtures; production without configured data renders an unavailable state rather than fake catalog content.
 - No missing local asset reference was found from the current `index.html` scan.
 
-## Baseline evidence
+## Historical baseline evidence
 
 | Check | Result | Evidence |
 | --- | --- | --- |
 | Repository inventory | Pass | Static entry point, five stylesheets, local imagery, and a standalone banner experiment identified. |
-| Git history | Pass | Local and remote `master` currently point to owner checkpoint `68500a7`; Stage 2 maintenance and Stage 3.1 work remain uncommitted locally by owner request. |
+| Git history | Pass | Historical audit snapshot: local and remote `master` pointed to owner checkpoint `68500a7` at that time. This is not a current Git-state claim. |
 | Local asset reference scan | Pass | No unresolved local `src`/`href` reference from `index.html`. |
 | TypeScript | Pass | `npm run typecheck` completed with zero errors. |
 | Repository-wide lint | Pass | `npm run lint` completes with zero findings after obsolete root screenshot scripts were removed. |
@@ -64,25 +77,31 @@
 | Browser/runtime verification | Pass | Agent Browser and `/_next/mcp` verified the public route, React runtime, route map, and zero compile/runtime errors. |
 | Production navigation rig | Pass | Playwright's public homepage check and `instant()` smoke check both passed against the freshly built local artifact on port 3100. |
 
+## Historical pre-App-Router implementation snapshot
+
+At the initial audit, the prototype contained a static hero, header/navigation, mobile menu, fragrance-note rail, collection cards, a bestsellers visual with hotspots, editorial story/banner content, fragrance-guide cards, footer, and small vanilla-JS menu/scroll controls. The then-unimplemented interaction statement is historical and superseded by the catalog, PDP, and limited Stage 5.2 PDP Add-to-bag implementation above.
+
 ## Current implementation
 
-The prototype contains a static hero, header/navigation, mobile menu, fragrance-note rail, collection cards, a bestsellers visual with hotspots, editorial story/banner content, fragrance-guide cards, footer, and small vanilla-JS menu/scroll controls. Links are fragment placeholders; account, search, wishlist, cart, catalog, checkout, and product interactions are not implemented.
-
-## Current implementation
-
-- `src/app` contains the App Router root layout and a verified static homepage shell.
+- `src/app` contains the Next.js App Router homepage, catalog routes, Brand/collection browsing, and server-rendered Product Detail routes.
 - `src/styles` contains only global, token, typography, and animation layers; bespoke homepage styling is owned by component CSS Modules.
 - Phase 1 added tokenized colour, spacing, layout, type, radius, elevation, and motion foundations; Next.js self-hosted Cormorant Garamond and DM Sans; and six reusable UI primitives under `src/components/ui`.
-- `playwright.config.ts`, `tests/home-shell.spec.ts`, and `instant-nav.rig.md` establish the reusable local verification rig.
+- The public catalog, PDP read model, gallery, variant selection, Product content, Related merchandising, and the bounded PDP guest-Cart Add-to-bag flow are implemented locally on their documented server/client boundaries.
+- `playwright.config.ts`, `tests/home-shell.spec.ts`, `tests/STAGE-05.2.spec.ts`, and `instant-nav.rig.md` establish the reusable local verification rig.
 - `.gitignore` excludes generated build, test, and TypeScript output.
 - The existing static prototype and its assets remain preserved as visual reference material.
 
-## Known follow-up items
+## Current follow-up items
 
-1. Obtain owner full-homepage visual approval before considering any Phase 3 catalog/product-discovery scope.
+1. Select and implement durable production Cart storage before making any production Cart readiness claim.
 2. Confirm production licensing for the reused Hero imagery and third-party brand/product references before any production launch.
-3. Provide a least-privilege development/test MongoDB Atlas URI and final database name for non-destructive live connectivity verification.
-4. `npm audit` reports two dependency vulnerabilities. They are not remediated automatically because an audit fix may change the dependency graph; address them in the dependency-security stage.
+3. Provide a least-privilege development/test MongoDB Atlas URI and final database name for non-destructive catalog and future Cart/Wishlist integration verification.
+4. Define Wishlist persistence, Cart presentation, Checkout, payment, Order, and inventory-reservation stages before activating those surfaces.
+5. `npm audit` reports two dependency vulnerabilities. They are not remediated automatically because an audit fix may change the dependency graph; address them in the dependency-security stage.
+
+## Historical stage records
+
+The records below preserve earlier-stage evidence. Statements such as “has not begun,” old test counts, and old UI boundaries describe their respective historical checkpoints, not the current Stage 5.2 state.
 
 ## Stage 2.2 status
 

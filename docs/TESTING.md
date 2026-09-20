@@ -35,6 +35,8 @@ Stage 4.5 adds focused coverage for Related eligibility, current-product exclusi
 
 Stage 5.1 adds pure domain coverage for canonical Cart-line merging, bounded integer quantity validation, unavailable/private Product and Variant rejection, canonical integer-minor price subtotal resolution, and Product-level Wishlist deduplication. Browser coverage confirms that the preserved PDP controls remain disabled and that ProductCard local affordances do not make commerce mutations.
 
+Stage 5.2 adds pure guest-Cart service coverage for canonical merge/separate-variant behavior, integer-minor subtotals, price tampering, unavailable/private catalog targets, and explicit production-adapter absence. Browser coverage exercises bounded PDP Quantity, Add-to-bag, cookie attributes, selected available Variant use, blocked unavailable Variant behavior, and unchanged gallery/Wishlist boundaries. Its full regression record separates fixture development from production isolation and retains `instant()`, Turbopack, and Axe verification.
+
 ## Atlas integration testing
 
 No automated test connects to a production Atlas database. When an owner-provided development/test URI is available, a future non-destructive connectivity check may call the server connection layer and read server metadata only. It must not reset, seed, or delete an arbitrary database.

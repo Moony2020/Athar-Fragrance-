@@ -39,4 +39,14 @@ If a Product is archived, a Variant is removed, or a price/availability changes 
 
 ### Deferrals
 
-Stage 5.1 does not implement Cart UI activation, Cart page/drawer, Checkout, Orders, payments, taxes, shipping, coupons, reservations, authentication, customer records, or inventory mutation. Stage 5.2 was not started.
+At the Stage 5.1 closure, Cart UI activation, Cart page/drawer, Checkout, Orders, payments, taxes, shipping, coupons, reservations, authentication, customer records, and inventory mutation were not implemented. Stage 5.2 had not started at that checkpoint.
+
+## Stage 5.2 — PDP Add-to-bag & Ephemeral Guest Cart
+
+**Status:** implemented locally; durable production Cart persistence and live Atlas reads are not yet verified.
+
+- Only the PDP size selection, bounded Quantity controls, and Add to bag control are active. The selected public Variant ID and quantity are submitted to one Next.js Server Action; client prices, totals, availability, inventory, and Product records are never accepted.
+- The action validates a strict `productSlug + variantId + quantity` payload, obtains or creates an opaque `athar_guest_cart` identifier, and delegates through the canonical public Product resolver before mutation. It returns only a narrow safe success/error result.
+- Development/test uses an in-memory, per-guest CartStore with serialized same-guest mutations. It intentionally disappears on a process restart. Production has no memory fallback: without a deliberate durable adapter the action returns a safe unavailable result rather than a fictional success.
+- The guest cookie is session-scoped, opaque, `httpOnly`, `SameSite=Lax`, `Path=/`, and `Secure` in production. It holds no price, cart contents, account identity, or inventory data.
+- Existing PDP gallery behavior remains independent. PDP purchase Wishlist remains visibly preserved but disabled; gallery and ProductCard local affordances, Header count, Cart page/drawer, Checkout, persistence schema, account merge, payment, Orders, and inventory reservation remain deferred.

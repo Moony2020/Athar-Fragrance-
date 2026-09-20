@@ -1,38 +1,40 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import type { ReactNode } from "react";
-import { formatMoneyMinor } from "@/lib/money";
 import type { CatalogProductDetailVariant } from "@/server/catalog/read-model";
+import { addToGuestCartAction } from "@/server/commerce/actions";
 import styles from "./ProductPurchasePanel.module.css";
 
 type Props = {
+  productSlug: string;
   currency: string;
-  presentationOnly?: boolean;
-  variants: CatalogProductDetailVariant[];
+  selectedVariant: CatalogProductDetailVariant;
 };
 
-/** Preserved owner-designed commerce UI; Stage 5.1 keeps it inert while the server-domain foundation is established. */
-export function ProductPurchasePanel({ currency, presentationOnly = false, variants }: Props) {
-  const [selectedId, setSelectedId] = useState(variants.find((variant) => variant.availability === "available")?.id ?? variants[0]?.id ?? "");
+/** Preserved owner UI; Stage 5.2 activates only bounded quantity and canonical PDP Add-to-bag. */
+export function ProductPurchasePanel({ productSlug, selectedVariant }: Props) {
   const [quantity, setQuantity] = useState(1);
-  const [isWishlisted, setWishlisted] = useState(false);
-  const selected = variants.find((variant) => variant.id === selectedId) ?? variants[0];
+  const [result, setResult] = useState<{ kind: "success" | "error"; message: string } | null>(null);
+  const [isPending, startTransition] = useTransition();
+  const canAdd = selectedVariant.availability === "available" && !isPending;
 
-  if (!selected) return null;
+  function addToBag() {
+    setResult(null);
+    startTransition(async () => {
+      const actionResult = await addToGuestCartAction({ productSlug, variantId: selectedVariant.id, quantity });
+      setResult({ kind: actionResult.ok ? "success" : "error", message: actionResult.ok ? `${actionResult.message} ${actionResult.totalQuantity} item${actionResult.totalQuantity === 1 ? "" : "s"} in bag.` : actionResult.message });
+    });
+  }
 
-  return <section aria-label="Purchase options" className={styles.panel} data-presentation={presentationOnly || undefined}>
-    <div className={styles.choiceHeader}><h2>Choose a size</h2><span>Size guide <b aria-hidden="true">↗</b></span></div>
-    <div className={styles.sizeChoices} role="group" aria-label="Choose a size">
-      {variants.map((variant) => <button aria-pressed={variant.id === selected.id} className={styles.sizeChoice} disabled={presentationOnly} key={variant.id} onClick={() => setSelectedId(variant.id)} type="button"><span>{variant.sizeMl} ml</span><small>{formatMoneyMinor(variant.priceMinor, currency)}</small></button>)}
-    </div>
+  return <section aria-label="Purchase options" className={styles.panel}>
     <p className={styles.quantityLabel}>Quantity</p>
     <div className={styles.purchaseRow}>
-      <div aria-label="Quantity" className={styles.quantity} role="group"><button aria-label="Decrease quantity" disabled={presentationOnly || quantity === 1} onClick={() => setQuantity((current) => Math.max(1, current - 1))} type="button">−</button><span>{quantity}</span><button aria-label="Increase quantity" disabled={presentationOnly} onClick={() => setQuantity((current) => current + 1)} type="button">+</button></div>
-      <button className={styles.addToBag} disabled={presentationOnly || selected.availability !== "available"} type="button"><span>Add to bag</span><BagIcon /></button>
-      <button aria-label={`${isWishlisted ? "Remove from" : "Add to"} wishlist`} aria-pressed={isWishlisted} className={styles.wishlist} disabled={presentationOnly} onClick={() => setWishlisted((current) => !current)} type="button"><HeartIcon /></button>
+      <div aria-label={`Quantity: ${quantity}`} className={styles.quantity} role="group"><button aria-label="Decrease quantity" disabled={quantity === 1 || isPending} onClick={() => setQuantity((current) => Math.max(1, current - 1))} type="button">−</button><span aria-live="polite">{quantity}</span><button aria-label="Increase quantity" disabled={quantity === 12 || isPending} onClick={() => setQuantity((current) => Math.min(12, current + 1))} type="button">+</button></div>
+      <button aria-busy={isPending || undefined} className={styles.addToBag} disabled={!canAdd} onClick={addToBag} type="button"><span>{isPending ? "Adding" : "Add to bag"}</span><BagIcon /></button>
+      <button aria-label="Wishlist is not available yet" aria-pressed={false} className={styles.wishlist} disabled type="button"><HeartIcon /></button>
     </div>
-    <p className={styles.status}>{selected.availability === "available" ? "Delivery information varies by order." : "This size is currently unavailable."}</p>
+    <p aria-live="polite" className={styles.status} data-result={result?.kind}>{result?.message ?? (selectedVariant.availability === "available" ? "Delivery information varies by order." : "This size is currently unavailable.")}</p>
     <div aria-label="Service information" className={styles.benefits} role="group"><BenefitIcon type="delivery" label={<>Delivery<br />options</>} /><BenefitIcon type="authenticity" label={<>House<br />standards</>} /><BenefitIcon type="gift" label={<>Gift<br />options</>} /></div>
   </section>;
 }
