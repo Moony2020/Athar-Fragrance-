@@ -12,7 +12,7 @@ type Props = {
   variants: CatalogProductDetailVariant[];
 };
 
-/** Preserved deferred commerce UI. It is intentionally not rendered in Stage 4.3. */
+/** Preserved owner-designed commerce UI; Stage 5.1 keeps it inert while the server-domain foundation is established. */
 export function ProductPurchasePanel({ currency, presentationOnly = false, variants }: Props) {
   const [selectedId, setSelectedId] = useState(variants.find((variant) => variant.availability === "available")?.id ?? variants[0]?.id ?? "");
   const [quantity, setQuantity] = useState(1);

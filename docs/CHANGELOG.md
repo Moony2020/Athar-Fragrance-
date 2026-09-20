@@ -157,3 +157,8 @@
 - Audited and preserved the complete Product Detail architecture without adding new product features or commerce behavior.
 - Re-verified visibility, DTO privacy, gallery, variants, pricing, availability, content, Related merchandising, responsive behavior, production fixture isolation, and future-commerce UI boundaries.
 - Closed Phase 4 locally; live Atlas catalog/media/variant/content/Related reads and owner production policy decisions remain pending.
+## 2026-09-20 — Phase 5 / Stage 5.1 Cart & Wishlist Foundation
+
+- Audited and preserved existing owner-designed commerce UI without activating checkout or redesigning PDP/Shop.
+- Added a tested persistence-free Cart/Wishlist domain with canonical Product/Variant identity, bounded quantity validation, server-authoritative public eligibility, integer-minor pricing, and Product-level Wishlist semantics.
+- Deferred Cart UI activation, guest persistence, Cart database schema, Checkout, payment, Orders, and inventory reservation.

@@ -1,8 +1,8 @@
 # ATHAR Project Status
 
 **Last audited:** 2026-09-19  
-**Current phase:** Phase 4 — Product Detail & Merchandising, Stage 4.6 complete
-**Overall status:** **PHASE 4 — TECHNICALLY COMPLETE LOCALLY. LIVE ATLAS PRODUCT DETAIL / MEDIA / VARIANT / CONTENT / RELATED READS NOT YET VERIFIED.**
+**Current phase:** Phase 5 — Cart & Wishlist, Stage 5.1 complete
+**Overall status:** **STAGE 5.1 COMPLETE — CART/WISHLIST FOUNDATION IMPLEMENTED LOCALLY.**
 
 ### Stage 4.3 closure boundary (2026-09-20)
 
@@ -32,6 +32,12 @@
 - No new commerce, recommendation, authentication, CMS, upload, structured-data, or Phase 5 feature was introduced.
 - Production fixture isolation, unavailable/not-found distinction, canonical metadata, responsive PDP/Shop behavior, security/privacy boundaries, and future-commerce UI classification were re-verified.
 - Live Atlas Product Detail, media, variant, content, and Related reads remain unverified; owner production catalog/media/business-policy decisions remain pending.
+
+### Stage 5.1 commerce-foundation boundary (complete locally)
+
+- Existing owner commerce-looking UI was inventoried and preserved. PDP purchase controls remain disabled UI-only; gallery and ProductCard hearts/bags remain local presentation-only controls; Header affordances remain static.
+- Cart domain lines use canonical Product slug plus public Variant ID and bounded integer quantity; Wishlist is Product-level. Both resolve public Product/Variant eligibility and current integer-minor-unit price through a server-only adapter.
+- No persistence, cookie, localStorage, server action, API route, Cart page, Checkout, payment, Order, reservation, or inventory mutation was added. Live Atlas Cart/Wishlist persistence remains not yet verified.
 
 ## Verified baseline
 

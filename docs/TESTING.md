@@ -33,6 +33,8 @@ After the Stage 4.4 changes, the complete fixture regression completed at **57 p
 
 Stage 4.5 adds focused coverage for Related eligibility, current-product exclusion, duplicate protection, deterministic ordering, four-item bounding, canonical PDP links, responsive ProductCard reuse, and production fixture isolation.
 
+Stage 5.1 adds pure domain coverage for canonical Cart-line merging, bounded integer quantity validation, unavailable/private Product and Variant rejection, canonical integer-minor price subtotal resolution, and Product-level Wishlist deduplication. Browser coverage confirms that the preserved PDP controls remain disabled and that ProductCard local affordances do not make commerce mutations.
+
 ## Atlas integration testing
 
 No automated test connects to a production Atlas database. When an owner-provided development/test URI is available, a future non-destructive connectivity check may call the server connection layer and read server metadata only. It must not reset, seed, or delete an arbitrary database.

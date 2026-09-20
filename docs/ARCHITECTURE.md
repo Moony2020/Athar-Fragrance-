@@ -22,6 +22,8 @@ Stage 4.3 adds `ProductVariantSelector` as the domain-backed variant read bounda
 
 Stage 4.5 keeps Related selection server-side in `getRelatedProductsData`. It reads the public catalog, applies canonical eligibility and identity exclusion, scores family/audience/Brand/collection signals deterministically, deduplicates, and caps the result at four before mapping to the existing `CatalogProductCard` DTO. Related cards reuse `ProductCard`; no client fetch or recommendation state is introduced.
 
+Stage 5.1 introduces a persistence-free commerce domain under `src/commerce/` and a server-only canonical resolver under `src/server/commerce/`. Future Cart lines are `productSlug + publicVariantId + quantity`; Wishlist entries are Product slugs. The domain accepts no client price or availability values and resolves public PDP data server-side before accepting a line or deriving an integer-minor-unit subtotal. No cookie, localStorage, database schema, API route, server action, or client provider is introduced yet.
+
 ## Planned integrations
 
 - Auth.js for customer authentication.

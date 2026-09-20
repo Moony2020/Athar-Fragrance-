@@ -16,6 +16,7 @@ There is no authentication, payment handling, public API, or configured live dat
 - `ensureCatalogIndexes()` is not a public endpoint and must be run only through a controlled deployment/migration process.
 - The catalog seed is developer/operations tooling, not a route handler. Its write path rejects `NODE_ENV=production`, requires `CATALOG_SEED_ALLOW_WRITE=1`, and validates every fixture before the first write.
 - Matching an existing slug is insufficient authority to overwrite it: seed records must carry the expected operational seed key. Conflicts fail rather than replacing unrelated records, and the pipeline deletes nothing.
+- Stage 5.1 commerce inputs are Zod-validated and use canonical Product slug plus public Variant ID and a bounded integer quantity. The server-only commerce adapter resolves current public Product/Variant eligibility, price, and safe availability; browser-supplied prices, totals, stock, and Product records are not accepted. No Cart/Wishlist persistence, cookie, localStorage, public API, mutation, or inventory reservation exists yet.
 
 ## Future baseline
 
