@@ -23,6 +23,10 @@ export function ProductPurchasePanel({ productSlug, selectedVariant }: Props) {
     setResult(null);
     startTransition(async () => {
       const actionResult = await addToGuestCartAction({ productSlug, variantId: selectedVariant.id, quantity });
+      if (actionResult.ok) {
+        (window as Window & { __atharCartCount?: number }).__atharCartCount = actionResult.totalQuantity;
+        window.setTimeout(() => window.dispatchEvent(new CustomEvent("athar:cart-count", { detail: actionResult.totalQuantity })), 100);
+      }
       setResult({ kind: actionResult.ok ? "success" : "error", message: actionResult.ok ? `${actionResult.message} ${actionResult.totalQuantity} item${actionResult.totalQuantity === 1 ? "" : "s"} in bag.` : actionResult.message });
     });
   }

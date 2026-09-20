@@ -44,5 +44,5 @@ test.describe("Stage 5.2 PDP Add-to-bag", () => {
 test("production without a durable Cart adapter cannot report a fictional add success", async ({ page }) => {
   test.skip(fixture, "Development intentionally uses the ephemeral Cart adapter.");
   await page.goto("/products/athar-test-no-01");
-  await expect(page.getByText("ATHAR Test No. 01", { exact: true })).toHaveCount(0);
+  await expect(page.getByText("Eros", { exact: true })).toHaveCount(0);
 });

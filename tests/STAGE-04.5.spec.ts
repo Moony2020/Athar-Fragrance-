@@ -13,7 +13,7 @@ test.describe("Stage 4.5 Related fragrances merchandising", () => {
     expect(count).toBeLessThanOrEqual(4);
     const names = await cards.evaluateAll((items) => items.map((item) => item.getAttribute("aria-label")));
     expect(new Set(names).size).toBe(names.length);
-    expect(names).not.toContain("ATHAR Atelier ATHAR Test No. 01");
+    expect(names).not.toContain("Versace Eros Eau de Parfum");
     for (const card of await cards.all()) {
       await expect(card.getByRole("link", { name: /View .+/ })).toHaveAttribute("href", /^\/products\/[a-z0-9-]+$/);
     }
@@ -34,7 +34,7 @@ test.describe("Stage 4.5 Related fragrances merchandising", () => {
     const response = await page.goto("/products/athar-test-no-01");
     expect([404, 200]).toContain(response?.status());
     await expect(page.getByRole("region", { name: "Related fragrances" })).toHaveCount(0);
-    await expect(page.getByText("Cedar Study", { exact: true })).toHaveCount(0);
-    await expect(page.getByText("ATHAR Test No. 01", { exact: true })).toHaveCount(0);
+    await expect(page.getByText("BOSS Bottled", { exact: true })).toHaveCount(0);
+    await expect(page.getByText("Eros", { exact: true })).toHaveCount(0);
   });
 });

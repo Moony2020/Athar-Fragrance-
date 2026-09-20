@@ -6,6 +6,7 @@ export type CatalogProductCard = {
   slug: string;
   brandName: string;
   name: string;
+  fragranceType: string | null;
   shortDescription: string;
   fragranceFamily: string;
   scentNotes: string[];
@@ -43,6 +44,7 @@ export type CatalogProductDetailVariant = {
 export type CatalogProductDetail = {
   slug: string;
   name: string;
+  fragranceType: string | null;
   currency: string;
   brand: Pick<CatalogBrandCard, "slug" | "name">;
   shortDescription: string | null;
@@ -106,6 +108,7 @@ export function toCatalogProductCard(product: Product, brand: Brand | null): Cat
     slug: product.slug,
     brandName: brand?.name ?? "ATHAR",
     name: product.name,
+    fragranceType: product.fragranceType ?? null,
     shortDescription: product.shortDescription?.trim() || product.description,
     fragranceFamily: product.fragranceFamily,
     scentNotes: [...product.notes.top, ...product.notes.heart, ...product.notes.base].slice(0, 3),
@@ -133,6 +136,7 @@ export function toCatalogProductDetail(product: Product, brand: Brand): CatalogP
   return {
     slug: product.slug,
     name: product.name,
+    fragranceType: product.fragranceType ?? null,
     currency: product.currency,
     brand: { slug: brand.slug, name: brand.name },
     shortDescription: product.shortDescription ?? null,

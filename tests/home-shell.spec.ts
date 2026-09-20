@@ -9,7 +9,7 @@ test("the public homepage shell contains the ATHAR hero", async ({ page }) => {
   await expect(page.getByRole("link", { name: "Explore the fragrance" })).toBeVisible();
   await expect(page.getByAltText("ATHAR Eau de Parfum bottle")).toBeVisible();
   await expect(page.getByRole("button", { name: "Watch our story is not available yet" })).toBeDisabled();
-  await expect(page.getByRole("button", { name: "Shopping bag, 0 items" })).toBeVisible();
+  await expect(page.getByRole("link", { name: "Shopping bag, 0 items" })).toHaveAttribute("href", "/cart");
   await expect(page.getByRole("heading", { name: "Shop by Collection" })).toBeVisible();
   await expect(page.getByRole("heading", { name: "Bestselling Fragrances" })).toBeVisible();
   await expect(page.getByRole("heading", { name: "Discover Your Signature" })).toBeVisible();

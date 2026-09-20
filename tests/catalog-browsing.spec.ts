@@ -9,7 +9,7 @@ test("shop renders the canonical active development catalog with normalized mone
   await page.goto("/shop");
   await expect(page.getByRole("heading", { name: "Shop ATHAR" })).toBeVisible();
   await expect(page.getByRole("list", { name: "Catalog products" })).toBeVisible();
-  await expect(page.getByRole("article", { name: "ATHAR Atelier ATHAR Test No. 01" })).toBeVisible();
+  await expect(page.getByRole("article", { name: "Versace Eros Eau de Parfum" })).toBeVisible();
   await expect(page.getByText("1 299 kr", { exact: true })).toBeVisible();
   await expect(page.getByText("Floral Study", { exact: true })).toHaveCount(0);
   await expect(page.getByText("Archive Sample", { exact: true })).toHaveCount(0);
@@ -18,18 +18,18 @@ test("shop renders the canonical active development catalog with normalized mone
 test("audience routes are validated and expose only active public fixtures", async ({ page }) => {
   await page.goto("/shop/men");
   await expect(page.getByRole("heading", { name: "For Him" })).toBeVisible();
-  await expect(page.getByText("Cedar Study", { exact: true })).toBeVisible();
-  await expect(page.getByText("ATHAR Test No. 01", { exact: true })).toHaveCount(0);
+  await expect(page.getByText("BOSS Bottled", { exact: true })).toBeVisible();
+  await expect(page.getByText("Eros", { exact: true })).toHaveCount(0);
 
 });
 
 test("collection routes render public products or an accessible empty state", async ({ page }) => {
   await page.goto("/collections/test-unisex");
   await expect(page.getByRole("heading", { name: "Test Unisex" })).toBeVisible();
-  await expect(page.getByText("ATHAR Test No. 01", { exact: true })).toBeVisible();
+  await expect(page.getByText("Eros", { exact: true })).toBeVisible();
 
   await page.goto("/collections/test-women");
-  await expect(page.getByText("Velvet Sillage", { exact: true })).toBeVisible();
+  await expect(page.getByText("Libre", { exact: true })).toBeVisible();
 
 });
 
@@ -48,7 +48,7 @@ test("production without configured catalog data does not expose fixtures", asyn
 
   await page.goto("/shop");
   await expect(page.getByRole("status")).toHaveText("Catalog browsing is temporarily unavailable.");
-  await expect(page.getByText("ATHAR Test No. 01", { exact: true })).toHaveCount(0);
+  await expect(page.getByText("Eros", { exact: true })).toHaveCount(0);
 });
 
 test("homepage catalog links lead only to implemented catalog routes", async ({ page }) => {

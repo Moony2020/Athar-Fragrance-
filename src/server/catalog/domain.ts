@@ -60,6 +60,8 @@ export type Product = {
   name: string;
   brandId: string;
   shortDescription?: string;
+  /** Product concentration as supplied by the catalog, e.g. Eau de Parfum. */
+  fragranceType?: string;
   description: string;
   audience: Audience;
   /** A normalized taxonomy key, e.g. "floral" or "amber-woody". */

@@ -1,13 +1,13 @@
 # ATHAR Project Status
 
 **Last audited:** 2026-09-20
-**Current phase:** Phase 5 — Cart & Wishlist, Stage 5.2 complete
-**Overall status:** **STAGE 5.2 COMPLETE — PDP ADD-TO-BAG + EPHEMERAL GUEST CART IMPLEMENTED LOCALLY.**
+**Current phase:** Phase 5 — Cart & Wishlist, Stage 5.3 complete
+**Overall status:** **STAGE 5.3 COMPLETE — CART PAGE, LINE MANAGEMENT & HEADER COUNT IMPLEMENTED LOCALLY.**
 
 ## Current project state
 
 - ATHAR is a Next.js 16.3 App Router application with a server-first Phase 3 catalog and a locally complete Phase 4 Product Detail flow.
-- Stage 5.1 provides the Cart/Wishlist domain foundation. Stage 5.2 activates only PDP Quantity and Add to bag through canonical server revalidation and an ephemeral development/test guest Cart.
+- Stage 5.1 provides the Cart/Wishlist domain foundation. Stages 5.2–5.3 provide PDP Add-to-bag, `/cart`, line management, current-price subtotals, and a safe Header count through an ephemeral development/test guest Cart.
 - Durable production Cart persistence, Wishlist persistence, a Cart page/drawer, Checkout, payment, Orders, inventory reservation, and live Atlas Cart/Wishlist verification are not implemented.
 - The original static prototype and local assets are preserved as historical visual reference material; they are not the current application architecture.
 
@@ -51,6 +51,13 @@
 - PDP Quantity and Add to bag now submit only public Product/Variant identity plus a bounded integer quantity through a Next Server Action. The server re-resolves public eligibility and current integer-minor price before mutating a Cart.
 - Development/test uses an explicitly ephemeral server-memory guest Cart keyed by an opaque, httpOnly session cookie. It is not durable and intentionally has no production memory fallback.
 - ProductGallery, ProductCard bag/hearts, Header counter, and Wishlist persistence remain outside this activation. No Cart route/drawer, Checkout, payment, Order, account merge, inventory reservation, or Atlas Cart read/write was added or claimed.
+
+### Stage 5.3 Cart-management boundary (complete locally)
+
+- `/cart` re-resolves current public Product/Variant data server-side and shows only safe public Cart DTO fields. Valid canonical lines use current integer-minor prices; stale/unavailable lines are excluded from Subtotal and can be removed.
+- Quantity updates and removals use existing Server Actions and canonical line identity. Header bag navigation targets `/cart`; its count is total line quantity, not distinct-line count.
+- The narrow Header count leaf keeps the root layout free of direct cookie reads, preserving Cache Components/Partial Prefetching architecture. It is visual synchronization from safe action results, not a second Cart source of truth.
+- Durable production Cart persistence, live Atlas Cart reads/writes, Wishlist persistence, ProductCard Add-to-bag, Cart drawer, Checkout, payment, Orders, account merge, and inventory reservation remain deferred.
 
 ## Historical Phase 0 baseline
 

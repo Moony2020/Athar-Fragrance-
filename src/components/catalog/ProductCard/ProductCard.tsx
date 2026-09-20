@@ -25,7 +25,7 @@ export function ProductCard({ product }: ProductCardProps) {
   const image = productImages[product.slug] ?? "/images/catalog/product-placeholder.svg";
   const selectedVariant = product.variants.find((variant) => variant.sizeMl === selectedSize) ?? product.variants[0];
 
-  return <article className={styles.card} aria-label={`${product.brandName} ${product.name}`}>
+  return <article className={styles.card} aria-label={[product.brandName, product.name, product.fragranceType].filter(Boolean).join(" ")}>
     <div className={styles.visual}>
       <Link aria-label={`View ${product.name}`} className={styles.imageLink} href={`/products/${product.slug}`}>
         {!isImageReady ? <span aria-hidden="true" className={styles.imageFallback}><b>ATHAR</b></span> : null}
@@ -33,7 +33,7 @@ export function ProductCard({ product }: ProductCardProps) {
         {product.badge ? <span className={styles.status}>{product.badge}</span> : !product.isAvailable ? <span className={styles.status}>Not available</span> : null}
       </Link>
       <button aria-label={`${isWishlisted ? "Remove" : "Add"} ${product.name} ${isWishlisted ? "from" : "to"} wishlist`} aria-pressed={isWishlisted} className={styles.wishlist} onClick={() => setIsWishlisted((current) => !current)} type="button"><HeartIcon filled={isWishlisted} /></button>
-      <span className={styles.overlay}><small>{product.brandName}</small><strong>{product.name}</strong><span>{product.scentNotes.join(", ")}</span><button aria-label={`Add ${product.name} to bag`} className={styles.bag} disabled={!product.isAvailable || selectedVariant?.availability !== "available"} onClick={() => setIsAdded(true)} type="button"><BagIcon added={isAdded} /></button></span>
+      <span className={styles.overlay}><small>{product.brandName}</small><strong>{product.name}</strong><span>{product.fragranceType ?? product.scentNotes.join(", ")}</span><button aria-label={`Add ${product.name} to bag`} className={styles.bag} disabled={!product.isAvailable || selectedVariant?.availability !== "available"} onClick={() => setIsAdded(true)} type="button"><BagIcon added={isAdded} /></button></span>
     </div>
     <div className={styles.actions}>
       <div aria-label={`Choose ${product.name} size`} className={styles.sizeChoices} role="group">{product.variants.map((variant) => <button aria-pressed={variant.sizeMl === selectedVariant?.sizeMl} className={styles.sizeChoice} disabled={variant.availability !== "available"} key={variant.sizeMl} onClick={() => { setSelectedSize(variant.sizeMl); setIsAdded(false); }} type="button">{variant.sizeMl} ml</button>)}</div>

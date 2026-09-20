@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-09-20 — Phase 5 / Stage 5.3 Cart Page, Line Management & Header Count
+
+- Added server-first `/cart`, current-catalog Cart presentation DTO, safe stale/unavailable reconciliation, canonical quantity update/remove Server Actions, valid-line subtotal, and restrained empty state.
+- Activated the existing Header bag as `/cart` navigation with total-quantity count synchronization from safe Cart action results; root layout remains free of direct cookie reads.
+- Kept development/test guest storage ephemeral and production unavailable. Wishlist, ProductCard Add-to-bag, drawer, Checkout, payment, Orders, and inventory reservation remain deferred.
+
 ## 2026-09-20 — Phase 5 / Stage 5.2 PDP Add-to-bag & Ephemeral Guest Cart
 
 - Activated only PDP Quantity and Add to bag through a strict Server Action, canonical public Product/Variant revalidation, and server-derived integer-minor pricing.

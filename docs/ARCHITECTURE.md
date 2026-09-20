@@ -26,6 +26,8 @@ Stage 5.1 introduces a persistence-free commerce domain under `src/commerce/` an
 
 Stage 5.2 adds a narrow `ProductPurchaseArea` client island that coordinates selected public Variant state between the existing size selector and PDP purchase panel. Its Add-to-bag mutation crosses one Server Action boundary to a server-only guest Cart adapter. Development/test storage is a process-memory `GuestCartStore`; it serializes writes per opaque guest ID and is deliberately unavailable in production until a durable adapter is designed. The cookie stores only that session guest ID; canonical resolution remains the authority for eligibility and price.
 
+Stage 5.3 adds `/cart` as a server-first utility route. A Suspense-bounded server read leaf consumes the guest cookie and maps stored identity/quantity through the current public PDP service into a narrow Cart DTO. The Cart controls and Header count are small client leaves; they consume safe mutation totals and trigger route refresh, but do not duplicate Cart data. The root layout does not read cookies, so unrelated route shells retain Cache Components/Partial Prefetching behavior.
+
 ## Planned integrations
 
 - Auth.js for customer authentication.

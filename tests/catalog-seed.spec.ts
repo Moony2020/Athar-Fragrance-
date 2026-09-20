@@ -10,15 +10,15 @@ import {
 import { dryRunCatalogSeed } from "../src/server/catalog/seed/dry-run";
 import { isPublicCatalogStatus } from "../src/server/catalog/visibility";
 
-test("fictional development fixtures validate and produce a deterministic dry-run plan", () => {
+test("development catalog fixtures validate and produce a deterministic dry-run plan", () => {
   const result = dryRunCatalogSeed(developmentCatalogSeed);
 
   expect(result.wrote).toBe(false);
   expect(result.summary).toContain("DRY RUN — no database writes performed");
-  expect(result.plan.summary.brand).toEqual({ create: 3, update: 0, unchanged: 0 });
+  expect(result.plan.summary.brand).toEqual({ create: 7, update: 0, unchanged: 0 });
   expect(result.plan.summary.collection).toEqual({ create: 4, update: 0, unchanged: 0 });
   expect(result.plan.summary.product).toEqual({ create: 7, update: 0, unchanged: 0 });
-  expect(result.plan.dataset.products.find((product) => product.key === "athar-test-no-01")?.brandKey).toBe("athar-atelier");
+  expect(result.plan.dataset.products.find((product) => product.key === "athar-test-no-01")?.brandKey).toBe("versace");
 });
 
 test("an identical fixture rerun plans as unchanged, while a changed owned fixture plans as an update", () => {
@@ -40,7 +40,7 @@ test("an identical fixture rerun plans as unchanged, while a changed owned fixtu
 test("seed planning refuses unrelated slug ownership conflicts before any write", () => {
   expect(() =>
     buildCatalogSeedPlan(developmentCatalogSeed, [
-      { type: "brand", slug: "athar-atelier" },
+      { type: "brand", slug: "versace" },
     ]),
   ).toThrow(CatalogSeedConflictError);
 

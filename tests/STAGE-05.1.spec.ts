@@ -20,9 +20,9 @@ test.describe("Stage 5.1 commerce-boundary audit", () => {
       if (!["GET", "HEAD"].includes(request.method())) nonReadRequests.push(`${request.method()} ${request.url()}`);
     });
     await page.goto("/shop");
-    const card = page.getByRole("article").filter({ hasText: "Cedar Study" });
+    const card = page.getByRole("article").filter({ hasText: "BOSS Bottled" });
     await card.getByRole("button", { name: /wishlist/i }).click();
-    await expect(card.getByRole("button", { name: /Remove Cedar Study from wishlist/ })).toHaveAttribute("aria-pressed", "true");
+    await expect(card.getByRole("button", { name: /Remove BOSS Bottled from wishlist/ })).toHaveAttribute("aria-pressed", "true");
     await expect.poll(() => nonReadRequests).toEqual([]);
   });
 });

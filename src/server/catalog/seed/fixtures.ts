@@ -24,38 +24,42 @@ export type CatalogSeedDataset = {
 };
 
 /**
- * Development-only fictional catalog data. It is intentionally unrelated to
- * homepage prototype brands, products, prices, logos, and photography.
+ * Development-only catalog data. Display names provide varied fragrance-house
+ * examples; the records, prices, stock, and local imagery remain test data.
  */
 export const developmentCatalogSeed: CatalogSeedDataset = {
   brands: [
     {
-      key: "athar-atelier",
+      key: "versace",
       input: {
-        name: "ATHAR Atelier",
-        slug: "athar-atelier",
-        description: "A fictional development brand for catalog-bootstrap verification.",
+        name: "Versace",
+        slug: "versace",
+        description: "Development catalog display data.",
         status: "active",
       },
     },
     {
-      key: "north-test-parfums",
+      key: "hugo-boss",
       input: {
-        name: "North Test Parfums",
-        slug: "north-test-parfums",
-        description: "A fictional development-only fragrance house.",
-        status: "draft",
-      },
-    },
-    {
-      key: "quiet-test-house",
-      input: {
-        name: "Quiet Test House",
-        slug: "quiet-test-house",
-        description: "A fictional active development brand with no public fragrances.",
+        name: "HUGO BOSS",
+        slug: "hugo-boss",
+        description: "Development catalog display data.",
         status: "active",
       },
     },
+    {
+      key: "giorgio-armani",
+      input: {
+        name: "Giorgio Armani",
+        slug: "giorgio-armani",
+        description: "Development catalog display data.",
+        status: "active",
+      },
+    },
+    { key: "yves-saint-laurent", input: { name: "Yves Saint Laurent", slug: "yves-saint-laurent", description: "Development catalog display data.", status: "active" } },
+    { key: "prada", input: { name: "Prada", slug: "prada", description: "Development catalog display data.", status: "active" } },
+    { key: "mugler", input: { name: "Mugler", slug: "mugler", description: "Development catalog display data.", status: "active" } },
+    { key: "north-test-parfums", input: { name: "North Test Parfums", slug: "north-test-parfums", description: "Non-public development catalog data.", status: "draft" } },
   ],
   collections: [
     {
@@ -78,20 +82,21 @@ export const developmentCatalogSeed: CatalogSeedDataset = {
   products: [
     {
       key: "athar-test-no-01",
-      brandKey: "athar-atelier",
+      brandKey: "versace",
       collectionKeys: ["test-unisex", "test-new-arrivals"],
       input: {
         slug: "athar-test-no-01",
-        name: "ATHAR Test No. 01",
+        name: "Eros",
+        fragranceType: "Eau de Parfum",
         shortDescription: "A fictional multi-size development fragrance.",
         description: "A safe test record used to verify the ATHAR catalog bootstrap pipeline.",
         audience: "unisex",
         fragranceFamily: "amber-woody",
         notes: { top: ["Bergamot"], heart: ["Orange blossom"], base: ["Cedar", "Vanilla"] },
         media: [
-          { url: "https://fixtures.athar.test/catalog/athar-test-no-01-front.jpg", publicId: "fixture/athar-test-no-01-front", alt: "Fictional ATHAR Test No. 01 front view", width: 1200, height: 1500, position: 0, type: "image" },
-          { url: "https://fixtures.athar.test/catalog/athar-test-no-01-detail.jpg", publicId: "fixture/athar-test-no-01-detail", alt: "Fictional ATHAR Test No. 01 detail view", width: 1200, height: 1500, position: 1, type: "image" },
-          { url: "https://fixtures.athar.test/catalog/athar-test-no-01-atelier.jpg", publicId: "fixture/athar-test-no-01-atelier", alt: "Fictional ATHAR Test No. 01 atelier view", width: 1200, height: 1500, position: 2, type: "image" },
+          { url: "https://fixtures.athar.test/catalog/athar-test-no-01-front.jpg", publicId: "fixture/athar-test-no-01-front", alt: "Eros front view", width: 1200, height: 1500, position: 0, type: "image" },
+          { url: "https://fixtures.athar.test/catalog/athar-test-no-01-detail.jpg", publicId: "fixture/athar-test-no-01-detail", alt: "Eros detail view", width: 1200, height: 1500, position: 1, type: "image" },
+          { url: "https://fixtures.athar.test/catalog/athar-test-no-01-atelier.jpg", publicId: "fixture/athar-test-no-01-atelier", alt: "Eros alternate view", width: 1200, height: 1500, position: 2, type: "image" },
         ],
         variants: [
           { sku: "ATHAR-TEST-01-50", sizeMl: 50, priceMinor: 129_900, inventoryQuantity: 12, isActive: true },
@@ -105,20 +110,21 @@ export const developmentCatalogSeed: CatalogSeedDataset = {
     },
     {
       key: "cedar-study",
-      brandKey: "athar-atelier",
+      brandKey: "hugo-boss",
       collectionKeys: ["test-men", "test-unisex"],
       input: {
         slug: "cedar-study",
-        name: "Cedar Study",
+        name: "BOSS Bottled",
+        fragranceType: "Eau de Toilette",
         shortDescription: "A fictional single-variant woody study.",
         description: "A development record that exercises active product visibility and inventory.",
         audience: "men",
         fragranceFamily: "woody",
         notes: { top: ["Juniper"], heart: ["Cedar"], base: ["Vetiver", "Musk"] },
         media: [
-          { url: "https://fixtures.athar.test/catalog/cedar-study-front.jpg", alt: "Fictional Cedar Study bottle, front view", position: 0, type: "image" },
-          { url: "https://fixtures.athar.test/catalog/cedar-study-facet.jpg", alt: "Fictional Cedar Study bottle, faceted side view", position: 1, type: "image" },
-          { url: "https://fixtures.athar.test/catalog/cedar-study-detail.jpg", alt: "Fictional Cedar Study bottle, label detail", position: 2, type: "image" },
+          { url: "https://fixtures.athar.test/catalog/cedar-study-front.jpg", alt: "BOSS Bottled front view", position: 0, type: "image" },
+          { url: "https://fixtures.athar.test/catalog/cedar-study-facet.jpg", alt: "BOSS Bottled side view", position: 1, type: "image" },
+          { url: "https://fixtures.athar.test/catalog/cedar-study-detail.jpg", alt: "BOSS Bottled detail view", position: 2, type: "image" },
         ],
         variants: [{ sku: "CEDAR-STUDY-75", sizeMl: 75, priceMinor: 149_900, inventoryQuantity: 8, isActive: true }],
         status: "active",
@@ -129,20 +135,21 @@ export const developmentCatalogSeed: CatalogSeedDataset = {
     },
     {
       key: "no-media-study",
-      brandKey: "athar-atelier",
+      brandKey: "giorgio-armani",
       collectionKeys: ["test-unisex"],
       input: {
         slug: "no-media-study",
-        name: "No Media Study",
+        name: "Acqua di Giò",
+        fragranceType: "Eau de Parfum",
         shortDescription: "A fictional development record with intentionally absent media.",
         description: "A development record used to verify safe Product media fallback behavior.",
         audience: "unisex",
         fragranceFamily: "fresh",
         notes: { top: ["Lemon"], heart: ["Tea"], base: ["Musk"] },
         media: [
-          { url: "https://fixtures.athar.test/catalog/no-media-study-front.jpg", alt: "Fictional No Media Study bottle, front view", position: 0, type: "image" },
-          { url: "https://fixtures.athar.test/catalog/no-media-study-facet.jpg", alt: "Fictional No Media Study bottle, faceted view", position: 1, type: "image" },
-          { url: "https://fixtures.athar.test/catalog/no-media-study-detail.jpg", alt: "Fictional No Media Study bottle, detail view", position: 2, type: "image" },
+          { url: "https://fixtures.athar.test/catalog/no-media-study-front.jpg", alt: "Acqua di Giò front view", position: 0, type: "image" },
+          { url: "https://fixtures.athar.test/catalog/no-media-study-facet.jpg", alt: "Acqua di Giò side view", position: 1, type: "image" },
+          { url: "https://fixtures.athar.test/catalog/no-media-study-detail.jpg", alt: "Acqua di Giò detail view", position: 2, type: "image" },
         ],
         variants: [{ sku: "NO-MEDIA-STUDY-50", sizeMl: 50, priceMinor: 99_900, inventoryQuantity: 4, isActive: true }],
         status: "active",
@@ -153,11 +160,12 @@ export const developmentCatalogSeed: CatalogSeedDataset = {
     },
     {
       key: "velvet-sillage",
-      brandKey: "athar-atelier",
+      brandKey: "yves-saint-laurent",
       collectionKeys: ["test-women", "test-unisex"],
       input: {
         slug: "velvet-sillage",
-        name: "Velvet Sillage",
+        name: "Libre",
+        fragranceType: "Eau de Parfum",
         shortDescription: "A fictional amber-floral evening composition.",
         description: "A development record exploring dark berry, rose and smoked amber in a soft, lingering trail.",
         audience: "unisex",
@@ -177,11 +185,12 @@ export const developmentCatalogSeed: CatalogSeedDataset = {
     },
     {
       key: "luminous-fig",
-      brandKey: "athar-atelier",
+      brandKey: "prada",
       collectionKeys: ["test-women", "test-unisex"],
       input: {
         slug: "luminous-fig",
-        name: "Luminous Fig",
+        name: "Luna Rossa Carbon",
+        fragranceType: "Eau de Toilette",
         shortDescription: "A fictional green-amber composition with a soft luminous trail.",
         description: "A development record exploring fresh fig, tea leaf and sandalwood in a polished, quietly modern fragrance.",
         audience: "unisex",

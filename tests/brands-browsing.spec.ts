@@ -5,27 +5,27 @@ const usesFixtureRuntime = process.env.CATALOG_FIXTURE_RUNTIME === "1";
 test.describe("development Brand fixture runtime", () => {
   test.skip(!usesFixtureRuntime, "These assertions run against the development fixture source only.");
 
-  test("brands index exposes only active fictional Brands as semantic links", async ({ page }) => {
+  test("brands index exposes active fragrance brands as semantic links", async ({ page }) => {
     await page.goto("/brands");
     await expect(page.getByRole("heading", { name: "Brands at ATHAR" })).toBeVisible();
-    await expect(page.getByRole("link", { name: "Browse ATHAR Atelier fragrances" })).toHaveAttribute("href", "/brands/athar-atelier");
-    await expect(page.getByRole("link", { name: "Browse Quiet Test House fragrances" })).toHaveAttribute("href", "/brands/quiet-test-house");
+    await expect(page.getByRole("link", { name: "Browse Versace fragrances" })).toHaveAttribute("href", "/brands/versace");
+    await expect(page.getByRole("link", { name: "Browse HUGO BOSS fragrances" })).toHaveAttribute("href", "/brands/hugo-boss");
     await expect(page.getByText("North Test Parfums", { exact: true })).toHaveCount(0);
   });
 
   test("an active Brand reuses the public product grid and hides non-public products", async ({ page }) => {
-    await page.goto("/brands/athar-atelier");
-    await expect(page).toHaveTitle("ATHAR Atelier | ATHAR");
+    await page.goto("/brands/versace");
+    await expect(page).toHaveTitle("Versace | ATHAR");
     await expect(page.getByRole("list", { name: "Catalog products" })).toBeVisible();
-    await expect(page.getByRole("article", { name: "ATHAR Atelier ATHAR Test No. 01" })).toBeVisible();
-    await expect(page.getByText("Cedar Study", { exact: true })).toBeVisible();
+    await expect(page.getByRole("article", { name: "Versace Eros Eau de Parfum" })).toBeVisible();
+    await expect(page.getByText("BOSS Bottled", { exact: true })).toHaveCount(0);
     await expect(page.getByText("Floral Study", { exact: true })).toHaveCount(0);
     await expect(page.getByText("Archive Sample", { exact: true })).toHaveCount(0);
   });
 
   test("a valid active empty Brand renders a deliberate accessible empty state", async ({ page }) => {
-    await page.goto("/brands/quiet-test-house");
-    await expect(page.getByRole("heading", { name: "Quiet Test House" })).toBeVisible();
+    await page.goto("/brands/mugler");
+    await expect(page.getByRole("heading", { name: "Mugler" })).toBeVisible();
     await expect(page.getByRole("status")).toHaveText("This brand has no public fragrances yet.");
   });
 });
@@ -44,7 +44,7 @@ test("production without canonical catalog data never exposes fixture Brands", a
   test.skip(usesFixtureRuntime, "The development fixture run deliberately exercises the non-production source.");
   await page.goto("/brands");
   await expect(page.getByRole("status")).toHaveText("Brand browsing is temporarily unavailable.");
-  await expect(page.getByText("ATHAR Atelier", { exact: true })).toHaveCount(0);
+  await expect(page.getByText("Eros", { exact: true })).toHaveCount(0);
 });
 
 for (const width of [360, 430, 768, 1280, 1600]) {

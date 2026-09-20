@@ -37,6 +37,8 @@ Stage 5.1 adds pure domain coverage for canonical Cart-line merging, bounded int
 
 Stage 5.2 adds pure guest-Cart service coverage for canonical merge/separate-variant behavior, integer-minor subtotals, price tampering, unavailable/private catalog targets, and explicit production-adapter absence. Browser coverage exercises bounded PDP Quantity, Add-to-bag, cookie attributes, selected available Variant use, blocked unavailable Variant behavior, and unchanged gallery/Wishlist boundaries. Its full regression record separates fixture development from production isolation and retains `instant()`, Turbopack, and Axe verification.
 
+Stage 5.3 adds Cart page coverage for empty state, PDP-to-Header-to-Cart continuity, canonical product link/subtotal presentation, bounded quantity mutation, removal, and count updates. Pure coverage retains canonical identity and stale-line removal semantics. Production coverage confirms no fictional Cart data or development-memory persistence is claimed.
+
 ## Atlas integration testing
 
 No automated test connects to a production Atlas database. When an owner-provided development/test URI is available, a future non-destructive connectivity check may call the server connection layer and read server metadata only. It must not reset, seed, or delete an arbitrary database.

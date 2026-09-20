@@ -43,6 +43,7 @@ function Details({ product }: { product: CatalogProductDetail }) {
     <div><h2>Product information</h2><p>{product.description}</p></div>
     <dl className={styles.facts}>
       <div><dt>Fragrance family</dt><dd>{formatFamily(product.fragranceFamily)}</dd></div>
+      {product.fragranceType ? <div><dt>Fragrance type</dt><dd>{product.fragranceType}</dd></div> : null}
       <div><dt>Audience</dt><dd>{formatAudience(product.audience)}</dd></div>
       <div><dt>Available sizes</dt><dd>{sizes || "Not specified"}</dd></div>
       <div><dt>Availability</dt><dd>{hasAvailableSize ? "Available" : "Currently unavailable"}</dd></div>

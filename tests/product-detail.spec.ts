@@ -7,8 +7,8 @@ test.describe("Stage 4.3 Product Detail variant selection", () => {
 
   test("renders a deterministic initial size and updates the selected price and availability", async ({ page }) => {
     await page.goto("/products/athar-test-no-01");
-    await expect(page.getByRole("heading", { name: "ATHAR Test No. 01" })).toBeVisible();
-    await expect(page.getByText("Size · 50 ml", { exact: true })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Eros" })).toBeVisible();
+    await expect(page.getByRole("region", { name: "Eros purchase information" }).getByText("Eau de Parfum", { exact: true })).toBeVisible();
     const selector = page.getByRole("region", { name: "Product size and availability" });
     await expect(selector).toContainText(/1\s?299 kr/);
     await expect(selector.getByRole("radio", { name: /50 ml/i })).toBeChecked();
@@ -31,29 +31,32 @@ test.describe("Stage 4.3 Product Detail variant selection", () => {
 
   test("keeps a single-variant product concise and preserves its public PDP identity", async ({ page }) => {
     await page.goto("/products/cedar-study");
-    await expect(page).toHaveTitle("Cedar Study | ATHAR");
-    await expect(page.getByRole("heading", { name: "Cedar Study" })).toBeVisible();
-    await expect(page.getByRole("navigation", { name: "Breadcrumb" }).getByRole("link", { name: "ATHAR Atelier" })).toHaveAttribute("href", "/brands/athar-atelier");
+    await expect(page).toHaveTitle("BOSS Bottled | ATHAR");
+    await expect(page.getByRole("heading", { name: "BOSS Bottled" })).toBeVisible();
+    await expect(page.getByRole("navigation", { name: "Breadcrumb" })).toHaveText(/Shop\s*\/\s*BOSS Bottled – Eau de Toilette/);
+    await expect(page.getByRole("navigation", { name: "Breadcrumb" }).getByText("ATHAR Atelier", { exact: true })).toHaveCount(0);
     const selector = page.getByRole("region", { name: "Product size and availability" });
     await expect(selector).toContainText(/1\s?499 kr/);
     await expect(selector.getByRole("radio")).toHaveCount(1);
     await expect(selector.getByRole("radio", { name: /75 ml/i })).toBeChecked();
+    expect(await selector.evaluate((element) => getComputedStyle(element).borderBottomWidth)).toBe("0px");
+    expect(await page.getByRole("region", { name: "Purchase options" }).evaluate((element) => getComputedStyle(element).borderTopWidth)).toBe("0px");
     await expect(page.getByRole("region", { name: "Fragrance notes" })).toContainText("Cedar");
   });
 
   test("catalog cards retain their selected-size price and canonical PDP links", async ({ page }) => {
     await page.goto("/shop");
-    const card = page.getByRole("article").filter({ hasText: "ATHAR Test No. 01" });
+    const card = page.getByRole("article").filter({ hasText: "Eros" });
     await expect(card.getByRole("button", { name: "50 ml" })).toHaveAttribute("aria-pressed", "true");
     await expect(card).toContainText(/1\s?299 kr/);
-    await expect(page.getByRole("link", { name: "View Cedar Study" })).toHaveAttribute("href", "/products/cedar-study");
+    await expect(page.getByRole("link", { name: "View BOSS Bottled" })).toHaveAttribute("href", "/products/cedar-study");
   });
 
   test("PDP remains readable without horizontal overflow across supported viewports", async ({ page }) => {
     await page.goto("/products/cedar-study");
     for (const width of [360, 430, 768, 1280, 1600]) {
       await page.setViewportSize({ width, height: 900 });
-      await expect(page.getByRole("heading", { name: "Cedar Study" })).toBeVisible();
+      await expect(page.getByRole("heading", { name: "BOSS Bottled" })).toBeVisible();
       await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
     }
   });
@@ -70,5 +73,5 @@ test("production Product Detail never falls back to fictional fixtures", async (
   test.skip(fixture, "Development intentionally uses fictional data.");
   const response = await page.goto("/products/cedar-study");
   expect([404, 200]).toContain(response?.status());
-  await expect(page.getByText("Cedar Study", { exact: true })).toHaveCount(0);
+  await expect(page.getByText("BOSS Bottled", { exact: true })).toHaveCount(0);
 });

@@ -77,6 +77,7 @@ const productInputShape = {
   name: z.string().trim().min(1).max(160),
   brandId: objectIdSchema,
   shortDescription: z.string().trim().min(1).max(320).optional(),
+  fragranceType: z.enum(["Eau de Parfum", "Eau de Toilette", "Parfum", "Eau de Cologne"]).optional(),
   description: z.string().trim().min(1).max(10_000),
   audience: audienceSchema,
   fragranceFamily: normalizedFamilySchema,

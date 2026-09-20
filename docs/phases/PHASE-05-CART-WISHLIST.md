@@ -50,3 +50,14 @@ At the Stage 5.1 closure, Cart UI activation, Cart page/drawer, Checkout, Orders
 - Development/test uses an in-memory, per-guest CartStore with serialized same-guest mutations. It intentionally disappears on a process restart. Production has no memory fallback: without a deliberate durable adapter the action returns a safe unavailable result rather than a fictional success.
 - The guest cookie is session-scoped, opaque, `httpOnly`, `SameSite=Lax`, `Path=/`, and `Secure` in production. It holds no price, cart contents, account identity, or inventory data.
 - Existing PDP gallery behavior remains independent. PDP purchase Wishlist remains visibly preserved but disabled; gallery and ProductCard local affordances, Header count, Cart page/drawer, Checkout, persistence schema, account merge, payment, Orders, and inventory reservation remain deferred.
+
+## Stage 5.3 — Cart Page, Line Management & Header Count
+
+**Status:** implemented locally; durable production Cart persistence and live Atlas Cart reads remain unverified.
+
+- `/cart` is a server-first private utility route (`noindex`). It reads the opaque guest cookie only in a Suspense-bounded server leaf, loads stored canonical identities, and re-resolves public Product/Variant data on every render.
+- The public Cart DTO exposes only public product/brand/name/media, selected size, quantity, current canonical integer-minor price, line subtotal, and a safe available/unavailable/stale state. It never exposes cookie values, persistence IDs, raw inventory, lifecycle, or seed metadata.
+- Quantity update and remove use the existing Server Action path and canonical `productSlug + variantId` identity. Updates require a currently available public Variant; removal intentionally works for stale lines. Valid lines alone contribute to `Subtotal`; no shipping, tax, promotion, payment fee, or final total is calculated.
+- A previously removed/private Product or missing Variant renders as stale; an unavailable Variant renders unavailable. These lines have no payable price/subtotal and remain removable. Current catalog prices replace any prior browser-era price at every render.
+- Header bag navigation now links to `/cart`. Its count is the sum of stored line quantities, including removable stale lines. A tiny visual client leaf consumes the server-provided initial count and the safe total returned by Cart actions; it is not a Cart store and never owns Cart truth.
+- The guest Cart is still session-scoped development/test server memory: restart loses state, a new guest session starts a new Cart, and production intentionally has no memory fallback. Wishlist persistence, ProductCard Add-to-bag, Cart drawer, Checkout, payment, Orders, account merge, and inventory reservation remain deferred.

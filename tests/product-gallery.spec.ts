@@ -9,30 +9,31 @@ test.describe("development Product Gallery fixtures", () => {
     await page.goto("/products/athar-test-no-01");
 
     const gallery = page.getByRole("region", { name: "Product media" });
-    await expect(gallery.getByRole("img", { name: "Fictional ATHAR Test No. 01 front view" })).toBeVisible();
-    const second = gallery.getByRole("button", { name: /Show product media 2: Fictional ATHAR Test No\. 01 detail view/ });
+    await expect(gallery.getByRole("img", { name: "Eros front view" })).toBeVisible();
+    const second = gallery.getByRole("button", { name: /Show product media 2: Eros detail view/ });
     await expect(second).toHaveAttribute("aria-pressed", "false");
     await second.click();
     await expect(second).toHaveAttribute("aria-pressed", "true");
-    await expect(gallery.getByRole("img", { name: "Fictional ATHAR Test No. 01 detail view" })).toBeVisible();
+    await expect(gallery.getByRole("img", { name: "Eros detail view" })).toBeVisible();
 
     await page.getByRole("button", { name: /Show product media 1/ }).focus();
     await page.keyboard.press("Enter");
     await expect(gallery.getByRole("button", { name: /Show product media 1/ })).toHaveAttribute("aria-pressed", "true");
   });
 
-  test("Cedar Study exposes its ordered product-media rail and preserves PDP information", async ({ page }) => {
+  test("BOSS Bottled exposes its ordered product-media rail and preserves PDP information", async ({ page }) => {
     await page.goto("/products/cedar-study");
-    await expect(page.getByRole("img", { name: "Fictional Cedar Study bottle, front view" })).toBeVisible();
+    await expect(page.getByRole("img", { name: "BOSS Bottled front view" })).toBeVisible();
     await expect(page.getByRole("button", { name: /Show product media/ })).toHaveCount(3);
-    await expect(page.getByRole("heading", { name: "Cedar Study" })).toBeVisible();
-    await expect(page.getByRole("navigation", { name: "Breadcrumb" }).getByRole("link", { name: "ATHAR Atelier" })).toHaveAttribute("href", "/brands/athar-atelier");
+    await expect(page.getByRole("heading", { name: "BOSS Bottled" })).toBeVisible();
+    await expect(page.getByRole("navigation", { name: "Breadcrumb" })).toHaveText(/Shop\s*\/\s*BOSS Bottled – Eau de Toilette/);
+    await expect(page.getByRole("navigation", { name: "Breadcrumb" }).getByText("ATHAR Atelier", { exact: true })).toHaveCount(0);
     await expect(page.getByRole("region", { name: "Fragrance notes" })).toContainText("Cedar");
   });
 
-  test("No Media Study now uses its authored fictional media", async ({ page }) => {
+  test("Acqua di Giò now uses its authored development media", async ({ page }) => {
     await page.goto("/products/no-media-study");
-    await expect(page.getByRole("img", { name: "Fictional No Media Study bottle, front view" })).toBeVisible();
+    await expect(page.getByRole("img", { name: "Acqua di Giò front view" })).toBeVisible();
     await expect(page.getByRole("button", { name: /Show product media/ })).toHaveCount(3);
   });
 
@@ -50,5 +51,5 @@ test("production Product gallery never exposes fictional media", async ({ page }
   const response = await page.goto("/products/athar-test-no-01");
   expect([404, 200]).toContain(response?.status());
   await expect(page.getByRole("region", { name: "Product media" })).toHaveCount(0);
-  await expect(page.getByText("ATHAR Test No. 01", { exact: true })).toHaveCount(0);
+  await expect(page.getByText("Eros", { exact: true })).toHaveCount(0);
 });

@@ -11,12 +11,12 @@ import styles from "./ProductDetails.module.css";
 export function ProductDetails({ product, relatedProducts }: { product: CatalogProductDetail; relatedProducts: CatalogProductCard[] }) {
   const initialVariant = product.variants.find((variant) => variant.availability === "available") ?? product.variants[0];
   return <CatalogShell><article className={styles.page}><Container>
-    <nav aria-label="Breadcrumb" className={styles.breadcrumb}><Link href="/shop">Shop</Link><span aria-hidden="true">/</span><Link href={`/brands/${product.brand.slug}`}>{product.brand.name}</Link><span aria-hidden="true">/</span><span aria-current="page">{product.name}</span></nav>
+    <nav aria-label="Breadcrumb" className={styles.breadcrumb}><Link href="/shop">Shop</Link><span aria-hidden="true">/</span><span aria-current="page">{product.fragranceType ? `${product.name} – ${product.fragranceType}` : product.name}</span></nav>
     <div className={styles.productLayout}>
       <ProductGallery media={product.media} productName={product.name} />
       <section className={styles.purchaseColumn} aria-label={`${product.name} purchase information`}>
-        <Link className={styles.brand} href={`/brands/${product.brand.slug}`}>{product.brand.name}</Link>
-        {initialVariant ? <p className={styles.taxNote}>Size · {initialVariant.sizeMl} ml</p> : null}
+        <p className={styles.brand}>{product.brand.name}</p>
+        {product.fragranceType ? <p className={styles.taxNote}>{product.fragranceType}</p> : initialVariant ? <p className={styles.taxNote}>Size · {initialVariant.sizeMl} ml</p> : null}
         <h1>{product.name}</h1>
         {product.shortDescription ? <p className={styles.short}>{product.shortDescription}</p> : null}
         <div className={styles.reviewRow} aria-label="Product rating and fragrance notes" role="group"><span className={styles.stars} aria-hidden="true">★★★★★</span><span>0.0 <span className={styles.reviewCount}>(0 reviews)</span></span><i aria-hidden="true" /><span>{product.notes.top.concat(product.notes.heart).slice(0, 3).join(" · ")}</span></div>
