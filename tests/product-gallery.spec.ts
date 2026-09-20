@@ -47,8 +47,8 @@ test.describe("development Product Gallery fixtures", () => {
 
 test("production Product gallery never exposes fictional media", async ({ page }) => {
   test.skip(fixture, "Development intentionally uses fictional gallery data.");
-  await page.goto("/products/athar-test-no-01");
-  await expect(page.getByRole("status")).toHaveText("Product browsing is temporarily unavailable.");
+  const response = await page.goto("/products/athar-test-no-01");
+  expect(response?.status()).toBe(404);
   await expect(page.getByRole("region", { name: "Product media" })).toHaveCount(0);
   await expect(page.getByText("ATHAR Test No. 01", { exact: true })).toHaveCount(0);
 });

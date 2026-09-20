@@ -23,6 +23,10 @@ Stage 4.1 adds development-fixture PDP coverage for name, Brand link, shared low
 
 Stage 4.2 adds fixture coverage for deterministic ordered multi-media selection, button/keyboard selected state, single-media restraint, zero-media placeholders, viewport overflow, and production media isolation. It also exercises equal media positions at the read-model boundary.
 
+Stage 4.3 adds fixture coverage for deterministic initial variant selection, stable public IDs, price/compare-at and availability rendering, disabled unavailable sizes, keyboard semantics, canonical PDP links, responsive overflow, and the preserved disabled purchase-control boundary. The closing gate also records production build, TypeScript, ESLint, catalog seed dry-run, full Playwright, instant/Turbopack, runtime diagnostics, and Axe checks; live Atlas Product reads remain unverified.
+
+The reconciled full fixture regression completed at **54 passed, 5 skipped, 0 failed**. Production fixture-isolation checks completed at **2 passed, 0 failed**. The `instant()` homepage smoke test passed in isolation and remains part of the suite.
+
 ## Atlas integration testing
 
 No automated test connects to a production Atlas database. When an owner-provided development/test URI is available, a future non-destructive connectivity check may call the server connection layer and read server metadata only. It must not reset, seed, or delete an arbitrary database.

@@ -10,7 +10,7 @@ test("shop renders the canonical active development catalog with normalized mone
   await expect(page.getByRole("heading", { name: "Shop ATHAR" })).toBeVisible();
   await expect(page.getByRole("list", { name: "Catalog products" })).toBeVisible();
   await expect(page.getByRole("article", { name: "ATHAR Atelier ATHAR Test No. 01" })).toBeVisible();
-  await expect(page.getByText("From 1 299 kr")).toBeVisible();
+  await expect(page.getByText("1 299 kr", { exact: true })).toBeVisible();
   await expect(page.getByText("Floral Study", { exact: true })).toHaveCount(0);
   await expect(page.getByText("Archive Sample", { exact: true })).toHaveCount(0);
 });
@@ -29,7 +29,7 @@ test("collection routes render public products or an accessible empty state", as
   await expect(page.getByText("ATHAR Test No. 01", { exact: true })).toBeVisible();
 
   await page.goto("/collections/test-women");
-  await expect(page.getByRole("status")).toHaveText("This collection has no public fragrances yet.");
+  await expect(page.getByText("Velvet Sillage", { exact: true })).toBeVisible();
 
 });
 

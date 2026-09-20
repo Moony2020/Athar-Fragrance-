@@ -15,9 +15,9 @@ test.describe("development discovery fixtures", () => {
     await page.goto("/shop?collection=test-men");
     await expect(page.getByText("Cedar Study", { exact: true })).toBeVisible();
     await page.goto("/shop?sort=price-asc");
-    await expect(page.getByRole("article").first()).toContainText("ATHAR Test No. 01");
+    await expect(page.getByRole("article").first()).toContainText("No Media Study");
     await page.goto("/shop?sort=price-desc");
-    await expect(page.getByRole("article").first()).toContainText("Cedar Study");
+    await expect(page.getByRole("article").first()).toContainText("Luminous Fig");
     await page.goto("/shop/women?audience=men");
     await expect(page.getByText("ATHAR Test No. 01", { exact: true })).toHaveCount(0);
     await expect(page.getByText("Cedar Study", { exact: true })).toHaveCount(0);

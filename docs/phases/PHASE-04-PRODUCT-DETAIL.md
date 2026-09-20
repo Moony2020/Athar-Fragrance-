@@ -47,4 +47,10 @@ Stage 4.1 does not add Cart, Wishlist, checkout/payment, inventory reservation, 
 - The gallery uses an inline horizontal thumbnail rail, contained scrolling, aspect-ratio media composition, mobile-first stacking, restrained opacity transition, and `prefers-reduced-motion` fallback. It is checked at 360px, 430px, 768px, 1280px, and 1600px.
 - Stage 4.1 product information, ProductCard canonical identity, unavailable/not-found behavior, metadata, cache strategy, and fixture isolation remain unchanged. Cart, Wishlist, and Stage 4.3 interactive variant selection remain deferred.
 
+## Stage 4.3 — Variant / Size Selection, Price & Availability
+
+The Stage 4.3 read boundary is implemented locally. Product variants are mapped from the catalog read model to stable public IDs with deterministic order and an initial available variant (falling back to the first variant when none are available). The selector renders size, price, compare-at price, and availability; unavailable sizes remain visibly muted/struck and disabled. Product-card size selection mirrors the same canonical selected-size price.
+
+The pre-existing PDP purchase controls (quantity, Add to bag, Wishlist) and Shop-card bag/Wishlist controls are intentionally preserved as disabled, visual-only owner UI. They have no persistence, cookies, localStorage, request, or mutation behavior. Related fragrances remain catalog-backed. Live Atlas Product reads and licensed production media are outside the verified local boundary.
+
 **LIVE ATLAS PRODUCT MEDIA READS — NOT YET VERIFIED.**

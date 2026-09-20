@@ -136,3 +136,8 @@
 - Added project governance, architecture, design, data, API, security, and testing documentation.
 - Added the Phase 0 ledger and architecture decision record.
 - No application feature implementation or dependency changes were made.
+## 2026-09-20 — Phase 4 / Stage 4.3 Variant / Size Selection
+
+- Added catalog-backed Product variant read mapping with stable public IDs, deterministic initial-size rules, price/compare-at values, availability labels, and disabled unavailable-size semantics.
+- Preserved the owner-designed PDP and Shop purchase/Wishlist UI as disabled, non-persistent visual boundaries; no commerce mutations or persistence were introduced.
+- Preserved catalog-backed Related fragrances and independent Product gallery behavior; documented the live Atlas verification boundary.

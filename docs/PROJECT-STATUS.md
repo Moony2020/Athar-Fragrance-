@@ -1,8 +1,15 @@
 # ATHAR Project Status
 
 **Last audited:** 2026-09-19  
-**Current phase:** Phase 4 — Product Detail & Merchandising, Stage 4.2 locally implemented
-**Overall status:** **STAGE 4.2 IMPLEMENTED LOCALLY.** Live Atlas Product media reads, production catalog data, and licensed media remain pending.
+**Current phase:** Phase 4 — Product Detail & Merchandising, Stage 4.3 closed locally
+**Overall status:** **STAGE 4.3 COMPLETE — LIVE ATLAS PRODUCT VARIANT READS NOT YET VERIFIED.**
+
+### Stage 4.3 closure boundary (2026-09-20)
+
+- Product variant selection is domain/read-model backed: stable public variant IDs, deterministic ordering, initial available-size selection, price/compare-at display, and availability labels are implemented and covered by fixture tests.
+- The existing PDP quantity, Add to bag, Wishlist, and Shop-card bag/Wishlist controls are preserved as owner-designed visual boundaries. They are disabled/non-persistent previews; no cart, wishlist, cookie, localStorage, or mutation request was added.
+- Related fragrances remain catalog-backed merchandising. Product gallery media remains independent from variant selection and no URL variant parameter was introduced.
+- The live Atlas adapter and licensed production media are intentionally not claimed as verified in this stage.
 
 ## Verified baseline
 

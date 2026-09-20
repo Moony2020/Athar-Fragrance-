@@ -4,3 +4,4 @@
 .panel[data-presentation] .sizeChoice:disabled,.panel[data-presentation] .addToBag:disabled,.panel[data-presentation] .wishlist:disabled { opacity: 1; }.panel[data-presentation] .sizeChoice:disabled { text-decoration: none; }.panel[data-presentation] .quantity button:disabled { opacity: .45; }
 .panel[data-presentation] .choiceHeader,.panel[data-presentation] .sizeChoices { display: none; }
 .panel[data-presentation] .quantityLabel { display: none; }
+.panel[data-presentation] { border-top: 0; margin-top: var(--space-2); padding-top: 0; }

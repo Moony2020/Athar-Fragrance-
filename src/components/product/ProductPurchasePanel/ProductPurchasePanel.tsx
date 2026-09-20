@@ -28,12 +28,12 @@ export function ProductPurchasePanel({ currency, presentationOnly = false, varia
     </div>
     <p className={styles.quantityLabel}>Quantity</p>
     <div className={styles.purchaseRow}>
-      <div aria-label="Quantity" className={styles.quantity}><button aria-label="Decrease quantity" disabled={presentationOnly || quantity === 1} onClick={() => setQuantity((current) => Math.max(1, current - 1))} type="button">−</button><span>{quantity}</span><button aria-label="Increase quantity" disabled={presentationOnly} onClick={() => setQuantity((current) => current + 1)} type="button">+</button></div>
+      <div aria-label="Quantity" className={styles.quantity} role="group"><button aria-label="Decrease quantity" disabled={presentationOnly || quantity === 1} onClick={() => setQuantity((current) => Math.max(1, current - 1))} type="button">−</button><span>{quantity}</span><button aria-label="Increase quantity" disabled={presentationOnly} onClick={() => setQuantity((current) => current + 1)} type="button">+</button></div>
       <button className={styles.addToBag} disabled={presentationOnly || selected.availability !== "available"} type="button"><span>Add to bag</span><BagIcon /></button>
       <button aria-label={`${isWishlisted ? "Remove from" : "Add to"} wishlist`} aria-pressed={isWishlisted} className={styles.wishlist} disabled={presentationOnly} onClick={() => setWishlisted((current) => !current)} type="button"><HeartIcon /></button>
     </div>
     <p className={styles.status}>{selected.availability === "available" ? "Complimentary delivery on this fragrance." : "This size is currently unavailable."}</p>
-    <div aria-label="Purchase benefits" className={styles.benefits}><BenefitIcon type="delivery" label={<>Complimentary<br />delivery</>} /><BenefitIcon type="authenticity" label={<>Authenticity<br />guaranteed</>} /><BenefitIcon type="gift" label={<>A thoughtful<br />gift, always</>} /></div>
+    <div aria-label="Purchase benefits" className={styles.benefits} role="group"><BenefitIcon type="delivery" label={<>Complimentary<br />delivery</>} /><BenefitIcon type="authenticity" label={<>Authenticity<br />guaranteed</>} /><BenefitIcon type="gift" label={<>A thoughtful<br />gift, always</>} /></div>
   </section>;
 }
 

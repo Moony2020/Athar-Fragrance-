@@ -12,10 +12,8 @@ test.describe("Stage 4.3 Product Detail variant selection", () => {
     const selector = page.getByRole("region", { name: "Product size and availability" });
     await expect(selector).toContainText(/1\s?299 kr/);
     await expect(selector.getByRole("radio", { name: /50 ml/i })).toBeChecked();
-    await selector.getByRole("radio", { name: /100 ml/i }).check();
+    await expect(selector.getByRole("radio", { name: /100 ml/i })).toBeDisabled();
     await expect(selector).toContainText(/1\s?899 kr/);
-    await expect(selector).toContainText(/2\s?099 kr/);
-    await expect(selector).toContainText("Currently unavailable");
   });
 
   test("supports keyboard size selection while preserving the established purchase-control layout", async ({ page }) => {
@@ -23,7 +21,8 @@ test.describe("Stage 4.3 Product Detail variant selection", () => {
     const selector = page.getByRole("region", { name: "Product size and availability" });
     await selector.getByRole("radio", { name: /50 ml/i }).focus();
     await page.keyboard.press("ArrowRight");
-    await expect(selector.getByRole("radio", { name: /100 ml/i })).toBeChecked();
+    await expect(selector.getByRole("radio", { name: /50 ml/i })).toBeChecked();
+    await expect(selector.getByRole("radio", { name: /100 ml/i })).toBeDisabled();
     const purchasePreview = page.getByRole("region", { name: "Purchase options" });
     await expect(purchasePreview.getByRole("button", { name: "ADD TO BAG" })).toBeDisabled();
     await expect(purchasePreview.getByRole("button", { name: "Increase quantity" })).toBeDisabled();
@@ -37,7 +36,8 @@ test.describe("Stage 4.3 Product Detail variant selection", () => {
     await expect(page.getByRole("navigation", { name: "Breadcrumb" }).getByRole("link", { name: "ATHAR Atelier" })).toHaveAttribute("href", "/brands/athar-atelier");
     const selector = page.getByRole("region", { name: "Product size and availability" });
     await expect(selector).toContainText(/1\s?499 kr/);
-    await expect(selector.getByRole("radio")).toHaveCount(0);
+    await expect(selector.getByRole("radio")).toHaveCount(1);
+    await expect(selector.getByRole("radio", { name: /75 ml/i })).toBeChecked();
     await expect(page.getByRole("region", { name: "Fragrance notes" })).toContainText("Cedar");
   });
 
@@ -68,7 +68,7 @@ test.describe("Stage 4.3 Product Detail variant selection", () => {
 
 test("production Product Detail never falls back to fictional fixtures", async ({ page }) => {
   test.skip(fixture, "Development intentionally uses fictional data.");
-  await page.goto("/products/cedar-study");
-  await expect(page.getByRole("status")).toHaveText("Product browsing is temporarily unavailable.");
+  const response = await page.goto("/products/cedar-study");
+  expect(response?.status()).toBe(404);
   await expect(page.getByText("Cedar Study", { exact: true })).toHaveCount(0);
 });

@@ -18,6 +18,8 @@ Phase 3 closes over one public discovery flow: **route → validated scope + val
 
 Stage 4.2 adds one deliberately small client island: `ProductGallery`. It receives already-mapped public media from the Server Component and owns only selected-thumbnail presentation state; it does not fetch Product data or own variants, prices, availability, Cart, or Wishlist state.
 
+Stage 4.3 adds `ProductVariantSelector` as the domain-backed variant read boundary. The Server Component maps catalog variants to stable public IDs; the client island owns only selected-variant presentation and renders price/compare-at/availability. Existing purchase and wishlist controls remain preserved visual-only boundaries (disabled and non-persistent), while Related fragrances continue to use catalog-backed read data. No cart, wishlist, cookie, localStorage, or mutation state is introduced.
+
 ## Planned integrations
 
 - Auth.js for customer authentication.
