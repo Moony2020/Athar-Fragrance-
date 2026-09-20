@@ -57,4 +57,8 @@ The pre-existing PDP purchase controls (quantity, Add to bag, Wishlist) and Shop
 
 Stage 4.4 audits and preserves the existing content layer. The public PDP DTO remains the source for descriptions, family, audience, structured top/heart/base notes, variants, media, brand, and Related fragrances. Family and audience receive display-only mappings; note groups with no canonical values are omitted. No ingredients or concentration field exists in the domain, so neither is fabricated. Unsupported static concentration, wear instructions, delivery, authenticity, gifting, and longevity-style claims were removed or neutralized while preserving the owner layout.
 
+## Stage 4.5 — Related Fragrances & Merchandising Audit
+
+Related fragrances remain pre-implemented catalog-backed merchandising rendered with the shared `ProductCard`. The server-side read now excludes the current Product by canonical identity, accepts only public active Products with active variants and public Brands, deduplicates by identity, scores existing family/audience/Brand/collection signals deterministically, sorts by score/name/slug, and returns at most four results. Empty results omit the section. No recommendation engine, tracking, personalization, or cross-sell commerce was introduced.
+
 **LIVE ATLAS PRODUCT MEDIA READS — NOT YET VERIFIED.**

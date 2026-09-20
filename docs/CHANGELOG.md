@@ -147,3 +147,8 @@
 - Added display-only family/audience mappings and graceful omission of empty note groups.
 - Removed unsupported hard-coded concentration/how-to-wear content and neutralized service wording while preserving the owner UI.
 - Added Stage 4.4 focused coverage and documented the pending ingredients/Live Atlas boundaries.
+## 2026-09-20 — Phase 4 / Stage 4.5 Related Merchandising Audit
+
+- Preserved the existing Related fragrances section and shared ProductCard.
+- Added a bounded server-side deterministic merchandising read using canonical family, audience, Brand, and collection signals.
+- Enforced public eligibility, current-product exclusion, deduplication, stable ordering, canonical PDP links, and empty-section omission without recommendation or commerce systems.

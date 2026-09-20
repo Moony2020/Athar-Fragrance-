@@ -45,6 +45,11 @@ export type ProductDetailResult = {
   product: CatalogProductDetail | null;
 };
 
+export type RelatedProductsResult = {
+  availability: CatalogAvailability;
+  products: CatalogProductCard[];
+};
+
 export type CatalogDiscoveryOptions = {
   brands: CatalogBrandCard[];
   collections: CatalogCollectionCard[];
@@ -271,6 +276,47 @@ export const getProductDetailData = cache(async (rawSlug: string): Promise<Produ
   } catch {
     return { availability: "unavailable", product: null };
   }
+});
+
+/** Deterministic, bounded merchandising read. Related selection stays server-side and reuses public catalog eligibility. */
+export const getRelatedProductsData = cache(async (rawSlug: string, limit = 4): Promise<RelatedProductsResult> => {
+  const parsed = slugSchema.safeParse(rawSlug);
+  if (!parsed.success) return { availability: "available", products: [] };
+  const current = await getPublicProductBySlug(parsed.data);
+  if (!current) return { availability: "available", products: [] };
+
+  let candidates: Product[];
+  let brands: Brand[];
+  try {
+    if (isDevelopmentCatalogSource()) {
+      candidates = getDevelopmentProducts();
+      brands = getDevelopmentBrands();
+    } else {
+      if (!canReadMongoCatalog()) return { availability: "unavailable", products: [] };
+      candidates = await (await getProductRepository()).listPublic({ limit: 100 });
+      brands = await (await getBrandRepository()).listPublic();
+    }
+  } catch {
+    return { availability: "unavailable", products: [] };
+  }
+
+  const publicBrandIds = new Set(brands.map((brand) => brand.id));
+  const scored = candidates
+    .filter((candidate) => candidate.slug !== current.slug && candidate.id !== current.id)
+    .filter((candidate) => candidate.status === "active" && candidate.variants.some((variant) => variant.isActive) && publicBrandIds.has(candidate.brandId))
+    .map((candidate) => {
+      const sharedCollections = candidate.collectionIds.filter((id) => current.collectionIds.includes(id)).length;
+      const score = (candidate.fragranceFamily === current.fragranceFamily ? 4 : 0)
+        + (candidate.audience === current.audience ? 2 : 0)
+        + (candidate.brandId === current.brandId ? 1 : 0)
+        + Math.min(sharedCollections, 2);
+      return { candidate, score };
+    })
+    .sort((left, right) => right.score - left.score || left.candidate.name.localeCompare(right.candidate.name) || left.candidate.slug.localeCompare(right.candidate.slug))
+    .slice(0, Math.max(0, Math.min(limit, 4)));
+
+  const brandById = new Map(brands.map((brand) => [brand.id, brand]));
+  return { availability: "available", products: scored.map(({ candidate }) => toCatalogProductCard(candidate, brandById.get(candidate.brandId) ?? null)) };
 });
 
 /** Public catalog reads deliberately return active records only. */

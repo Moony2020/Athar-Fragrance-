@@ -31,6 +31,8 @@ Stage 4.4 adds focused coverage for canonical descriptions, family/audience disp
 
 After the Stage 4.4 changes, the complete fixture regression completed at **57 passed, 5 skipped, 0 failed** (62 tests total). The isolated catalog-discovery timeout was rerun successfully; no implementation regression was found.
 
+Stage 4.5 adds focused coverage for Related eligibility, current-product exclusion, duplicate protection, deterministic ordering, four-item bounding, canonical PDP links, responsive ProductCard reuse, and production fixture isolation.
+
 ## Atlas integration testing
 
 No automated test connects to a production Atlas database. When an owner-provided development/test URI is available, a future non-destructive connectivity check may call the server connection layer and read server metadata only. It must not reset, seed, or delete an arbitrary database.

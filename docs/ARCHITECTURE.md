@@ -20,6 +20,8 @@ Stage 4.2 adds one deliberately small client island: `ProductGallery`. It receiv
 
 Stage 4.3 adds `ProductVariantSelector` as the domain-backed variant read boundary. The Server Component maps catalog variants to stable public IDs; the client island owns only selected-variant presentation and renders price/compare-at/availability. Existing purchase and wishlist controls remain preserved visual-only boundaries (disabled and non-persistent), while Related fragrances continue to use catalog-backed read data. No cart, wishlist, cookie, localStorage, or mutation state is introduced.
 
+Stage 4.5 keeps Related selection server-side in `getRelatedProductsData`. It reads the public catalog, applies canonical eligibility and identity exclusion, scores family/audience/Brand/collection signals deterministically, deduplicates, and caps the result at four before mapping to the existing `CatalogProductCard` DTO. Related cards reuse `ProductCard`; no client fetch or recommendation state is introduced.
+
 ## Planned integrations
 
 - Auth.js for customer authentication.

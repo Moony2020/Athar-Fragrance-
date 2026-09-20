@@ -1,8 +1,8 @@
 # ATHAR Project Status
 
 **Last audited:** 2026-09-19  
-**Current phase:** Phase 4 — Product Detail & Merchandising, Stage 4.4 closed locally
-**Overall status:** **STAGE 4.4 COMPLETE — LIVE ATLAS PRODUCT CONTENT READS NOT YET VERIFIED.**
+**Current phase:** Phase 4 — Product Detail & Merchandising, Stage 4.5 complete
+**Overall status:** **STAGE 4.5 COMPLETE — LIVE ATLAS RELATED PRODUCT READS NOT YET VERIFIED.**
 
 ### Stage 4.3 closure boundary (2026-09-20)
 
@@ -16,6 +16,15 @@
 - Existing Product content is preserved and audited through the public PDP DTO. Descriptions, family, audience, structured notes, variants, brand, media, and Related fragrances remain domain-backed.
 - Family and audience are display-mapped only; empty note groups are omitted. Ingredients and concentration remain pending canonical data and are not fabricated.
 - Unsupported static operational/authenticity/gifting wording was neutralized without removing the visual service layout. Commerce controls remain disabled and non-persistent.
+
+### Stage 4.5 audit boundary (complete)
+
+- Related fragrances are preserved as catalog-backed merchandising using the shared ProductCard.
+- The server-side related read now applies public eligibility, current-product exclusion, deterministic family/audience/Brand/collection scoring, stable tie-breakers, deduplication, and a four-item bound.
+- No recommendation engine, personalization, tracking, or cross-sell commerce was introduced.
+- Fixture verification: 59 passed, 6 skipped, 0 failed in the full Playwright suite; the focused Stage 4.5/PDP/gallery/content set passed with one isolated 30-second navigation timeout rerunning green.
+- Production isolation: 3 passed against the fresh production build; unavailable production reads may return the framework's 200 unavailable shell or 404, but never fictional product or Related content.
+- TypeScript, ESLint, Turbopack production build, catalog seed dry-run, runtime compilation/error checks, responsive overflow, and accessibility checks are green within the documented environment limits.
 
 ## Verified baseline
 
