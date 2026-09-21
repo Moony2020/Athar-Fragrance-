@@ -7,6 +7,7 @@ export const databaseCollections = {
   carts: "carts",
   wishlists: "wishlists",
   users: "users",
+  userCredentials: "user_credentials",
 } as const;
 
 export type DatabaseCollectionName = (typeof databaseCollections)[keyof typeof databaseCollections];

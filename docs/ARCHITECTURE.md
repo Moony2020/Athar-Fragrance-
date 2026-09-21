@@ -41,6 +41,12 @@ normalized unique email, strict Mongo parsing, and an explicit identity index.
 Password hashes remain storage-only and are never returned in public DTOs.
 Auth.js Credentials runtime, registration/sign-in, OAuth, and account merge are
 later stages and are not implemented here.
+
+Stage 6.2 now implements Auth.js Credentials registration/sign-in/sign-out with
+JWT sessions. Argon2id hashes live in the separate `user_credentials` collection;
+the canonical `users` collection contains identity only. Session `user.id` is
+the public opaque ID, disabled credentials are rejected, and duplicate account
+errors remain generic.
 - Stripe Payment Element for card collection; direct PayPal Orders API for PayPal.
 - Verified webhooks for payment state.
 - A transactional email provider and a media provider selected by the owner.

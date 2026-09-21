@@ -1103,6 +1103,37 @@ Completion contract:
   and repository documentation are internally consistent and verified.
 - Stage 6.2 is NOT STARTED.
 
+==================================================
+15. ATHAR — PHASE 6 / STAGE 6.2 CONTRACT
+==================================================
+
+Baseline: `2a2706429d0ad5231edf903c4d9aff8fdec85df5`
+
+Stage 6.2: Auth.js Credentials Runtime + Email/Password Registration & Sign-In
+
+Goal contract:
+
+- Implement real Auth.js Credentials runtime with email/password registration,
+  sign-in, sign-out, and JWT-backed sessions.
+- Use Argon2id for password hashing and keep credentials in a separate
+  persistence collection from the canonical User domain.
+- Expose only the public opaque `userId` in session state; never expose Mongo
+  `_id` or `passwordHash`.
+- Reject disabled users and return generic duplicate-email errors.
+
+Allowed authentication: Auth.js Credentials only; email + password only.
+
+Explicitly excluded: OAuth, Google, Apple, Clerk, magic links, email
+verification, password reset, Brevo sending, guest-to-account merge,
+account/profile UI, Stage 6.3+, and checkout/payment/order work.
+
+Persistence boundary:
+
+- Canonical User records remain in `users`.
+- Password hashes and disabled state live in `user_credentials`.
+- Identity indexes are explicit and unique for User email, User public ID, and
+  credential user ownership.
+
 هذا هو الـPrompt الذي أبدأ به المشروع.
 
 وبعد أن Codex يرجع لنا Audit حقيقي، أنا أراجع التقرير معك، وبعدها نثبت Stack نهائيًا ونبدأ Phase 1. بهذه الطريقة ما نكرر خطأ أن نبني نصف المشروع ثم نكتشف لاحقًا أن architecture ناقصة.

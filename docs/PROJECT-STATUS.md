@@ -21,6 +21,17 @@ domain/parser/service tests, real Mongo CRUD/index/concurrency checks,
 TypeScript, full ESLint, production build, and `git diff --check` pass. Stage
 6.2 is not started.
 
+## Stage 6.2 implementation boundary
+
+Stage 6.2 is complete locally from baseline
+`2a2706429d0ad5231edf903c4d9aff8fdec85df5`. Auth.js Credentials runtime,
+email/password registration, sign-in, sign-out handlers, Argon2id hashing,
+separate `user_credentials` persistence, disabled-user rejection, generic
+duplicate-email errors, and public-`userId` JWT sessions are in scope. OAuth,
+Clerk, magic links, email verification, password reset, Brevo sending,
+guest-to-account merge, and Stage 6.3 remain out of scope. Live production
+Atlas Auth persistence is not verified.
+
 ## Current project state
 
 - ATHAR is a Next.js 16.3 App Router application with a server-first Phase 3 catalog and a locally complete Phase 4 Product Detail flow.

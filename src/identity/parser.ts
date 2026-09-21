@@ -8,7 +8,6 @@ const userDocumentSchema = z.object({
   _id: z.instanceof(ObjectId).optional(),
   userId: publicUserIdSchema,
   normalizedEmail: normalizedEmailSchema,
-  passwordHash: z.string().trim().min(1).max(512),
   createdAt: z.date(),
   updatedAt: z.date(),
 }).strict();

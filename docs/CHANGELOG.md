@@ -203,3 +203,11 @@
   repository boundaries, identity indexes, customer creation service, and
   `CommerceOwner.user`; verified against `athar_stage55_test` without starting
   Auth.js runtime or Stage 6.2.
+- Stage 6.2 adds Auth.js Credentials email/password registration, sign-in and
+  sign-out runtime, Argon2id hashing, separate `user_credentials` persistence,
+  disabled-user rejection, generic duplicate-email responses, and public-
+  `userId` JWT sessions. OAuth, Clerk, verification email, password reset,
+  Brevo sending, merge, and Stage 6.3 remain deferred.
+- Stage 6.2 closure verified the Register/Sign-in/Account browser flow,
+  duplicate and disabled-user behavior, request-time account boundary, and
+  disposable Mongo cleanup against `athar_stage55_test`.

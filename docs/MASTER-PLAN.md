@@ -32,7 +32,7 @@ Each phase has a goal contract, implementation ledger, evidence, documentation, 
 | Stage | Scope | Status |
 | --- | --- | --- |
 | 6.1 | Customer Identity & Account Foundation | Complete locally |
-| 6.2 | Auth.js Credentials Runtime + Email/Password Registration & Sign-In | Not started |
+| 6.2 | Auth.js Credentials Runtime + Email/Password Registration & Sign-In | Complete locally |
 | 6.3 | Customer Account Shell & Profile | Not started |
 | 6.4 | Guest-to-Account Commerce Reconciliation | Not started |
 | 6.5 | Account Security & Password Recovery | Not started |
@@ -51,6 +51,9 @@ Each phase has a goal contract, implementation ledger, evidence, documentation, 
 - Future order confirmation emails must use Brevo.
 - Stage 6.1 baseline: `1cc405bf77e44777cae20b1e2998bfbdf5366bcd`.
 - Guest-to-account commerce merge is contract-only and not implemented.
+- Stage 6.2 uses Auth.js Credentials only with Argon2id password hashing.
+- Credentials persist separately from canonical User records; sessions carry
+  only the public opaque `userId`.
 
 ## Permanent domain invariants
 

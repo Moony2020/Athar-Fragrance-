@@ -28,3 +28,6 @@ Auth.js runtime, registration/sign-in, profile UI, or Stage 6.2.
 - `git diff --check`: passed.
 - No Auth.js runtime, OAuth, Clerk, email verification, password reset, or
   guest-to-account merge was started.
+
+Stage 6.2 later adds the Auth.js Credentials runtime; it is not part of this
+Stage 6.1 record.

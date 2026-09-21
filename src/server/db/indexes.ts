@@ -5,6 +5,7 @@ import { getDatabase } from "@/server/db/mongodb";
 import type { BrandDocument, CollectionDocument, ProductDocument } from "@/server/catalog/documents";
 import type { DurableCartDocument, DurableWishlistDocument } from "@/server/commerce/mongo-store";
 import type { UserDocument } from "@/identity/documents";
+import type { UserCredentialDocument } from "@/identity/credential-documents";
 
 /**
  * Idempotent catalog indexes. Invoke from a controlled deployment/migration
@@ -48,8 +49,11 @@ export async function ensureCommerceIndexes(): Promise<void> {
 /** Identity indexes are explicit deployment work; importing identity code never creates them. */
 export async function ensureIdentityIndexes(): Promise<void> {
   const database = await getDatabase();
-  await database.collection<UserDocument>(databaseCollections.users).createIndexes([
-    { key: { normalizedEmail: 1 }, name: "users_email_unique", unique: true },
-    { key: { userId: 1 }, name: "users_public_id_unique", unique: true },
+  await Promise.all([
+    database.collection<UserDocument>(databaseCollections.users).createIndexes([
+      { key: { normalizedEmail: 1 }, name: "users_email_unique", unique: true },
+      { key: { userId: 1 }, name: "users_public_id_unique", unique: true },
+    ]),
+    database.collection<UserCredentialDocument>(databaseCollections.userCredentials).createIndex({ userId: 1 }, { name: "credentials_user_unique", unique: true }),
   ]);
 }

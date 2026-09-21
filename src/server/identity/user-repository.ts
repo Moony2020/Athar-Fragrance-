@@ -15,7 +15,6 @@ function createPublicUserId(): string {
 
 export type CreateUserRecord = {
   email: string;
-  passwordHash: string;
 };
 
 export class MongoUserRepository {
@@ -37,12 +36,15 @@ export class MongoUserRepository {
       _id: undefined,
       userId: createPublicUserId(),
       normalizedEmail: normalizeEmail(input.email),
-      passwordHash: input.passwordHash,
       createdAt: now,
       updatedAt: now,
     };
     const collection = (await this.database()).collection<UserDocument>(databaseCollections.users);
     await collection.insertOne(document);
     return parseUserDocument(document);
+  }
+
+  async deleteByUserId(userId: string): Promise<void> {
+    await (await this.database()).collection<UserDocument>(databaseCollections.users).deleteOne({ userId });
   }
 }

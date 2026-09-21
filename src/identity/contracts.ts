@@ -6,7 +6,11 @@ export const normalizedEmailSchema = emailSchema.transform((value) => value.toLo
 
 export const customerCreateInputSchema = z.object({
   email: emailSchema,
-  passwordHash: z.string().trim().min(1).max(512),
+}).strict();
+
+export const registrationInputSchema = z.object({
+  email: emailSchema,
+  password: z.string().min(15).max(128),
 }).strict();
 
 export const userPublicSchema = z.object({

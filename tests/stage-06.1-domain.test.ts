@@ -14,7 +14,6 @@ function document(overrides: Partial<UserDocument> = {}): UserDocument {
     _id: new ObjectId(),
     userId: "u".repeat(43),
     normalizedEmail: "customer@example.com",
-    passwordHash: "hash-not-a-password",
     createdAt: now,
     updatedAt: now,
     ...overrides,
@@ -44,14 +43,13 @@ test("customer creation service enforces normalized-email uniqueness and hides p
   const records: UserDocument[] = [];
   const repository = {
     findByNormalizedEmail: async (email: string) => records.find((record) => record.normalizedEmail === normalizeEmail(email)) ?? null,
-    create: async ({ email, passwordHash }: { email: string; passwordHash: string }) => {
-      const created = document({ userId: "x".repeat(43), normalizedEmail: normalizeEmail(email), passwordHash });
+    create: async ({ email }: { email: string }) => {
+      const created = document({ userId: "x".repeat(43), normalizedEmail: normalizeEmail(email) });
       records.push(created);
       return created;
     },
   };
-  const publicUser = await createCustomer({ email: " New@Example.com ", passwordHash: "hash" }, repository);
+  const publicUser = await createCustomer({ email: " New@Example.com " }, repository);
   assert.deepEqual(publicUser, { userId: "x".repeat(43), email: "new@example.com" });
-  assert.equal("passwordHash" in publicUser, false);
-  await assert.rejects(() => createCustomer({ email: "NEW@example.com", passwordHash: "hash" }, repository), /already exists/);
+  await assert.rejects(() => createCustomer({ email: "NEW@example.com" }, repository), /already exists/);
 });
