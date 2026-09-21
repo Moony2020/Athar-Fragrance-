@@ -4,6 +4,7 @@ import { databaseCollections } from "@/server/db/collections";
 import { getDatabase } from "@/server/db/mongodb";
 import type { BrandDocument, CollectionDocument, ProductDocument } from "@/server/catalog/documents";
 import type { DurableCartDocument, DurableWishlistDocument } from "@/server/commerce/mongo-store";
+import type { UserDocument } from "@/identity/documents";
 
 /**
  * Idempotent catalog indexes. Invoke from a controlled deployment/migration
@@ -41,5 +42,14 @@ export async function ensureCommerceIndexes(): Promise<void> {
       { key: { ownerType: 1, ownerId: 1 }, name: "wishlist_owner_unique", unique: true },
       { key: { expiresAt: 1 }, name: "wishlist_expiry_ttl", expireAfterSeconds: 0 },
     ]),
+  ]);
+}
+
+/** Identity indexes are explicit deployment work; importing identity code never creates them. */
+export async function ensureIdentityIndexes(): Promise<void> {
+  const database = await getDatabase();
+  await database.collection<UserDocument>(databaseCollections.users).createIndexes([
+    { key: { normalizedEmail: 1 }, name: "users_email_unique", unique: true },
+    { key: { userId: 1 }, name: "users_public_id_unique", unique: true },
   ]);
 }

@@ -27,6 +27,31 @@ Each phase has a goal contract, implementation ledger, evidence, documentation, 
 | 12 | Security, performance, accessibility, SEO | Planned |
 | 13 | Production readiness | Planned |
 
+### Phase 6 stage map
+
+| Stage | Scope | Status |
+| --- | --- | --- |
+| 6.1 | Customer Identity & Account Foundation | Complete locally |
+| 6.2 | Auth.js Credentials Runtime + Email/Password Registration & Sign-In | Not started |
+| 6.3 | Customer Account Shell & Profile | Not started |
+| 6.4 | Guest-to-Account Commerce Reconciliation | Not started |
+| 6.5 | Account Security & Password Recovery | Not started |
+| 6.6 | Phase 6 Integration & Closure | Not started |
+
+### Phase 6 fixed decisions
+
+- Email + Password only.
+- Auth.js is the authentication framework.
+- Credentials is the future authentication method.
+- OAuth/social login is not used.
+- Clerk is not used.
+- Brevo is the transactional email provider.
+- Required email verification is not implemented.
+- Password reset is required in a later stage.
+- Future order confirmation emails must use Brevo.
+- Stage 6.1 baseline: `1cc405bf77e44777cae20b1e2998bfbdf5366bcd`.
+- Guest-to-account commerce merge is contract-only and not implemented.
+
 ## Permanent domain invariants
 
 - Products, brands, collections, inventory, merchandising flags, and prices are canonical data—not hard-coded JSX.

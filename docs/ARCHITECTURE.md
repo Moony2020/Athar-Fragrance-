@@ -35,6 +35,12 @@ Stage 5.5 keeps the two existing guest cookies and introduces an account-ready `
 ## Planned integrations
 
 - Auth.js for customer authentication.
+
+Stage 6.1 adds a server-only User identity foundation: opaque public `userId`,
+normalized unique email, strict Mongo parsing, and an explicit identity index.
+Password hashes remain storage-only and are never returned in public DTOs.
+Auth.js Credentials runtime, registration/sign-in, OAuth, and account merge are
+later stages and are not implemented here.
 - Stripe Payment Element for card collection; direct PayPal Orders API for PayPal.
 - Verified webhooks for payment state.
 - A transactional email provider and a media provider selected by the owner.

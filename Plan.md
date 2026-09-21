@@ -1051,6 +1051,58 @@ Await owner review.
 
 Do NOT begin Phase 1 automatically.
 
+==================================================
+14. ATHAR — PHASE 6 / STAGE 6.1 CONTRACT
+==================================================
+
+Baseline: `1cc405bf77e44777cae20b1e2998bfbdf5366bcd`
+
+Phase 6: Authentication and Customer Account
+
+Stage 6.1: Customer Identity & Account Foundation
+
+Goal contract:
+
+- Establish the canonical customer User identity boundary and account-ready
+  ownership contract without starting later authentication runtime stages.
+- Keep public DTOs free of credentials, provider tokens, and internal Mongo IDs.
+- Preserve guest Cart/Wishlist behavior; guest-to-account merge remains later.
+
+Owner-approved authentication decisions:
+
+- Email + Password only.
+- Authentication framework: Auth.js.
+- Future Auth method: Credentials / email-password.
+- OAuth/social login: NOT USED.
+- Clerk: NOT USED.
+- Transactional email provider: Brevo.
+- Email verification: NOT REQUIRED / NOT IMPLEMENTED.
+- Password reset: REQUIRED LATER.
+- Future Order confirmation emails: REQUIRED THROUGH BREVO.
+
+Customer/User domain requirements:
+
+- Use a public opaque User ID; never expose Mongo `_id` or credential fields.
+- Normalize email deterministically and enforce a unique normalized-email rule.
+- Define strict User repository, index, and parser boundaries that reject
+  unexpected persisted fields and keep storage-only fields private.
+- Support authenticated ownership through the existing `CommerceOwner` user
+  identity contract without changing guest semantics.
+
+Guest → Account merge: CONTRACT ONLY / NOT IMPLEMENTED.
+
+Stage 6.1 out of scope:
+
+- Auth.js runtime/session wiring and registration or sign-in.
+- OAuth/social providers, Clerk, required email verification, password reset
+  execution, profile UI, checkout, payments, orders, inventory, and Stage 6.2+.
+
+Completion contract:
+
+- Identity/domain contract, persistence boundary, parser/index rules, tests,
+  and repository documentation are internally consistent and verified.
+- Stage 6.2 is NOT STARTED.
+
 هذا هو الـPrompt الذي أبدأ به المشروع.
 
 وبعد أن Codex يرجع لنا Audit حقيقي، أنا أراجع التقرير معك، وبعدها نثبت Stack نهائيًا ونبدأ Phase 1. بهذه الطريقة ما نكرر خطأ أن نبني نصف المشروع ثم نكتشف لاحقًا أن architecture ناقصة.

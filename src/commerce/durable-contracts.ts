@@ -14,5 +14,6 @@ export type DurableBase = { ownerType: CommerceOwner["ownerType"]; ownerId: stri
 export type DurableCartDocument = DurableBase & { state: CartState; _id?: ObjectId };
 export type DurableWishlistDocument = DurableBase & { state: WishlistState; _id?: ObjectId };
 export function guestCommerceOwner(guestId: string): CommerceOwner { return commerceOwnerSchema.parse({ ownerType: "guest", ownerId: guestId }); }
+export function userCommerceOwner(userId: string): CommerceOwner { return commerceOwnerSchema.parse({ ownerType: "user", ownerId: userId }); }
 export function toDurableCartDocument(owner: CommerceOwner, state: CartState, now = new Date(), revision = 1): DurableCartDocument { return { _id: new ObjectId(), ...owner, revision, state: cartStateSchema.parse(state), createdAt: now, updatedAt: now, expiresAt: new Date(now.getTime() + durableTtlMs) }; }
 export function toDurableWishlistDocument(owner: CommerceOwner, state: WishlistState, now = new Date(), revision = 1): DurableWishlistDocument { return { _id: new ObjectId(), ...owner, revision, state: wishlistStateSchema.parse(state), createdAt: now, updatedAt: now, expiresAt: new Date(now.getTime() + durableTtlMs) }; }

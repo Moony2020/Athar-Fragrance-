@@ -1,8 +1,25 @@
 # ATHAR Project Status
 
 **Last audited:** 2026-09-21
-**Current phase:** Phase 5 — Cart & Wishlist, complete locally
+**Current phase:** Phase 6 — Authentication and Customer Account
 **Overall status:** **PHASE 5 COMPLETE — CART + WISHLIST + DURABLE GUEST PERSISTENCE VERIFIED.**
+
+## Stage 6.1 planning boundary
+
+Stage 6.1 now has its local Customer Identity & Account Foundation implemented
+and verified against the dedicated non-production Mongo database.
+The approved decisions are email/password only, Auth.js
+with future Credentials, no OAuth/social login, no Clerk, Brevo for future
+transactional email, no required email verification, and password reset later.
+The public opaque User ID, normalized unique email, strict User repository/index/
+parser boundary, and `CommerceOwner` user identity contract are required. Guest
+to account merge is contract-only and not implemented. Stage 6.2 and all later
+Phase 6 stages are not started.
+
+The Stage 6.1 baseline is `1cc405bf77e44777cae20b1e2998bfbdf5366bcd`. Local
+domain/parser/service tests, real Mongo CRUD/index/concurrency checks,
+TypeScript, full ESLint, production build, and `git diff --check` pass. Stage
+6.2 is not started.
 
 ## Current project state
 

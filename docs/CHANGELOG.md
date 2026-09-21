@@ -198,3 +198,8 @@
 - Audited and preserved existing owner-designed commerce UI without activating checkout or redesigning PDP/Shop.
 - Added a tested persistence-free Cart/Wishlist domain with canonical Product/Variant identity, bounded quantity validation, server-authoritative public eligibility, integer-minor pricing, and Product-level Wishlist semantics.
 - Deferred Cart UI activation, guest persistence, Cart database schema, Checkout, payment, Orders, and inventory reservation.
+- Stage 6.1 Customer Identity & Account Foundation is complete locally: added
+  opaque User identity, normalized unique email, strict Mongo User parsing and
+  repository boundaries, identity indexes, customer creation service, and
+  `CommerceOwner.user`; verified against `athar_stage55_test` without starting
+  Auth.js runtime or Stage 6.2.
