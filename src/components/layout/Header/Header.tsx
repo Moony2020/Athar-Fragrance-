@@ -25,9 +25,9 @@ export function Header() {
           <button className={styles.action} aria-label="Account" type="button">
             <svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="7.5" r="3.8" /><path d="M4.5 21c.8-4 3.4-6 7.5-6s6.7 2 7.5 6" /></svg>
           </button>
-          <button className={styles.action} aria-label="Wishlist" type="button">
+          <Link className={styles.action} aria-label="Wishlist" href="/wishlist">
             <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M20.8 4.9a5.2 5.2 0 0 0-7.4 0L12 6.3l-1.4-1.4a5.2 5.2 0 0 0-7.4 7.4L12 21l8.8-8.7a5.2 5.2 0 0 0 0-7.4Z" /></svg>
-          </button>
+          </Link>
           <Suspense fallback={<HeaderCartCount initialCount={0} />}><HeaderCartLink /></Suspense>
           <MobileMenu />
         </div>

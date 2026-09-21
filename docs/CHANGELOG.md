@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-09-21 — Phase 5 / Stage 5.4 Guest Wishlist activation
+
+- Activated Product-level guest Wishlist continuity across PDP, Gallery, Shop cards, Header navigation, and `/wishlist` through an opaque httpOnly guest cookie and canonical public Product validation.
+- Added request-time Wishlist rendering (`instant = false`), cross-surface synchronization, removal-to-empty behavior, responsive hit-target coverage, and Axe/Agent Browser verification.
+- Durable/live Atlas Wishlist persistence remains unimplemented and unverified; no Stage 5.5 work started.
+
 ## 2026-09-20 — Phase 5 / Stage 5.3 Cart Page, Line Management & Header Count
 
 - Added server-first `/cart`, current-catalog Cart presentation DTO, safe stale/unavailable reconciliation, canonical quantity update/remove Server Actions, valid-line subtotal, and restrained empty state.

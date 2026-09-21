@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useState } from "react";
+import { WishlistButton } from "@/components/commerce/WishlistButton";
 import type { CatalogProductDetail } from "@/server/catalog/read-model";
 import styles from "./ProductGallery.module.css";
 
@@ -19,9 +20,8 @@ const generatedMedia: Record<string, string> = {
  * The PDP stays server-rendered. This smallest client island owns only the
  * presentational selected-media index for Products with multiple images.
  */
-export function ProductGallery({ media, productName }: { media: PublicMedia[]; productName: string }) {
+export function ProductGallery({ media, productName, productSlug, initialWishlisted }: { media: PublicMedia[]; productName: string; productSlug: string; initialWishlisted: boolean }) {
   const [selectedIndex, setSelectedIndex] = useState(0);
-  const [isWishlisted, setWishlisted] = useState(false);
   const selected = media[selectedIndex] ?? null;
 
   if (!selected) {
@@ -60,13 +60,12 @@ export function ProductGallery({ media, productName }: { media: PublicMedia[]; p
       ) : null}
       <div className={`${styles.primary} ${toneClass(selected.position)}`} aria-live="polite">
         <GalleryImage media={selected} priority={selectedIndex === 0} />
-        <button aria-label={`${isWishlisted ? "Remove" : "Add"} ${productName} ${isWishlisted ? "from" : "to"} wishlist`} aria-pressed={isWishlisted} className={styles.primaryWishlist} onClick={() => setWishlisted((current) => !current)} type="button"><HeartIcon filled={isWishlisted} /></button>
+        <WishlistButton className={styles.primaryWishlist} initialWishlisted={initialWishlisted} productName={productName} productSlug={productSlug} />
       </div>
     </section>
   );
 }
 
-function HeartIcon({ filled }: { filled: boolean }) { return <svg aria-hidden="true" fill={filled ? "currentColor" : "none"} viewBox="0 0 24 24"><path d="M12 20.1 5.8 14.3a4.9 4.9 0 0 1 6.2-7.5 4.9 4.9 0 0 1 6.2 7.5L12 20.1Z" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.8" /></svg>; }
 
 
 function GalleryImage({ media, priority = false }: { media: PublicMedia; priority?: boolean }) {

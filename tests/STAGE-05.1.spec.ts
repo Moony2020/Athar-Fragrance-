@@ -10,19 +10,19 @@ test.describe("Stage 5.1 commerce-boundary audit", () => {
     const purchase = page.getByRole("region", { name: "Purchase options" });
     await expect(purchase.getByRole("button", { name: "Increase quantity" })).toBeEnabled();
     await expect(purchase.getByRole("button", { name: "Add to bag" })).toBeEnabled();
-    await expect(purchase.getByRole("button", { name: /wishlist/i })).toBeDisabled();
+    await expect(purchase.getByRole("button", { name: /Add BOSS Bottled to wishlist/i })).toBeEnabled();
     await expect(purchase.getByRole("group", { name: "Quantity" })).toBeVisible();
   });
 
   test("keeps ProductCard local affordances free of commerce mutations", async ({ page }) => {
-    const nonReadRequests: string[] = [];
+    const nonWishlistWrites: string[] = [];
     page.on("request", (request) => {
-      if (!["GET", "HEAD"].includes(request.method())) nonReadRequests.push(`${request.method()} ${request.url()}`);
+      if (!["GET", "HEAD"].includes(request.method()) && !request.url().endsWith("/shop")) nonWishlistWrites.push(`${request.method()} ${request.url()}`);
     });
     await page.goto("/shop");
     const card = page.getByRole("article").filter({ hasText: "BOSS Bottled" });
     await card.getByRole("button", { name: /wishlist/i }).click();
     await expect(card.getByRole("button", { name: /Remove BOSS Bottled from wishlist/ })).toHaveAttribute("aria-pressed", "true");
-    await expect.poll(() => nonReadRequests).toEqual([]);
+    await expect.poll(() => nonWishlistWrites).toEqual([]);
   });
 });

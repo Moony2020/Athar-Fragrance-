@@ -61,3 +61,12 @@ At the Stage 5.1 closure, Cart UI activation, Cart page/drawer, Checkout, Orders
 - A previously removed/private Product or missing Variant renders as stale; an unavailable Variant renders unavailable. These lines have no payable price/subtotal and remain removable. Current catalog prices replace any prior browser-era price at every render.
 - Header bag navigation now links to `/cart`. Its count is the sum of stored line quantities, including removable stale lines. A tiny visual client leaf consumes the server-provided initial count and the safe total returned by Cart actions; it is not a Cart store and never owns Cart truth.
 - The guest Cart is still session-scoped development/test server memory: restart loses state, a new guest session starts a new Cart, and production intentionally has no memory fallback. Wishlist persistence, ProductCard Add-to-bag, Cart drawer, Checkout, payment, Orders, account merge, and inventory reservation remain deferred.
+
+## Stage 5.4 — Guest Wishlist activation
+
+**Status:** complete locally with real guest cookie continuity; durable/live Atlas Wishlist reads and writes are not implemented or verified.
+
+- PDP, Product Gallery, Shop/ProductCard, Header Wishlist navigation, and `/wishlist` now share one Product-level guest Wishlist boundary keyed by an opaque httpOnly cookie.
+- Add/remove is a validated Server Action over canonical public Product slugs. The UI synchronizes across surfaces and the Wishlist page re-reads server state after removal; no client-owned Wishlist store or price/inventory snapshot is introduced.
+- The Wishlist page opts out of `instant` validation because its cookie-backed server read is intentionally request-time. This preserves the Next.js 16 Cache Components build contract without claiming a static Wishlist shell.
+- Focused flow, responsive hit-target checks, full fixture regression, production fixture isolation, typecheck, lint, dry-run seed, production Turbopack build, Agent Browser flow, and Axe are green locally. Atlas continuity and durable persistence remain an explicit gate.

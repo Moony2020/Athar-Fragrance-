@@ -1,14 +1,14 @@
 # ATHAR Project Status
 
-**Last audited:** 2026-09-20
-**Current phase:** Phase 5 — Cart & Wishlist, Stage 5.3 complete
-**Overall status:** **STAGE 5.3 COMPLETE — CART PAGE, LINE MANAGEMENT & HEADER COUNT IMPLEMENTED LOCALLY.**
+**Last audited:** 2026-09-21
+**Current phase:** Phase 5 — Cart & Wishlist, Stage 5.4 complete
+**Overall status:** **STAGE 5.4 COMPLETE — REAL GUEST WISHLIST ACTIVATED LOCALLY.**
 
 ## Current project state
 
 - ATHAR is a Next.js 16.3 App Router application with a server-first Phase 3 catalog and a locally complete Phase 4 Product Detail flow.
-- Stage 5.1 provides the Cart/Wishlist domain foundation. Stages 5.2–5.3 provide PDP Add-to-bag, `/cart`, line management, current-price subtotals, and a safe Header count through an ephemeral development/test guest Cart.
-- Durable production Cart persistence, Wishlist persistence, a Cart page/drawer, Checkout, payment, Orders, inventory reservation, and live Atlas Cart/Wishlist verification are not implemented.
+- Stage 5.1 provides the Cart/Wishlist domain foundation. Stages 5.2–5.3 provide PDP Add-to-bag, `/cart`, line management, current-price subtotals, and a safe Header count through an ephemeral development/test guest Cart. Stage 5.4 activates a Product-level guest Wishlist across PDP, Gallery, Shop, Header, and `/wishlist`.
+- Durable production Cart/Wishlist persistence, Checkout, payment, Orders, inventory reservation, and live Atlas Cart/Wishlist verification are not implemented or verified.
 - The original static prototype and local assets are preserved as historical visual reference material; they are not the current application architecture.
 
 ### Stage 4.3 closure boundary (2026-09-20)
@@ -58,6 +58,13 @@
 - Quantity updates and removals use existing Server Actions and canonical line identity. Header bag navigation targets `/cart`; its count is total line quantity, not distinct-line count.
 - The narrow Header count leaf keeps the root layout free of direct cookie reads, preserving Cache Components/Partial Prefetching architecture. It is visual synchronization from safe action results, not a second Cart source of truth.
 - Durable production Cart persistence, live Atlas Cart reads/writes, Wishlist persistence, ProductCard Add-to-bag, Cart drawer, Checkout, payment, Orders, account merge, and inventory reservation remain deferred.
+
+### Stage 5.4 Guest Wishlist boundary (complete locally)
+
+- PDP, Gallery, Shop/ProductCard, and `/wishlist` share an opaque httpOnly guest Wishlist cookie and canonical Product-level Server Action. Client hearts mirror action results and synchronize across surfaces without owning Wishlist truth.
+- `/wishlist` is intentionally request-time and declares `instant = false` for the Next.js 16 Cache Components contract. Removal uses `router.refresh()` plus a fresh server read; the control gate passed 3/3 without `revalidatePath`.
+- Focused flow, five responsive hit-target sizes, full fixture regression (66 passed / 8 skipped), production isolation (42 passed / 32 skipped), typecheck, lint, dry-run seed, production build, Agent Browser flow, and Axe (0 violations / 0 incomplete) are green locally.
+- Durable/live Atlas Wishlist reads and writes, account merging, and Stage 5.5 remain explicitly unstarted.
 
 ## Historical Phase 0 baseline
 

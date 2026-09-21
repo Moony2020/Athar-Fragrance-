@@ -36,7 +36,7 @@ test.describe("Stage 5.2 PDP Add-to-bag", () => {
     await purchase.getByRole("button", { name: "Add to bag" }).click();
     await expect(purchase.getByText(/Added to bag\. 1 item in bag\./)).toBeVisible();
     await expect(page.getByRole("radio", { name: /50 ml/ })).toBeChecked();
-    await expect(page.getByRole("button", { name: "Wishlist is not available yet" })).toBeDisabled();
+    await expect(purchase.getByRole("button", { name: "Add Eros to wishlist" })).toBeEnabled();
   });
 
 });

@@ -8,12 +8,12 @@ import { Container } from "@/components/ui/Container/Container";
 import type { CatalogProductCard, CatalogProductDetail } from "@/server/catalog/read-model";
 import styles from "./ProductDetails.module.css";
 
-export function ProductDetails({ product, relatedProducts }: { product: CatalogProductDetail; relatedProducts: CatalogProductCard[] }) {
+export function ProductDetails({ product, relatedProducts, initialWishlisted }: { product: CatalogProductDetail; relatedProducts: CatalogProductCard[]; initialWishlisted: boolean }) {
   const initialVariant = product.variants.find((variant) => variant.availability === "available") ?? product.variants[0];
   return <CatalogShell><article className={styles.page}><Container>
     <nav aria-label="Breadcrumb" className={styles.breadcrumb}><Link href="/shop">Shop</Link><span aria-hidden="true">/</span><span aria-current="page">{product.fragranceType ? `${product.name} – ${product.fragranceType}` : product.name}</span></nav>
     <div className={styles.productLayout}>
-      <ProductGallery media={product.media} productName={product.name} />
+      <ProductGallery initialWishlisted={initialWishlisted} media={product.media} productName={product.name} productSlug={product.slug} />
       <section className={styles.purchaseColumn} aria-label={`${product.name} purchase information`}>
         <p className={styles.brand}>{product.brand.name}</p>
         {product.fragranceType ? <p className={styles.taxNote}>{product.fragranceType}</p> : initialVariant ? <p className={styles.taxNote}>Size · {initialVariant.sizeMl} ml</p> : null}
@@ -21,7 +21,7 @@ export function ProductDetails({ product, relatedProducts }: { product: CatalogP
         {product.shortDescription ? <p className={styles.short}>{product.shortDescription}</p> : null}
         <div className={styles.reviewRow} aria-label="Product rating and fragrance notes" role="group"><span className={styles.stars} aria-hidden="true">★★★★★</span><span>0.0 <span className={styles.reviewCount}>(0 reviews)</span></span><i aria-hidden="true" /><span>{product.notes.top.concat(product.notes.heart).slice(0, 3).join(" · ")}</span></div>
         <div className={styles.qualityRow} aria-label="Product details" role="group"><span>◌ Composition details</span><span>✦ Edition details</span><span>◇ House details</span></div>
-        <ProductPurchaseArea currency={product.currency} productSlug={product.slug} variants={product.variants} />
+        <ProductPurchaseArea initialWishlisted={initialWishlisted} productName={product.name} currency={product.currency} productSlug={product.slug} variants={product.variants} />
       </section>
     </div>
     <div className={styles.productInformation}><ProductInformationTabs product={product} /></div>

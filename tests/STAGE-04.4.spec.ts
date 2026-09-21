@@ -31,6 +31,6 @@ test.describe("Stage 4.4 Product content audit", () => {
     await page.goto("/products/athar-test-no-01");
     await expect(page.getByRole("region", { name: "Related fragrances" })).toBeVisible();
     await expect(page.getByRole("region", { name: "Purchase options" }).getByRole("button", { name: "ADD TO BAG" })).toBeEnabled();
-    await expect(page.getByRole("region", { name: "Purchase options" }).getByRole("button", { name: "Wishlist is not available yet" })).toBeDisabled();
+    await expect(page.getByRole("region", { name: "Purchase options" }).getByRole("button", { name: "Add Eros to wishlist" })).toBeEnabled();
   });
 });

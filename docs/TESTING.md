@@ -39,6 +39,8 @@ Stage 5.2 adds pure guest-Cart service coverage for canonical merge/separate-var
 
 Stage 5.3 adds Cart page coverage for empty state, PDP-to-Header-to-Cart continuity, canonical product link/subtotal presentation, bounded quantity mutation, removal, and count updates. Pure coverage retains canonical identity and stale-line removal semantics. Production coverage confirms no fictional Cart data or development-memory persistence is claimed.
 
+Stage 5.4 adds a real guest Wishlist flow: PDP/Gallery synchronization, Shop save, `/wishlist` server read, normal removal, immediate empty state, and fresh-navigation empty state. The focused flow passed 3 consecutive runs with no `revalidatePath` dependency; responsive hit-target checks passed at 360/430/768/1280/1600px. Full fixture regression passed 66/66 executed tests (8 skipped), production isolation passed 42/42 (32 skipped), and Axe reported 0 violations / 0 incomplete. Live Atlas and durable persistence are not covered.
+
 ## Atlas integration testing
 
 No automated test connects to a production Atlas database. When an owner-provided development/test URI is available, a future non-destructive connectivity check may call the server connection layer and read server metadata only. It must not reset, seed, or delete an arbitrary database.

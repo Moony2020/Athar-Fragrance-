@@ -2,6 +2,8 @@ import "server-only";
 
 import type { GuestCartStore } from "@/commerce/guest-cart-service";
 import type { CartState } from "@/commerce/contracts";
+import type { WishlistState } from "@/commerce/contracts";
+import type { GuestWishlistStore } from "@/commerce/guest-wishlist-service";
 
 export type { GuestCartStore } from "@/commerce/guest-cart-service";
 
@@ -49,3 +51,14 @@ export function getEphemeralGuestCartStore(): GuestCartStore | null {
 export function resetEphemeralGuestCartStoreForTests() {
   globalStore.atharEphemeralGuestCartStore?.resetForTests();
 }
+
+class EphemeralGuestWishlistStore implements GuestWishlistStore {
+  private readonly wishlists = new Map<string, WishlistState>();
+  async read(guestId: string) { return this.wishlists.get(guestId) ?? { productSlugs: [] }; }
+  async mutate(guestId: string, mutation: (current: WishlistState) => Promise<WishlistState>) { const next = await mutation(await this.read(guestId)); this.wishlists.set(guestId, next); return next; }
+}
+const wishlistGlobal = globalThis as typeof globalThis & { atharEphemeralGuestWishlistStore?: EphemeralGuestWishlistStore };
+export function getEphemeralGuestWishlistStore(): GuestWishlistStore | null { if (process.env.NODE_ENV === "production") return null; wishlistGlobal.atharEphemeralGuestWishlistStore ??= new EphemeralGuestWishlistStore(); return wishlistGlobal.atharEphemeralGuestWishlistStore; }
+
+
+// TEMP Stage 5.4 removal diagnostic; remove after the boundary is classified.

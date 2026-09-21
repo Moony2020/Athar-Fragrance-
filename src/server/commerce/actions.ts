@@ -5,6 +5,8 @@ import { refresh } from "next/cache";
 import { cookies } from "next/headers";
 import { addToGuestCart, removeGuestCartLine, type GuestCartMutationResult, updateGuestCartLine } from "@/server/commerce/guest-cart";
 import { readGuestCartId } from "@/server/commerce/guest-cookie";
+import { toggleGuestWishlist } from "@/server/commerce/guest-wishlist";
+import { guestWishlistCookieName, guestWishlistIdPattern, readGuestWishlistId } from "@/server/commerce/guest-wishlist-cookie";
 
 const guestCartCookieName = "athar_guest_cart";
 const guestCartIdPattern = /^[A-Za-z0-9_-]{32,128}$/;
@@ -40,4 +42,11 @@ export async function removeGuestCartLineAction(input: unknown) {
   const result = await removeGuestCartLine(guestId, input);
   if (result.ok) refresh();
   return result;
+}
+
+export async function toggleGuestWishlistAction(input: unknown) {
+  const cookieStore = await cookies(); const existing = await readGuestWishlistId(); const guestId = existing ?? createGuestCartId();
+  const result = await toggleGuestWishlist(guestId, input);
+  if (result.ok && !existing && guestWishlistIdPattern.test(guestId)) cookieStore.set({ name: guestWishlistCookieName, value: guestId, httpOnly: true, sameSite: "lax", secure: process.env.NODE_ENV === "production", path: "/" });
+  if (result.ok) refresh(); return result;
 }

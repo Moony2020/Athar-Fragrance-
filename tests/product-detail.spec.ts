@@ -26,7 +26,7 @@ test.describe("Stage 4.3 Product Detail variant selection", () => {
     const purchasePreview = page.getByRole("region", { name: "Purchase options" });
     await expect(purchasePreview.getByRole("button", { name: "ADD TO BAG" })).toBeEnabled();
     await expect(purchasePreview.getByRole("button", { name: "Increase quantity" })).toBeEnabled();
-    await expect(purchasePreview.getByRole("button", { name: "Wishlist is not available yet" })).toBeDisabled();
+    await expect(purchasePreview.getByRole("button", { name: "Add Eros to wishlist" })).toBeEnabled();
   });
 
   test("keeps a single-variant product concise and preserves its public PDP identity", async ({ page }) => {

@@ -28,6 +28,8 @@ Stage 5.2 adds a narrow `ProductPurchaseArea` client island that coordinates sel
 
 Stage 5.3 adds `/cart` as a server-first utility route. A Suspense-bounded server read leaf consumes the guest cookie and maps stored identity/quantity through the current public PDP service into a narrow Cart DTO. The Cart controls and Header count are small client leaves; they consume safe mutation totals and trigger route refresh, but do not duplicate Cart data. The root layout does not read cookies, so unrelated route shells retain Cache Components/Partial Prefetching behavior.
 
+Stage 5.4 adds a Product-level guest Wishlist boundary. A validated Wishlist Server Action uses an opaque httpOnly guest identifier and canonical public Product resolution; the `/wishlist` route re-reads server state and is explicitly `instant = false` because its session cookie is request-time data. Client hearts only mirror the narrow action result and dispatch a local synchronization event; they do not own Wishlist truth.
+
 ## Planned integrations
 
 - Auth.js for customer authentication.
