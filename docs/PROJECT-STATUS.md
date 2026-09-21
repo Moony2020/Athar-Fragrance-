@@ -240,3 +240,22 @@ The records below preserve earlier-stage evidence. Statements such as “has not
 - Query matching is a bounded portable literal substring operation over public fields only; raw Mongo operators and regex execution are not accepted. Price range and pagination are deferred as disproportionate to the current bounded listing.
 - Query URLs use `noindex, follow` plus canonical browse metadata. **LIVE ATLAS SEARCH/FILTER/SORT QUERIES — NOT YET VERIFIED.**
 - **STAGE 3.5 IMPLEMENTED LOCALLY — OWNER APPROVAL PENDING.**
+
+## Stage 6.3 status
+
+- Baseline: `3e7840d4ae9d7f8b747f2672c735efeba83be7b4`.
+- A protected `/account` shell reads canonical User data from the server
+  Auth.js session and repository boundary; unauthenticated requests redirect
+  to Sign-in.
+- Profile editing is limited to a trimmed, validated `displayName`. Email is
+  read-only. The browser never supplies the owning `userId`.
+- Mongo `_id`, credentials, and `passwordHash` remain outside public DTOs.
+- Stage 6.4 reconciliation, addresses, orders, password changes, and email
+  changes are not started. Live production Atlas verification is not claimed.
+- Stage 6.3 focused/domain and Browser E2E checks pass. Build attribution is
+  conclusive: the clean `3e7840d` baseline and a Stage-6.3-only worktree both
+  pass production build. The current-tree build is blocked only by the
+  preserved Owner Header/Wishlist change reading cookies in the shared Header
+  during `/_not-found` prerender; this external Owner blocker does not prevent
+  Stage 6.3 closure.
+- **STAGE 6.3 COMPLETE — CUSTOMER ACCOUNT SHELL & PROFILE.**

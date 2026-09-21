@@ -33,7 +33,7 @@ Each phase has a goal contract, implementation ledger, evidence, documentation, 
 | --- | --- | --- |
 | 6.1 | Customer Identity & Account Foundation | Complete locally |
 | 6.2 | Auth.js Credentials Runtime + Email/Password Registration & Sign-In | Complete locally |
-| 6.3 | Customer Account Shell & Profile | Not started |
+| 6.3 | Customer Account Shell & Profile | Complete locally |
 | 6.4 | Guest-to-Account Commerce Reconciliation | Not started |
 | 6.5 | Account Security & Password Recovery | Not started |
 | 6.6 | Phase 6 Integration & Closure | Not started |
@@ -54,6 +54,13 @@ Each phase has a goal contract, implementation ledger, evidence, documentation, 
 - Stage 6.2 uses Auth.js Credentials only with Argon2id password hashing.
 - Credentials persist separately from canonical User records; sessions carry
   only the public opaque `userId`.
+- Stage 6.3 baseline: `3e7840d4ae9d7f8b747f2672c735efeba83be7b4`.
+- Stage 6.3 permits server-session-owned `displayName` updates only; email is
+  read-only and account addresses, orders, password changes, and guest merge
+  remain deferred.
+- Stage 6.3 closure evidence: Stage-6.3-only production build passed. The
+  current-tree build blocker is a preserved Owner Header/Wishlist change and
+  is outside this stage.
 
 ## Permanent domain invariants
 

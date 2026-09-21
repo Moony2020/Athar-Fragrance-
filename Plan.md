@@ -1137,3 +1137,31 @@ Persistence boundary:
 هذا هو الـPrompt الذي أبدأ به المشروع.
 
 وبعد أن Codex يرجع لنا Audit حقيقي، أنا أراجع التقرير معك، وبعدها نثبت Stack نهائيًا ونبدأ Phase 1. بهذه الطريقة ما نكرر خطأ أن نبني نصف المشروع ثم نكتشف لاحقًا أن architecture ناقصة.
+
+==================================================
+ATHAR — PHASE 6 / STAGE 6.3 CONTRACT
+==================================================
+
+Baseline: `3e7840d4ae9d7f8b747f2672c735efeba83be7b4`
+
+Stage 6.3: Customer Account Shell & Profile
+
+Goal contract:
+
+- Provide a protected `/account` shell backed by the Auth.js server session.
+- Read and update canonical User profile data through the repository boundary.
+- Allow only trimmed `displayName` updates; email remains read-only.
+- Derive ownership exclusively from the server session public `userId`.
+- Never expose Mongo `_id`, credentials, or `passwordHash`.
+
+Out of scope: email change, password change/reset, addresses, orders, cart or
+wishlist merge, guest-to-account reconciliation, Auth.js provider changes, and
+Stage 6.4+.
+
+Closure evidence:
+
+- `STAGE 6.3 COMPLETE — CUSTOMER ACCOUNT SHELL & PROFILE`
+- `STAGE-6.3-ONLY PRODUCTION BUILD — PASSED`
+- The current working-tree build remains blocked only by the preserved Owner
+  Header/Wishlist change at `/_not-found`; this is outside Stage 6.3.
+- Stage 6.4: NOT STARTED.

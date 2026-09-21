@@ -22,7 +22,7 @@ function document(overrides: Partial<UserDocument> = {}): UserDocument {
 
 test("normalizes customer email and keeps a public opaque identity", () => {
   assert.equal(normalizeEmail(" Customer@Example.COM "), "customer@example.com");
-  assert.deepEqual(toPublicUser(document()), { userId: "u".repeat(43), email: "customer@example.com" });
+  assert.deepEqual(toPublicUser(document()), { userId: "u".repeat(43), email: "customer@example.com", displayName: "customer" });
   assert.deepEqual(userPublicSchema.parse(toPublicUser(document())), toPublicUser(document()));
 });
 
@@ -50,6 +50,6 @@ test("customer creation service enforces normalized-email uniqueness and hides p
     },
   };
   const publicUser = await createCustomer({ email: " New@Example.com " }, repository);
-  assert.deepEqual(publicUser, { userId: "x".repeat(43), email: "new@example.com" });
+  assert.deepEqual(publicUser, { userId: "x".repeat(43), email: "new@example.com", displayName: "new" });
   await assert.rejects(() => createCustomer({ email: "NEW@example.com" }, repository), /already exists/);
 });

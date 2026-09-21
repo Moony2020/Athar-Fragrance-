@@ -1,0 +1,50 @@
+.shell {
+  width: min(100% - 2rem, 70rem);
+  margin: 0 auto;
+  padding: clamp(4rem, 10vw, 8rem) 0;
+}
+
+.shell h1 {
+  margin: 0 0 .75rem;
+  font-family: var(--font-display);
+  font-size: clamp(2.75rem, 7vw, 5.5rem);
+  font-weight: 400;
+  letter-spacing: -.04em;
+}
+
+.email {
+  display: grid;
+  gap: .45rem;
+  max-width: 34rem;
+  color: var(--color-muted);
+}
+
+.email input,
+.profile input {
+  width: 100%;
+  border: 1px solid var(--color-border);
+  border-radius: .75rem;
+  background: var(--color-surface);
+  padding: .85rem 1rem;
+  color: var(--color-text);
+}
+
+.profile {
+  display: grid;
+  gap: .55rem;
+  max-width: 34rem;
+  margin: 2rem 0;
+}
+
+.profile button,
+.signOut {
+  width: fit-content;
+  border-radius: 999px;
+  background: var(--color-text);
+  color: var(--color-background);
+  padding: .8rem 1.4rem;
+}
+
+.profile button:disabled { opacity: .55; cursor: wait; }
+
+.publicId { color: var(--color-muted); font-size: .85rem; word-break: break-all; }

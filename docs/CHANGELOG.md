@@ -208,6 +208,13 @@
   disabled-user rejection, generic duplicate-email responses, and public-
   `userId` JWT sessions. OAuth, Clerk, verification email, password reset,
   Brevo sending, merge, and Stage 6.3 remain deferred.
+
+## Stage 6.3 closure
+
+- Closed Customer Account Shell & Profile locally with session-owned profile
+  reads/updates, read-only email, and Browser E2E evidence.
+- Baseline and Stage-6.3-only production builds passed. The current-tree
+  `/_not-found` blocker is preserved Owner Header/Wishlist work outside scope.
 - Stage 6.2 closure verified the Register/Sign-in/Account browser flow,
   duplicate and disabled-user behavior, request-time account boundary, and
   disposable Mongo cleanup against `athar_stage55_test`.

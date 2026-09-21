@@ -16,7 +16,10 @@ export const registrationInputSchema = z.object({
 export const userPublicSchema = z.object({
   userId: publicUserIdSchema,
   email: emailSchema,
+  displayName: z.string().trim().min(1).max(80),
 }).strict();
+
+export const displayNameSchema = z.string().trim().min(1).max(80);
 
 export type CustomerCreateInput = z.input<typeof customerCreateInputSchema>;
 export type UserPublic = z.output<typeof userPublicSchema>;

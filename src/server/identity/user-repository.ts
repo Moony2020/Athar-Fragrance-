@@ -6,6 +6,7 @@ import type { Db } from "mongodb";
 import { databaseCollections } from "@/server/db/collections";
 import { getDatabase } from "@/server/db/mongodb";
 import { normalizeEmail } from "@/identity/contracts";
+import { displayNameSchema } from "@/identity/contracts";
 import type { UserDocument } from "@/identity/documents";
 import { parseUserDocument } from "@/identity/parser";
 
@@ -15,6 +16,7 @@ function createPublicUserId(): string {
 
 export type CreateUserRecord = {
   email: string;
+  displayName?: string;
 };
 
 export class MongoUserRepository {
@@ -36,6 +38,7 @@ export class MongoUserRepository {
       _id: undefined,
       userId: createPublicUserId(),
       normalizedEmail: normalizeEmail(input.email),
+      displayName: input.displayName?.trim() || normalizeEmail(input.email).split("@")[0],
       createdAt: now,
       updatedAt: now,
     };
@@ -46,5 +49,16 @@ export class MongoUserRepository {
 
   async deleteByUserId(userId: string): Promise<void> {
     await (await this.database()).collection<UserDocument>(databaseCollections.users).deleteOne({ userId });
+  }
+
+  async updateDisplayName(userId: string, displayName: string): Promise<UserDocument | null> {
+    const value = displayNameSchema.parse(displayName);
+    const collection = (await this.database()).collection<UserDocument>(databaseCollections.users);
+    const result = await collection.findOneAndUpdate(
+      { userId },
+      { $set: { displayName: value, updatedAt: new Date() } },
+      { returnDocument: "after" },
+    );
+    return result ? parseUserDocument(result) : null;
   }
 }
