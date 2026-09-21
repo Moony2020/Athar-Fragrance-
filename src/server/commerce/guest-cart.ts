@@ -9,12 +9,40 @@ import { CommerceError, quantitySchema, publicVariantIdSchema } from "@/commerce
 import { slugSchema } from "@/server/catalog/schemas";
 import { resolvePublicCommerceProduct } from "@/server/commerce/services";
 import { getGuestCartStore } from "@/server/commerce/store";
+import { MongoGuestCartStore } from "@/server/commerce/mongo-store";
+import type { CommerceOwner } from "@/commerce/durable-contracts";
 
 export type { GuestCartMutationResult, GuestCartReadResult } from "@/commerce/guest-cart-service";
 
 function getService() {
   return createGuestCartService(getGuestCartStore(), resolvePublicCommerceProduct);
 }
+
+function getOwnerService(owner: CommerceOwner) {
+  const store = getGuestCartStore();
+  if (!(store instanceof MongoGuestCartStore)) return null;
+  return createGuestCartService({
+    read: () => store.readOwner(owner),
+    mutate: (_ignored, mutation) => store.mutateOwner(owner, mutation),
+  }, resolvePublicCommerceProduct);
+}
+
+export function addToCommerceCart(owner: CommerceOwner, input: CartLineInput | unknown) {
+  return owner.ownerType === "guest" ? addToGuestCart(owner.ownerId, input) : (getOwnerService(owner)?.add(owner.ownerId, input) ?? Promise.resolve({ ok: false as const, code: "CART_UNAVAILABLE" as const, message: "Bag service is temporarily unavailable." }));
+}
+
+export async function updateCommerceCartLine(owner: CommerceOwner, rawInput: unknown) {
+  if (owner.ownerType === "guest") return updateGuestCartLine(owner.ownerId, rawInput);
+  const service = getOwnerService(owner);
+  if (!service) return { ok: false as const, code: "CART_UNAVAILABLE", message: "Bag service is temporarily unavailable." };
+  const input = publicVariantIdSchema.safeParse(typeof rawInput === "object" && rawInput ? (rawInput as { variantId?: unknown }).variantId : undefined);
+  const productSlug = slugSchema.safeParse(typeof rawInput === "object" && rawInput ? (rawInput as { productSlug?: unknown }).productSlug : undefined);
+  const quantity = quantitySchema.safeParse(typeof rawInput === "object" && rawInput ? (rawInput as { quantity?: unknown }).quantity : undefined);
+  if (!input.success || !productSlug.success || !quantity.success) return { ok: false as const, code: "INVALID_CART_INPUT", message: "Please choose an available size and quantity." };
+  try { const cart = await storeForOwner().mutateOwner(owner, async (current) => updateCartLineQuantity(current, { productSlug: productSlug.data, variantId: input.data }, quantity.data, resolvePublicCommerceProduct)); return { ok: true as const, totalQuantity: cart.lines.reduce((t, l) => t + l.quantity, 0), message: "Quantity updated." }; } catch (error) { return mutationFailure(error); }
+}
+
+function storeForOwner() { const store = getGuestCartStore(); if (!(store instanceof MongoGuestCartStore)) throw new Error("Cart unavailable"); return store; }
 
 export function addToGuestCart(guestId: string, input: CartLineInput | unknown) {
   return getService().add(guestId, input);
@@ -55,4 +83,13 @@ export async function removeGuestCartLine(guestId: string, rawInput: unknown) {
     const cart = await store.mutate(guestId, async (current) => removeCartLine(current, { productSlug: productSlug.data, variantId: input.data }));
     return { ok: true as const, totalQuantity: cart.lines.reduce((total, line) => total + line.quantity, 0), message: "Item removed from bag." };
   } catch (error) { return mutationFailure(error); }
+}
+
+export async function removeCommerceCartLine(owner: CommerceOwner, rawInput: unknown) {
+  if (owner.ownerType === "guest") return removeGuestCartLine(owner.ownerId, rawInput);
+  const input = publicVariantIdSchema.safeParse(typeof rawInput === "object" && rawInput ? (rawInput as { variantId?: unknown }).variantId : undefined);
+  const productSlug = slugSchema.safeParse(typeof rawInput === "object" && rawInput ? (rawInput as { productSlug?: unknown }).productSlug : undefined);
+  if (!input.success || !productSlug.success) return { ok: false as const, code: "INVALID_CART_INPUT", message: "This bag item is invalid." };
+  const store = getGuestCartStore(); if (!(store instanceof MongoGuestCartStore)) return { ok: false as const, code: "CART_UNAVAILABLE", message: "Bag service is temporarily unavailable." };
+  try { const cart = await store.mutateOwner(owner, async (current) => removeCartLine(current, { productSlug: productSlug.data, variantId: input.data })); return { ok: true as const, totalQuantity: cart.lines.reduce((t, l) => t + l.quantity, 0), message: "Item removed from bag." }; } catch (error) { return mutationFailure(error); }
 }

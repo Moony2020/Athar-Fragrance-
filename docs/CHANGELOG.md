@@ -218,3 +218,15 @@
 - Stage 6.2 closure verified the Register/Sign-in/Account browser flow,
   duplicate and disabled-user behavior, request-time account boundary, and
   disposable Mongo cleanup against `athar_stage55_test`.
+
+## Stage 6.4 implementation
+
+Stage 6.4 is complete locally. Authenticated server reads and Cart/Wishlist
+mutations now resolve the public session `userId` owner continuously after
+sign-in; guest cookies remain the unauthenticated path. Existing-account
+Browser E2E and repeat sign-in prove no duplication, canonical merge, and
+post-success guest cleanup against `athar_stage55_test`.
+
+- Added server-only guest Cart/Wishlist reconciliation for registration and
+  Credentials sign-in, with canonical product resolution, quantity cap 12,
+  wishlist union, CAS-backed stores, and durable idempotency markers.

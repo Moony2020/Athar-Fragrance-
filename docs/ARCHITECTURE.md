@@ -53,6 +53,14 @@ errors remain generic.
 
 No separate Express application is proposed unless a later verified requirement requires one.
 
+## Authenticated commerce ownership
+
+Stage 6.4 resolves commerce ownership server-side from the Auth.js session:
+authenticated Cart/Wishlist reads and mutations use the public session
+`userId`; only requests without a session use opaque guest cookies. Browser input
+never selects a user owner. Reconciliation is CAS-safe and idempotent, clearing
+guest state only after successful canonical merge.
+
 ## Migration principle
 
 The static prototype is visual reference material, not production architecture. Recreate approved design intent as accessible, componentized, responsive routes; do not copy CSS override layers forward.

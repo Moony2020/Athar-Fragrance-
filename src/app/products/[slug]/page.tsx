@@ -4,7 +4,7 @@ import { ProductDetails } from "@/components/product/ProductDetails/ProductDetai
 import { CatalogShell } from "@/components/catalog/CatalogShell/CatalogShell";
 import { Container } from "@/components/ui/Container/Container";
 import { getProductDetailData, getRelatedProductsData } from "@/server/catalog/services";
-import { isCurrentGuestWishlisted } from "@/server/commerce/wishlist-read";
+import { isCurrentCommerceWishlisted } from "@/server/commerce/wishlist-read";
 
 export const instant = false;
 type Props = { params: Promise<{ slug: string }> };
@@ -23,7 +23,7 @@ export default async function ProductPage({ params }: Props) {
   if (!result.product) notFound();
   const related = await getRelatedProductsData(slug);
   const relatedProducts = related.products;
-  return <ProductDetails initialWishlisted={await isCurrentGuestWishlisted(result.product.slug)} product={result.product} relatedProducts={relatedProducts} />;
+  return <ProductDetails initialWishlisted={await isCurrentCommerceWishlisted(result.product.slug)} product={result.product} relatedProducts={relatedProducts} />;
 }
 
 function ProductUnavailable() { return <CatalogShell><main><Container><p role="status">Product browsing is temporarily unavailable.</p></Container></main></CatalogShell>; }

@@ -2,6 +2,9 @@ import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 
 import { authorizeCredentials } from "@/server/auth/credentials";
+import { mergeGuestCommerceForUser } from "@/server/commerce/reconciliation";
+import { readGuestCartId } from "@/server/commerce/guest-cookie";
+import { readGuestWishlistId } from "@/server/commerce/guest-wishlist-cookie";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   trustHost: true,
@@ -20,6 +23,15 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     },
   })],
   callbacks: {
+    async signIn({ user }) {
+      if (!user?.id) return false;
+      try {
+        await mergeGuestCommerceForUser(user.id, { cartId: await readGuestCartId(), wishlistId: await readGuestWishlistId() });
+        return true;
+      } catch {
+        return false;
+      }
+    },
     jwt({ token, user }) {
       if (user?.id) token.sub = user.id;
       return token;

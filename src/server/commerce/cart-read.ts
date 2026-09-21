@@ -3,6 +3,9 @@ import "server-only";
 import { readGuestCartId } from "@/server/commerce/guest-cookie";
 import { getProductDetailData } from "@/server/catalog/services";
 import { getGuestCartStore } from "@/server/commerce/store";
+import { MongoGuestCartStore } from "@/server/commerce/mongo-store";
+import { userCommerceOwner } from "@/commerce/durable-contracts";
+import { readCurrentCommerceOwner } from "@/server/commerce/current-owner";
 
 export type PublicCartLine = {
   productSlug: string;
@@ -78,6 +81,29 @@ export async function readCurrentGuestCart(): Promise<PublicCart> {
   };
 }
 
+/** Reads the durable owner selected by the server session; cookies are used only for guests. */
+export async function readCurrentCommerceCart(): Promise<PublicCart> {
+  const owner = await readCurrentCommerceOwner();
+  if (owner.ownerType === "guest") return readCurrentGuestCart();
+  const store = getGuestCartStore();
+  if (!(store instanceof MongoGuestCartStore)) return { availability: "unavailable", lines: [], subtotalMinor: 0, currency: null, totalQuantity: 0 };
+  const state = await store.readOwner(userCommerceOwner(owner.ownerId));
+  const lines = await Promise.all(state.lines.map(async (line): Promise<PublicCartLine> => {
+    const result = await getProductDetailData(line.productSlug);
+    if (result.availability === "unavailable" || !result.product) return staleLine(line.productSlug, line.variantId, line.quantity, "stale");
+    const variant = result.product.variants.find((candidate) => candidate.id === line.variantId);
+    if (!variant) return staleLine(line.productSlug, line.variantId, line.quantity, "stale");
+    const media = generatedMedia[result.product.slug] ? { src: generatedMedia[result.product.slug], alt: result.product.media[0]?.alt ?? result.product.name } : null;
+    if (variant.availability !== "available") return { productSlug: result.product.slug, productName: result.product.name, brandName: result.product.brand.name, fragranceType: result.product.fragranceType, variantId: variant.id, sizeMl: variant.sizeMl, media, quantity: line.quantity, priceMinor: null, subtotalMinor: null, currency: result.product.currency, availability: "unavailable" };
+    return { productSlug: result.product.slug, productName: result.product.name, brandName: result.product.brand.name, fragranceType: result.product.fragranceType, variantId: variant.id, sizeMl: variant.sizeMl, media, quantity: line.quantity, priceMinor: variant.priceMinor, subtotalMinor: variant.priceMinor * line.quantity, currency: result.product.currency, availability: "available" };
+  }));
+  const validLines = lines.filter((line) => line.availability === "available");
+  const currencies = new Set(validLines.map((line) => line.currency).filter((currency): currency is string => Boolean(currency)));
+  return { availability: "available", lines, subtotalMinor: validLines.reduce((total, line) => total + (line.subtotalMinor ?? 0), 0), currency: currencies.size === 1 ? [...currencies][0] : null, totalQuantity: lines.reduce((total, line) => total + line.quantity, 0) };
+}
+
 export async function readCurrentGuestCartCount() {
   return (await readCurrentGuestCart()).totalQuantity;
 }
+
+export async function readCurrentCommerceCartCount() { return (await readCurrentCommerceCart()).totalQuantity; }

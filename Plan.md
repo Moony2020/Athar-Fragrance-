@@ -1164,4 +1164,32 @@ Closure evidence:
 - `STAGE-6.3-ONLY PRODUCTION BUILD — PASSED`
 - The current working-tree build remains blocked only by the preserved Owner
   Header/Wishlist change at `/_not-found`; this is outside Stage 6.3.
-- Stage 6.4: NOT STARTED.
+- Stage 6.4: COMPLETE LOCALLY; Stage 6.5 NOT STARTED.
+
+==================================================
+ATHAR — PHASE 6 / STAGE 6.4 CONTRACT
+==================================================
+
+Baseline: `2851f06308c82c6eeeb25f12154f92fd82a7ac00`
+
+Stage 6.4: Guest-to-Account Commerce Reconciliation
+
+Goal contract:
+
+- Merge guest Cart and Wishlist into the authenticated public `userId` owner
+  after registration or Credentials sign-in.
+- Cart identity is `productSlug + variantId`; quantities are additive and cap
+  at 12 while canonical prices and availability are re-resolved server-side.
+- Wishlist is a deduplicated product-slug union with stale-item reconciliation.
+- Merge is server-only, CAS-safe, retry-safe, idempotent, and clears guest
+  state only after complete success; failures preserve guest data.
+
+Out of scope: orders, addresses, password reset, Brevo, Checkout, Payments,
+and Stage 6.5+.
+
+Closure evidence: pure reconciliation, dedicated Mongo `athar_stage55_test`,
+concurrency/retry idempotency, authenticated `/cart` and `/wishlist` owner
+resolution, and existing-account Browser E2E (merge, sign-out/sign-in repeat,
+no duplication) passed. Clean baseline and Stage-6.4-only production builds
+passed. The current-tree build remains blocked by the preserved Owner
+Header/Wishlist dynamic-cookie change outside Stage 6.4.

@@ -50,3 +50,10 @@ Stage 5.6 closes Phase 5 locally through an integrated commerce flow: Cart multi
 No automated test connects to a production Atlas database. When an owner-provided development/test URI is available, a future non-destructive connectivity check may call the server connection layer and read server metadata only. It must not reset, seed, or delete an arbitrary database.
 
 Required future evidence includes responsive visual checks, keyboard navigation, screen-reader semantics, validation failures, authorization checks, payment webhook idempotency, and checkout/order concurrency scenarios.
+
+Stage 6.4 verification adds pure reconciliation, real Mongo concurrency/retry
+coverage, and an existing-account Browser E2E: guest Cart/Wishlist merge into
+the authenticated user owner, `/cart` and `/wishlist` authenticated reads,
+sign-out/sign-in repeat idempotency, and guest cleanup. The current-tree build
+blocker is the preserved Owner Header/Wishlist dynamic-cookie change, not a
+Stage 6.4 failure.

@@ -70,3 +70,10 @@ Brand records classify catalog membership only. They do not establish authorizat
 ## Discovery reads
 
 Stage 3.5 uses one server-side allow-listed discovery query. It filters only active public records and applies bounded literal search over public Product/Brand fields before mapping to the existing public product card DTO. URL values never become Mongo operators or regular expressions. The current bounded public listing makes price-range UI and pagination unnecessary; future scale can evaluate indexed repository filters or Atlas Search only after live requirements are verified.
+
+## Stage 6.4 commerce reconciliation
+
+Dedicated `athar_stage55_test` verification proved durable user-owned Cart and
+Wishlist merge, canonical re-resolution, quantity cap 12, retry/concurrency
+idempotency, and guest-state zeroing after success. No live production Atlas
+database was used.

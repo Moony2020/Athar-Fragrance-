@@ -43,6 +43,7 @@ export async function ensureCommerceIndexes(): Promise<void> {
       { key: { ownerType: 1, ownerId: 1 }, name: "wishlist_owner_unique", unique: true },
       { key: { expiresAt: 1 }, name: "wishlist_expiry_ttl", expireAfterSeconds: 0 },
     ]),
+    (async () => { const merges = database.collection(databaseCollections.commerceMerges); await merges.dropIndex("commerce_merge_pair_unique").catch(() => undefined); return merges.createIndex({ userId: 1, guestId: 1, kind: 1 }, { name: "commerce_merge_pair_kind_unique", unique: true }); })(),
   ]);
 }
 
@@ -56,4 +57,9 @@ export async function ensureIdentityIndexes(): Promise<void> {
     ]),
     database.collection<UserCredentialDocument>(databaseCollections.userCredentials).createIndex({ userId: 1 }, { name: "credentials_user_unique", unique: true }),
   ]);
+}
+
+export async function ensureCommerceMergeIndexes(): Promise<void> {
+  const database = await getDatabase();
+  await database.collection(databaseCollections.commerceMerges).createIndex({ userId: 1, guestId: 1 }, { name: "commerce_merge_pair_unique", unique: true });
 }

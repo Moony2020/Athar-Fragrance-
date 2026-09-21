@@ -259,3 +259,20 @@ The records below preserve earlier-stage evidence. Statements such as “has not
   during `/_not-found` prerender; this external Owner blocker does not prevent
   Stage 6.3 closure.
 - **STAGE 6.3 COMPLETE — CUSTOMER ACCOUNT SHELL & PROFILE.**
+
+## Stage 6.4 status
+
+- Baseline: `2851f06308c82c6eeeb25f12154f92fd82a7ac00`.
+- Server-only reconciliation now targets the authenticated public `userId`
+  owner. Cart merges by `productSlug + variantId`, caps each line at 12, and
+  re-resolves canonical availability; Wishlist merges a deduplicated union.
+- A durable merge marker prevents repeated callbacks from duplicating state;
+  guest records are cleared only after both merge and reconciliation succeed.
+- Pure reconciliation, real Mongo, and Browser E2E registration verification
+  pass against `athar_stage55_test`; existing-account Browser E2E proves
+  authenticated Cart/Wishlist owner resolution, merge cleanup, and repeated
+  sign-in idempotency. TypeScript and ESLint pass. **STAGE 6.4 COMPLETE —
+  GUEST-TO-ACCOUNT COMMERCE RECONCILIATION.** Clean baseline and
+  Stage-6.4-only production builds pass; only the current-tree build is blocked
+  at `/_not-found` by the preserved Owner Header/Wishlist dynamic-cookie
+  change, outside Stage 6.4. Stage 6.5 has not started.

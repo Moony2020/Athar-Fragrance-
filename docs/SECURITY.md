@@ -21,6 +21,10 @@ There is no authentication, payment handling, public API, or configured live dat
 - Stage 5.3 Cart reads never reveal raw Cart storage or cookie values. Public Cart lines are re-resolved from canonical public catalog data; stale/unavailable lines have no payable price or subtotal and may only be removed by the same opaque guest identity. Update/remove actions validate canonical Product slug, public Variant ID, and bounded quantity; Header count receives only a safe aggregate quantity.
 - Stage 5.4 Wishlist entries are Product-level canonical slugs only. The `athar_guest_wishlist` cookie is opaque, httpOnly, SameSite=Lax, Path=/, and Secure in production; no price, inventory, account identity, or client-owned Wishlist payload is stored. Every mutation revalidates public Product eligibility server-side.
 - Stage 5.5 durable records use an opaque `CommerceOwner` (`guest | user`) and never accept owner identity from browser mutation input. Mongo `_id`, email, prices, inventory, Product copy, and subtotal are not persisted as commerce authority. Unique owner indexes, strict Zod read/write validation, optimistic revisions, TTL expiry, and production no-memory-fallback behavior were verified against dedicated non-production `athar_stage55_test`; no production database was used.
+- Stage 6.4 derives authenticated commerce ownership only from the server-side
+  Auth.js public `userId` session claim. Guest cookies cannot select an account;
+  merge retries/concurrency are idempotent and guest state is cleared only
+  after successful canonical reconciliation.
 
 ## Future baseline
 

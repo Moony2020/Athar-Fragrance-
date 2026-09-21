@@ -34,7 +34,7 @@ Each phase has a goal contract, implementation ledger, evidence, documentation, 
 | 6.1 | Customer Identity & Account Foundation | Complete locally |
 | 6.2 | Auth.js Credentials Runtime + Email/Password Registration & Sign-In | Complete locally |
 | 6.3 | Customer Account Shell & Profile | Complete locally |
-| 6.4 | Guest-to-Account Commerce Reconciliation | Not started |
+| 6.4 | Guest-to-Account Commerce Reconciliation | Complete locally |
 | 6.5 | Account Security & Password Recovery | Not started |
 | 6.6 | Phase 6 Integration & Closure | Not started |
 
@@ -50,7 +50,8 @@ Each phase has a goal contract, implementation ledger, evidence, documentation, 
 - Password reset is required in a later stage.
 - Future order confirmation emails must use Brevo.
 - Stage 6.1 baseline: `1cc405bf77e44777cae20b1e2998bfbdf5366bcd`.
-- Guest-to-account commerce merge is contract-only and not implemented.
+- Guest-to-account commerce merge is implemented server-side with canonical
+  re-resolution, CAS-safe idempotency, and post-success guest-state clearing.
 - Stage 6.2 uses Auth.js Credentials only with Argon2id password hashing.
 - Credentials persist separately from canonical User records; sessions carry
   only the public opaque `userId`.
@@ -61,6 +62,15 @@ Each phase has a goal contract, implementation ledger, evidence, documentation, 
 - Stage 6.3 closure evidence: Stage-6.3-only production build passed. The
   current-tree build blocker is a preserved Owner Header/Wishlist change and
   is outside this stage.
+- Stage 6.4 merges guest Cart/Wishlist into the authenticated public `userId`
+  owner with canonical re-resolution, CAS-safe idempotency, and post-success
+  guest-state clearing only.
+- Stage 6.4 closure evidence: pure/domain and dedicated Mongo tests pass;
+  existing-account Browser E2E proves merge, authenticated owner reads,
+  sign-out/sign-in repeat idempotency, and guest-state cleanup. Clean baseline
+  and Stage-6.4-only production builds pass; only the current tree is blocked
+  at `/_not-found` by the preserved Owner Header/Wishlist dynamic-cookie
+  change outside this stage. Stage 6.5 is not started.
 
 ## Permanent domain invariants
 
