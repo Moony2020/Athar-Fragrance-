@@ -8,18 +8,20 @@ import { removeCartLine, updateCartLineQuantity } from "@/commerce/domain";
 import { CommerceError, quantitySchema, publicVariantIdSchema } from "@/commerce/contracts";
 import { slugSchema } from "@/server/catalog/schemas";
 import { resolvePublicCommerceProduct } from "@/server/commerce/services";
-import { getEphemeralGuestCartStore } from "@/server/commerce/store";
+import { getGuestCartStore } from "@/server/commerce/store";
 
 export type { GuestCartMutationResult, GuestCartReadResult } from "@/commerce/guest-cart-service";
 
-const defaultService = createGuestCartService(getEphemeralGuestCartStore(), resolvePublicCommerceProduct);
+function getService() {
+  return createGuestCartService(getGuestCartStore(), resolvePublicCommerceProduct);
+}
 
 export function addToGuestCart(guestId: string, input: CartLineInput | unknown) {
-  return defaultService.add(guestId, input);
+  return getService().add(guestId, input);
 }
 
 export function readGuestCart(guestId: string) {
-  return defaultService.read(guestId);
+  return getService().read(guestId);
 }
 
 function mutationFailure(error: unknown) {
@@ -35,7 +37,7 @@ export async function updateGuestCartLine(guestId: string, rawInput: unknown) {
   const productSlug = slugSchema.safeParse(typeof rawInput === "object" && rawInput ? (rawInput as { productSlug?: unknown }).productSlug : undefined);
   const quantity = quantitySchema.safeParse(typeof rawInput === "object" && rawInput ? (rawInput as { quantity?: unknown }).quantity : undefined);
   if (!input.success || !productSlug.success || !quantity.success) return { ok: false as const, code: "INVALID_CART_INPUT", message: "Please choose an available size and quantity." };
-  const store = getEphemeralGuestCartStore();
+  const store = getGuestCartStore();
   if (!store) return { ok: false as const, code: "CART_UNAVAILABLE", message: "Bag service is temporarily unavailable." };
   try {
     const cart = await store.mutate(guestId, (current) => updateCartLineQuantity(current, { productSlug: productSlug.data, variantId: input.data }, quantity.data, resolvePublicCommerceProduct));
@@ -47,7 +49,7 @@ export async function removeGuestCartLine(guestId: string, rawInput: unknown) {
   const input = publicVariantIdSchema.safeParse(typeof rawInput === "object" && rawInput ? (rawInput as { variantId?: unknown }).variantId : undefined);
   const productSlug = slugSchema.safeParse(typeof rawInput === "object" && rawInput ? (rawInput as { productSlug?: unknown }).productSlug : undefined);
   if (!input.success || !productSlug.success) return { ok: false as const, code: "INVALID_CART_INPUT", message: "This bag item is invalid." };
-  const store = getEphemeralGuestCartStore();
+  const store = getGuestCartStore();
   if (!store) return { ok: false as const, code: "CART_UNAVAILABLE", message: "Bag service is temporarily unavailable." };
   try {
     const cart = await store.mutate(guestId, async (current) => removeCartLine(current, { productSlug: productSlug.data, variantId: input.data }));

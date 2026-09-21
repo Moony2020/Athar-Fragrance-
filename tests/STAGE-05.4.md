@@ -45,4 +45,4 @@ The focused end-to-end flow passed 3 consecutive times without `revalidatePath`:
 
 ## Scope boundaries
 
-This stage does not add durable production persistence, live Atlas verification, account Wishlist merging, ProductCard Add-to-Bag behavior, Checkout, Payment, Order, or Stage 5.5.
+This stage did not add durable production persistence, live Atlas verification, account Wishlist merging, ProductCard Add-to-Bag behavior, Checkout, Payment, or Order. Stage 5.5 is now a separate in-progress persistence gate.

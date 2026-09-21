@@ -10,6 +10,7 @@ import { guestWishlistCookieName, guestWishlistIdPattern, readGuestWishlistId } 
 
 const guestCartCookieName = "athar_guest_cart";
 const guestCartIdPattern = /^[A-Za-z0-9_-]{32,128}$/;
+const guestCommerceCookieMaxAge = 30 * 24 * 60 * 60;
 
 function createGuestCartId() {
   return randomBytes(32).toString("base64url");
@@ -22,7 +23,7 @@ export async function addToGuestCartAction(input: unknown): Promise<GuestCartMut
   const guestId = existing && guestCartIdPattern.test(existing) ? existing : createGuestCartId();
   const result = await addToGuestCart(guestId, input);
   if (result.ok && guestId !== existing) {
-    cookieStore.set({ name: guestCartCookieName, value: guestId, httpOnly: true, sameSite: "lax", secure: process.env.NODE_ENV === "production", path: "/" });
+    cookieStore.set({ name: guestCartCookieName, value: guestId, httpOnly: true, sameSite: "lax", secure: process.env.NODE_ENV === "production", maxAge: guestCommerceCookieMaxAge, path: "/" });
   }
   if (result.ok) refresh();
   return result;
@@ -47,6 +48,6 @@ export async function removeGuestCartLineAction(input: unknown) {
 export async function toggleGuestWishlistAction(input: unknown) {
   const cookieStore = await cookies(); const existing = await readGuestWishlistId(); const guestId = existing ?? createGuestCartId();
   const result = await toggleGuestWishlist(guestId, input);
-  if (result.ok && !existing && guestWishlistIdPattern.test(guestId)) cookieStore.set({ name: guestWishlistCookieName, value: guestId, httpOnly: true, sameSite: "lax", secure: process.env.NODE_ENV === "production", path: "/" });
+  if (result.ok && !existing && guestWishlistIdPattern.test(guestId)) cookieStore.set({ name: guestWishlistCookieName, value: guestId, httpOnly: true, sameSite: "lax", secure: process.env.NODE_ENV === "production", maxAge: guestCommerceCookieMaxAge, path: "/" });
   if (result.ok) refresh(); return result;
 }

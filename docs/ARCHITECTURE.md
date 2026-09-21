@@ -30,6 +30,8 @@ Stage 5.3 adds `/cart` as a server-first utility route. A Suspense-bounded serve
 
 Stage 5.4 adds a Product-level guest Wishlist boundary. A validated Wishlist Server Action uses an opaque httpOnly guest identifier and canonical public Product resolution; the `/wishlist` route re-reads server state and is explicitly `instant = false` because its session cookie is request-time data. Client hearts only mirror the narrow action result and dispatch a local synchronization event; they do not own Wishlist truth.
 
+Stage 5.5 keeps the two existing guest cookies and introduces an account-ready `CommerceOwner` (`guest | user`) contract without implementing Auth. Mongo Cart/Wishlist documents are identity-only durable records selected explicitly by `ATHAR_COMMERCE_PERSISTENCE=mongo`; Mongo `_id`, prices, inventory, Product copy, and account email never cross the public boundary. Optimistic revision updates serialize concurrent same-owner writes across instances, while TTL expiry is refreshed on mutation. Production has no process-memory fallback.
+
 ## Planned integrations
 
 - Auth.js for customer authentication.

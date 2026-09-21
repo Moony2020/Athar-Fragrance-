@@ -4,6 +4,7 @@ import type { GuestCartStore } from "@/commerce/guest-cart-service";
 import type { CartState } from "@/commerce/contracts";
 import type { WishlistState } from "@/commerce/contracts";
 import type { GuestWishlistStore } from "@/commerce/guest-wishlist-service";
+import { MongoGuestCartStore, MongoGuestWishlistStore } from "@/server/commerce/mongo-store";
 
 export type { GuestCartStore } from "@/commerce/guest-cart-service";
 
@@ -47,6 +48,22 @@ export function getEphemeralGuestCartStore(): GuestCartStore | null {
   return globalStore.atharEphemeralGuestCartStore;
 }
 
+function durableCommerceEnabled(): boolean {
+  return process.env.ATHAR_COMMERCE_PERSISTENCE === "mongo" && Boolean(process.env.MONGODB_URI && process.env.MONGODB_DB_NAME);
+}
+
+const durableGlobal = globalThis as typeof globalThis & {
+  atharMongoGuestCartStore?: MongoGuestCartStore;
+  atharMongoGuestWishlistStore?: MongoGuestWishlistStore;
+};
+
+/** Explicit Mongo selection. Production never falls back to process memory. */
+export function getGuestCartStore(): GuestCartStore | null {
+  if (!durableCommerceEnabled()) return process.env.NODE_ENV === "production" ? null : getEphemeralGuestCartStore();
+  durableGlobal.atharMongoGuestCartStore ??= new MongoGuestCartStore();
+  return durableGlobal.atharMongoGuestCartStore;
+}
+
 /** Internal test helper only; it is never exposed through a route or action. */
 export function resetEphemeralGuestCartStoreForTests() {
   globalStore.atharEphemeralGuestCartStore?.resetForTests();
@@ -60,5 +77,8 @@ class EphemeralGuestWishlistStore implements GuestWishlistStore {
 const wishlistGlobal = globalThis as typeof globalThis & { atharEphemeralGuestWishlistStore?: EphemeralGuestWishlistStore };
 export function getEphemeralGuestWishlistStore(): GuestWishlistStore | null { if (process.env.NODE_ENV === "production") return null; wishlistGlobal.atharEphemeralGuestWishlistStore ??= new EphemeralGuestWishlistStore(); return wishlistGlobal.atharEphemeralGuestWishlistStore; }
 
-
-// TEMP Stage 5.4 removal diagnostic; remove after the boundary is classified.
+export function getGuestWishlistStore(): GuestWishlistStore | null {
+  if (!durableCommerceEnabled()) return process.env.NODE_ENV === "production" ? null : getEphemeralGuestWishlistStore();
+  durableGlobal.atharMongoGuestWishlistStore ??= new MongoGuestWishlistStore();
+  return durableGlobal.atharMongoGuestWishlistStore;
+}

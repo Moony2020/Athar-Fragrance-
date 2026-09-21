@@ -1,14 +1,14 @@
 # ATHAR Project Status
 
 **Last audited:** 2026-09-21
-**Current phase:** Phase 5 — Cart & Wishlist, Stage 5.4 complete
-**Overall status:** **STAGE 5.4 COMPLETE — REAL GUEST WISHLIST ACTIVATED LOCALLY.**
+**Current phase:** Phase 5 — Cart & Wishlist, Stage 5.5 complete
+**Overall status:** **STAGE 5.5 COMPLETE — DURABLE GUEST COMMERCE PERSISTENCE VERIFIED LOCALLY.**
 
 ## Current project state
 
 - ATHAR is a Next.js 16.3 App Router application with a server-first Phase 3 catalog and a locally complete Phase 4 Product Detail flow.
 - Stage 5.1 provides the Cart/Wishlist domain foundation. Stages 5.2–5.3 provide PDP Add-to-bag, `/cart`, line management, current-price subtotals, and a safe Header count through an ephemeral development/test guest Cart. Stage 5.4 activates a Product-level guest Wishlist across PDP, Gallery, Shop, Header, and `/wishlist`.
-- Durable production Cart/Wishlist persistence, Checkout, payment, Orders, inventory reservation, and live Atlas Cart/Wishlist verification are not implemented or verified.
+- Durable Cart/Wishlist adapters are verified against the dedicated non-production Mongo database `athar_stage55_test` behind explicit Mongo selection. Checkout, payment, Orders, inventory reservation, and Auth remain outside scope.
 - The original static prototype and local assets are preserved as historical visual reference material; they are not the current application architecture.
 
 ### Stage 4.3 closure boundary (2026-09-20)
@@ -64,7 +64,15 @@
 - PDP, Gallery, Shop/ProductCard, and `/wishlist` share an opaque httpOnly guest Wishlist cookie and canonical Product-level Server Action. Client hearts mirror action results and synchronize across surfaces without owning Wishlist truth.
 - `/wishlist` is intentionally request-time and declares `instant = false` for the Next.js 16 Cache Components contract. Removal uses `router.refresh()` plus a fresh server read; the control gate passed 3/3 without `revalidatePath`.
 - Focused flow, five responsive hit-target sizes, full fixture regression (66 passed / 8 skipped), production isolation (42 passed / 32 skipped), typecheck, lint, dry-run seed, production build, Agent Browser flow, and Axe (0 violations / 0 incomplete) are green locally.
-- Durable/live Atlas Wishlist reads and writes, account merging, and Stage 5.5 remain explicitly unstarted.
+- Durable/live Atlas Wishlist reads and writes and account merging remain outside Stage 5.4; Stage 5.5 now owns the persistence work.
+
+### Stage 5.5 Durable persistence boundary (complete locally)
+
+- Added `CommerceOwner` (`guest | user`) and Mongo-backed Cart/Wishlist stores while preserving every existing Cart/Wishlist UI surface and server-authoritative catalog validation.
+- Durable records persist only canonical identity/quantity (Cart) or Product slugs (Wishlist), owner identity, revision, timestamps, and 30-day expiry. Unique owner and TTL indexes are explicit through `ensureCommerceIndexes()`.
+- Mongo selection is explicit via `ATHAR_COMMERCE_PERSISTENCE=mongo`; production has no memory fallback. Existing independent guest cookies remain unchanged and now receive a 30-day lifetime when issued.
+- Parser tests, TypeScript, ESLint, Mongo Cart/Wishlist CRUD, guest isolation, CAS/revision concurrency, max quantity 12 concurrency, TTL expiry/replacement, server-authoritative reconciliation, controlled failure handling, and separate-process restart persistence are green against `athar_stage55_test`.
+- Commerce unique-owner and TTL indexes are present; full fixture Playwright passes 66/66 executed (8 skipped), production isolation passes 42/42 (32 skipped), production build passes, Agent Browser/Axe reports 0 violations and 0 incomplete, seed dry-run and `git diff --check` pass. Stage 5.6 has not started.
 
 ## Historical Phase 0 baseline
 

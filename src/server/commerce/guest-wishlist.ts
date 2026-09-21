@@ -1,7 +1,7 @@
 import "server-only";
 import { createGuestWishlistService } from "@/commerce/guest-wishlist-service";
 import { resolvePublicCommerceProduct } from "@/server/commerce/services";
-import { getEphemeralGuestWishlistStore } from "@/server/commerce/store";
-const service = createGuestWishlistService(getEphemeralGuestWishlistStore(), resolvePublicCommerceProduct);
-export const readGuestWishlist = (guestId: string) => service.read(guestId);
-export const toggleGuestWishlist = (guestId: string, input: unknown) => service.toggle(guestId, input);
+import { getGuestWishlistStore } from "@/server/commerce/store";
+function getService() { return createGuestWishlistService(getGuestWishlistStore(), resolvePublicCommerceProduct); }
+export const readGuestWishlist = (guestId: string) => getService().read(guestId);
+export const toggleGuestWishlist = (guestId: string, input: unknown) => getService().toggle(guestId, input);

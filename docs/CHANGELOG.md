@@ -6,6 +6,18 @@
 - Added request-time Wishlist rendering (`instant = false`), cross-surface synchronization, removal-to-empty behavior, responsive hit-target coverage, and Axe/Agent Browser verification.
 - Durable/live Atlas Wishlist persistence remains unimplemented and unverified; no Stage 5.5 work started.
 
+## 2026-09-21 — Phase 5 / Stage 5.5 Durable persistence foundation
+
+- Added account-ready `CommerceOwner` contracts, Mongo Cart/Wishlist document mappings, explicit durable adapter selection, owner/TTL indexes, optimistic revisions, and 30-day guest cookie lifetime.
+- Preserved the existing Cart/Wishlist UI and server-authoritative catalog validation; production never falls back to process memory.
+- Live Atlas connectivity, writes, indexes, and restart persistence remain pending; Auth, Checkout, and Stage 5.6 were not started.
+
+## 2026-09-21 — Phase 5 / Stage 5.5 Durable persistence verification
+
+- Fixed strict durable Cart/Wishlist document parsing to allow only the legal Mongo `_id` and typed `state` fields while rejecting unexpected top-level data and malformed state.
+- Verified the dedicated non-production `athar_stage55_test` database for Cart/Wishlist CRUD, guest isolation, CAS/revision and max-quantity concurrency, TTL expiry/replacement, server-authoritative reconciliation, controlled failure handling, indexes, and separate-process restart persistence.
+- Full fixture regression passed 66/66 executed (8 skipped), production isolation 42/42 (32 skipped), production build, TypeScript, ESLint, seed dry-run, Agent Browser, Axe, and diff checks passed. Auth, Checkout, and Stage 5.6 remain unstarted.
+
 ## 2026-09-20 — Phase 5 / Stage 5.3 Cart Page, Line Management & Header Count
 
 - Added server-first `/cart`, current-catalog Cart presentation DTO, safe stale/unavailable reconciliation, canonical quantity update/remove Server Actions, valid-line subtotal, and restrained empty state.

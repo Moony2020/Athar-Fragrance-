@@ -2,7 +2,7 @@ import "server-only";
 
 import { readGuestCartId } from "@/server/commerce/guest-cookie";
 import { getProductDetailData } from "@/server/catalog/services";
-import { getEphemeralGuestCartStore } from "@/server/commerce/store";
+import { getGuestCartStore } from "@/server/commerce/store";
 
 export type PublicCartLine = {
   productSlug: string;
@@ -42,7 +42,7 @@ function staleLine(productSlug: string, variantId: string, quantity: number, ava
 /** Reads only stored identity/quantity, then derives all public Cart values from the current catalog. */
 export async function readCurrentGuestCart(): Promise<PublicCart> {
   const guestId = await readGuestCartId();
-  const store = getEphemeralGuestCartStore();
+  const store = getGuestCartStore();
   if (!guestId) return { availability: "available", lines: [], subtotalMinor: 0, currency: null, totalQuantity: 0 };
   if (!store) return { availability: "unavailable", lines: [], subtotalMinor: 0, currency: null, totalQuantity: 0 };
   const state = await store.read(guestId);

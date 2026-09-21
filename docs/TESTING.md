@@ -41,6 +41,8 @@ Stage 5.3 adds Cart page coverage for empty state, PDP-to-Header-to-Cart continu
 
 Stage 5.4 adds a real guest Wishlist flow: PDP/Gallery synchronization, Shop save, `/wishlist` server read, normal removal, immediate empty state, and fresh-navigation empty state. The focused flow passed 3 consecutive runs with no `revalidatePath` dependency; responsive hit-target checks passed at 360/430/768/1280/1600px. Full fixture regression passed 66/66 executed tests (8 skipped), production isolation passed 42/42 (32 skipped), and Axe reported 0 violations / 0 incomplete. Live Atlas and durable persistence are not covered.
 
+Stage 5.5 is closed locally against the dedicated non-production `athar_stage55_test` database. Parser/owner tests pass 7/7; commerce domain/service tests pass 17/17; Mongo control covers Cart/Wishlist write-read-parse, guest isolation, CAS/revision and max-quantity-12 concurrency, TTL expiry/replacement, server-authoritative price/stale reconciliation, controlled failure handling, and separate-process restart persistence. Commerce indexes are verified. Full fixture Playwright passes 66/66 executed (8 skipped), production isolation passes 42/42 (32 skipped), TypeScript, ESLint, production Turbopack build, catalog seed dry-run, Agent Browser, Axe (0 violations / 0 incomplete), and `git diff --check` pass.
+
 ## Atlas integration testing
 
 No automated test connects to a production Atlas database. When an owner-provided development/test URI is available, a future non-destructive connectivity check may call the server connection layer and read server metadata only. It must not reset, seed, or delete an arbitrary database.

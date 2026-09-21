@@ -31,6 +31,16 @@ Media stores provider references only: URL, optional provider public ID, alt tex
 
 The current layer has no seed script and performs no writes without an explicit repository create call. Test data uses fictional ATHAR records only.
 
+## Stage 5.5 commerce persistence (complete locally)
+
+The durable commerce adapter uses the existing official MongoDB Node driver and connection reuse. It adds two small collections, `carts` and `wishlists`, without embedding commerce state in Product documents.
+
+Cart records contain `ownerType`, opaque `ownerId`, canonical `lines` (`productSlug`, `publicVariantId`, `quantity`), `revision`, `createdAt`, `updatedAt`, and `expiresAt`. Wishlist records contain the same owner/timestamp/revision fields plus Product `productSlugs`. Current Product/Variant price, availability, inventory, copy, media, subtotal, and Mongo `_id` are deliberately not persisted as public truth.
+
+`ensureCommerceIndexes()` is an explicit deployment operation. It creates unique `(ownerType, ownerId)` indexes and TTL indexes on `expiresAt` for both collections. The inactivity expiry policy is 30 days and is refreshed on mutation. Reads validate stored records with the existing Zod contracts; malformed records fail safely rather than crossing the public boundary.
+
+`ATHAR_COMMERCE_PERSISTENCE=mongo` selects the durable adapter. Development/test otherwise retain the deterministic ephemeral store; production returns an unavailable result when durable selection/configuration is absent and never uses memory fallback. The adapter was verified against the dedicated non-production `athar_stage55_test` database for CRUD, isolation, CAS concurrency, TTL expiry/replacement, and restart persistence. No production database was used.
+
 ## Development catalog bootstrap
 
 Stage 3.2 adds a controlled development-only seed pipeline under `src/server/catalog/seed/`. `developmentCatalogSeed` contains fictional ATHAR-only records, never the homepage prototype brands, products, imagery, or prices. Its human-readable references use fixture keys such as `athar-atelier` and `test-unisex`; execution resolves them to the canonical MongoDB IDs created or found for that run.
