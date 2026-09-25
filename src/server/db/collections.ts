@@ -8,6 +8,7 @@ export const databaseCollections = {
   wishlists: "wishlists",
   users: "users",
   userCredentials: "user_credentials",
+  passwordResetTokens: "password_reset_tokens",
   commerceMerges: "commerce_merges",
 } as const;
 

@@ -1,8 +1,55 @@
 # ATHAR Project Status
 
-**Last audited:** 2026-09-21
+**Last audited:** 2026-09-25
 **Current phase:** Phase 6 — Authentication and Customer Account
-**Overall status:** **PHASE 5 COMPLETE — CART + WISHLIST + DURABLE GUEST PERSISTENCE VERIFIED.**
+**Overall status:** **PHASE 5 COMPLETE; PHASE 6 IN PROGRESS — STAGE 6.5 COMPLETE LOCALLY; STAGE 6.6 NOT STARTED.**
+
+## Stage 6.5 current status
+
+Stage 6.5 is **COMPLETE LOCALLY — ACCOUNT SECURITY & PASSWORD RECOVERY** from baseline
+`87b9993d9d0a6bb76d6eb88b3909f90591750ff0`. Added forgot/reset interfaces,
+generic forgot responses, a server-only Brevo mail adapter, hash-only expiring
+reset-token persistence, unique/TTL index contract, transactional password
+update/token consumption, and Auth.js session invalidation using a private
+credential security version. A secret-protected, non-production-only in-memory
+test-mail adapter supports reset-link capture; production always selects Brevo.
+The live Stage 6.5 Mongo integration passed 5/5, including index verification,
+concurrent one-time token use, credential update, security-version increment,
+and fixture cleanup. Earlier TLS failures followed a switch from mobile hotspot
+to hotel Wi-Fi while the active IP was absent from Atlas IP Access List. After
+addressing the active network IP, the owner reported two consecutive
+`MONGO_PING: PASS` results on hotel Wi-Fi. The final Browser E2E passed the
+protected test-mail reset flow, old-password rejection/new-password acceptance,
+prior-session invalidation, reused-token rejection, and generic unknown/disabled
+account behavior. The confirmed cause of earlier missing mail was a route input
+shape mismatch; it is fixed and covered by a focused regression. The post-E2E
+cleanup audit found zero disposable Stage 6.5 users, credentials, or reset
+tokens in the dedicated test DB.
+No live Brevo email was sent. Isolated build attribution passes
+for clean baseline `87b9993` and baseline + Stage-6.5-only; current-tree build
+fails at `/_not-found` because preserved Owner Header/Wishlist code reads the
+cookie-backed current wishlist outside Suspense. Brevo delivery is not verified
+and does not block closure by itself. Prior-stage focused regression passed
+36 domain/auth tests passed with one live transaction case skipped from that
+batch and run separately; Stage 6.5 focused tests passed 8/8, and live Mongo
+regressions for Stages 6.1, 6.2, and 6.4 each passed. Clean baseline and
+Stage-6.5-only production builds passed after the route fix. Full TypeScript and
+full ESLint passed; ESLint retains one warning in `SignInForm.tsx`. Current-tree
+build remains attributed to preserved Owner Header/Wishlist runtime access,
+outside Stage 6.5. Live Brevo delivery is **NOT YET VERIFIED** and is not a
+closure blocker. Stage 6.6 has not started. No commit or push was made.
+
+Historical TLS path isolation: explicit SNI and no-SNI Node TLS probes failed identically
+for all three Atlas hosts under TLS 1.2 and TLS 1.3 before any peer
+certificate arrives. Node is v24.19.0 with OpenSSL 3.5.7; the MongoDB Node
+driver is 7.6.0 and its ping fails with the same alert. `mongosh` and OpenSSL
+CLI are absent. No proxy environment variables, WinINET/WinHTTP proxy, VPN, or
+custom CA override were detected; Defender status could not be read. Atlas
+control-plane MCP access is disabled for the organization, so Atlas state was
+not independently inspected. The owner supplied a screen showing the active
+network IP was not listed and only `84.219.76.1/32` active. The owner later
+reported two successful pings after switching to hotel Wi-Fi and addressing
+the IP Access List. No URI or TLS settings were changed.
 
 ## Stage 6.1 planning boundary
 
@@ -12,9 +59,9 @@ The approved decisions are email/password only, Auth.js
 with future Credentials, no OAuth/social login, no Clerk, Brevo for future
 transactional email, no required email verification, and password reset later.
 The public opaque User ID, normalized unique email, strict User repository/index/
-parser boundary, and `CommerceOwner` user identity contract are required. Guest
-to account merge is contract-only and not implemented. Stage 6.2 and all later
-Phase 6 stages are not started.
+parser boundary, and `CommerceOwner` user identity contract were established.
+This is a historical Stage 6.1 closure record; later stage status is recorded
+in the current Stage 6.5 section above.
 
 The Stage 6.1 baseline is `1cc405bf77e44777cae20b1e2998bfbdf5366bcd`. Local
 domain/parser/service tests, real Mongo CRUD/index/concurrency checks,
@@ -23,14 +70,14 @@ TypeScript, full ESLint, production build, and `git diff --check` pass. Stage
 
 ## Stage 6.2 implementation boundary
 
-Stage 6.2 is complete locally from baseline
+Stage 6.2 closed locally from baseline
 `2a2706429d0ad5231edf903c4d9aff8fdec85df5`. Auth.js Credentials runtime,
 email/password registration, sign-in, sign-out handlers, Argon2id hashing,
 separate `user_credentials` persistence, disabled-user rejection, generic
 duplicate-email errors, and public-`userId` JWT sessions are in scope. OAuth,
 Clerk, magic links, email verification, password reset, Brevo sending,
-guest-to-account merge, and Stage 6.3 remain out of scope. Live production
-Atlas Auth persistence is not verified.
+guest-to-account merge, and Stage 6.3 were outside that stage's scope. Live
+production Atlas Auth persistence was not verified at that closure.
 
 ## Current project state
 
@@ -275,4 +322,5 @@ The records below preserve earlier-stage evidence. Statements such as “has not
   GUEST-TO-ACCOUNT COMMERCE RECONCILIATION.** Clean baseline and
   Stage-6.4-only production builds pass; only the current-tree build is blocked
   at `/_not-found` by the preserved Owner Header/Wishlist dynamic-cookie
-  change, outside Stage 6.4. Stage 6.5 has not started.
+  change, outside Stage 6.4. Stage 6.5 had not started at the time of that
+  checkpoint; its current status is listed at the top of this document.

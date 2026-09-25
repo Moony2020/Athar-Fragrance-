@@ -5,6 +5,7 @@ export type UserCredentialDocument = {
   userId: string;
   passwordHash: string;
   disabledAt: Date | null;
+  securityVersion: number;
   createdAt: Date;
   updatedAt: Date;
 };

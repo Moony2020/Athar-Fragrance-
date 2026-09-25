@@ -13,6 +13,8 @@ export const registrationInputSchema = z.object({
   password: z.string().min(15).max(128),
 }).strict();
 
+export const passwordSchema = z.string().min(15).max(128);
+
 export const userPublicSchema = z.object({
   userId: publicUserIdSchema,
   email: emailSchema,

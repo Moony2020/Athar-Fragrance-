@@ -1,5 +1,21 @@
 # Changelog
 
+## 2026-09-24 — Phase 6 / Stage 6.5 verification update
+
+- Fixed the reset page's Cache Components boundary by awaiting request-time
+  `searchParams` inside Suspense. Isolated builds pass for clean baseline
+  `87b9993` and baseline plus Stage-6.5 changes; current-tree build remains
+  blocked by the preserved Owner Header/Wishlist cookie-backed read outside
+  Suspense.
+- Live Stage 6.5 Mongo checks passed against `athar_stage55_test` (5/5). The
+  earlier TLS failure followed a switch from mobile hotspot to hotel Wi-Fi
+  while the active IP was not on Atlas IP Access List; the owner then reported
+  two consecutive successful pings on hotel Wi-Fi. Browser reset-flow E2E was
+  attempted but active-account forgot produced no captured test-mail message;
+  reset and session revocation remain unverified. Disposable fixtures were
+  confirmed cleaned. Brevo live delivery remains unverified; no live message
+  was sent.
+
 ## 2026-09-21 — Phase 5 / Stage 5.4 Guest Wishlist activation
 
 - Activated Product-level guest Wishlist continuity across PDP, Gallery, Shop cards, Header navigation, and `/wishlist` through an opaque httpOnly guest cookie and canonical public Product validation.
@@ -230,3 +246,18 @@ post-success guest cleanup against `athar_stage55_test`.
 - Added server-only guest Cart/Wishlist reconciliation for registration and
   Credentials sign-in, with canonical product resolution, quantity cap 12,
   wishlist union, CAS-backed stores, and durable idempotency markers.
+
+## Stage 6.5 — Account Security & Password Recovery (complete locally)
+
+- Added Forgot Password and Reset Password routes/forms with generic account
+  responses and server-side validation.
+- Added one-time 30-minute random reset tokens with hash-only Mongo persistence,
+  explicit unique/TTL indexes, and transactional password update/consumption.
+- Added the Brevo transactional email adapter and environment contract; live
+  provider delivery is not verified.
+- Added private credential security-version checks in Auth.js to reject old
+  sessions after password reset. Fixed the forgot-password route to pass the
+  validated email string to its service and added a regression test. The full
+  test-mail Browser E2E, session revocation, replay rejection, Mongo cleanup,
+  focused/prior regressions, TypeScript, ESLint, and Stage-6.5-only build pass.
+  Live Brevo delivery is not yet verified; Stage 6.6 has not started.

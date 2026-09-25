@@ -59,6 +59,16 @@ export async function ensureIdentityIndexes(): Promise<void> {
   ]);
 }
 
+/** Password recovery indexes are explicit, idempotent deployment work. */
+export async function ensurePasswordResetIndexes(): Promise<void> {
+  const database = await getDatabase();
+  await database.collection(databaseCollections.passwordResetTokens).createIndexes([
+    { key: { userId: 1 }, name: "password_reset_user_unique", unique: true },
+    { key: { tokenHash: 1 }, name: "password_reset_token_hash_unique", unique: true },
+    { key: { expiresAt: 1 }, name: "password_reset_expiry_ttl", expireAfterSeconds: 0 },
+  ]);
+}
+
 export async function ensureCommerceMergeIndexes(): Promise<void> {
   const database = await getDatabase();
   await database.collection(databaseCollections.commerceMerges).createIndex({ userId: 1, guestId: 1 }, { name: "commerce_merge_pair_unique", unique: true });

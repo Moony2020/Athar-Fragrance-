@@ -61,6 +61,17 @@ authenticated Cart/Wishlist reads and mutations use the public session
 never selects a user owner. Reconciliation is CAS-safe and idempotent, clearing
 guest state only after successful canonical merge.
 
+## Stage 6.5 password recovery
+
+Forgot/reset routes call server-only services. Reset tokens are 256-bit random
+values delivered only in Brevo transactional email; Mongo stores the SHA-256
+hash, public user ID, creation time, and expiry only. A Mongo transaction
+consumes the eligible token, updates the separate credential record, increments
+a private security version, and removes sibling reset tokens. Auth.js checks
+the version while processing JWTs, revoking old sessions without adding
+credential state to public User/session DTOs. The production mail adapter is
+never a mock.
+
 ## Migration principle
 
 The static prototype is visual reference material, not production architecture. Recreate approved design intent as accessible, componentized, responsive routes; do not copy CSS override layers forward.

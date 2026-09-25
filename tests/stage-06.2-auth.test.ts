@@ -35,13 +35,13 @@ test("registration cleanup removes a newly created User if credential creation f
 test("Credentials authorization returns only public user identity and rejects disabled users", async () => {
   const passwordHash = await hashPassword("Correct horse battery staple 42");
   const user = { userId: "u".repeat(43), normalizedEmail: "customer@example.com", createdAt: new Date(), updatedAt: new Date() };
-  const credential = { userId: user.userId, passwordHash, disabledAt: null, createdAt: new Date(), updatedAt: new Date() };
+  const credential = { userId: user.userId, passwordHash, disabledAt: null, securityVersion: 0, createdAt: new Date(), updatedAt: new Date() };
   const repositories = {
     users: { findByNormalizedEmail: async (email: string) => email === user.normalizedEmail ? user : null },
     credentials: { findByUserId: async () => credential },
   };
   const authorized = await authorizeCredentials(" Customer@Example.com ", "Correct horse battery staple 42", repositories);
-  assert.deepEqual(authorized, { id: user.userId, email: user.normalizedEmail });
+  assert.deepEqual(authorized, { id: user.userId, email: user.normalizedEmail, securityVersion: 0 });
   assert.equal("passwordHash" in (authorized ?? {}), false);
   assert.equal(await authorizeCredentials("customer@example.com", "wrong", repositories), null);
   credential.disabledAt = new Date();

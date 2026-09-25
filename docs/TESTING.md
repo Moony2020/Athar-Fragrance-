@@ -57,3 +57,16 @@ the authenticated user owner, `/cart` and `/wishlist` authenticated reads,
 sign-out/sign-in repeat idempotency, and guest cleanup. The current-tree build
 blocker is the preserved Owner Header/Wishlist dynamic-cookie change, not a
 Stage 6.4 failure.
+
+Stage 6.5 focused tests cover strict reset-token parsing, generic account
+responses, disabled accounts, token-hash-only persistence, expiry/replacement,
+password policy/Argon2id replacement, one-time/concurrent consumption, and
+session security-version invalidation. All 8 focused auth/Mongo tests passed
+against `athar_stage55_test`. Browser E2E passed the full protected test-mail
+flow, including password replacement, prior-session invalidation, replay
+rejection, and generic unknown/disabled responses. The request adapter has a
+regression test for passing the validated email string to the reset service.
+Post-run fixture audit found zero disposable users, credentials, and reset
+tokens. Live Brevo delivery is not claimed and is not required for Stage 6.5
+closure. Clean baseline and Stage-6.5-only production builds passed after the
+route fix; full TypeScript, full ESLint, and `git diff --check` passed.

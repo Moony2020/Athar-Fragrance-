@@ -2,7 +2,13 @@
 
 ## Current state
 
-There is no authentication, payment handling, public API, or configured live database connection. Stage 3.1 adds a server-only MongoDB contract; no credentials are present in source control.
+Auth.js Credentials and customer-account routes are implemented through Stage
+6.5 locally. Password-reset Mongo transaction/index tests and Browser reset,
+token-replay, generic-response, and session-revocation checks pass on the
+dedicated test database. Live Brevo delivery is not yet verified. No payment
+handling is active.
+Mongo access is server-only and live production credentials are not in source
+control.
 
 ## Catalog data boundary
 
@@ -34,3 +40,11 @@ There is no authentication, payment handling, public API, or configured live dat
 - Verify Stripe and PayPal webhook signatures; persist and deduplicate provider events.
 - Never persist raw card data.
 - Apply security headers, rate limits where appropriate, dependency review, and least-privilege access before production.
+
+Stage 6.5 password recovery stores only SHA-256 hashes of 256-bit random
+one-time tokens, expires them after 30 minutes, and atomically consumes them
+with a credential password update. Forgot responses are account-independent;
+reset tokens/URLs and provider credentials are never logged or returned. Brevo
+credentials are server-only. Password resets increment a private credential
+security version checked by Auth.js to invalidate prior JWT sessions; the
+version is not part of public DTO/session data.

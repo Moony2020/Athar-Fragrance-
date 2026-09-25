@@ -9,6 +9,7 @@ const userCredentialDocumentSchema = z.object({
   userId: publicUserIdSchema,
   passwordHash: z.string().trim().min(1).max(512),
   disabledAt: z.date().nullable(),
+  securityVersion: z.number().int().nonnegative().default(0),
   createdAt: z.date(),
   updatedAt: z.date(),
 }).strict();

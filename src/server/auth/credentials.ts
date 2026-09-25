@@ -17,5 +17,5 @@ export async function authorizeCredentials(
   if (!user) return null;
   const credential = await repositories.credentials.findByUserId(user.userId);
   if (!credential || credential.disabledAt || !(await verifyPassword(credential.passwordHash, password))) return null;
-  return { id: user.userId, email: user.normalizedEmail };
+  return { id: user.userId, email: user.normalizedEmail, securityVersion: credential.securityVersion };
 }

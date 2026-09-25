@@ -1193,3 +1193,62 @@ resolution, and existing-account Browser E2E (merge, sign-out/sign-in repeat,
 no duplication) passed. Clean baseline and Stage-6.4-only production builds
 passed. The current-tree build remains blocked by the preserved Owner
 Header/Wishlist dynamic-cookie change outside Stage 6.4.
+
+==================================================
+ATHAR — PHASE 6 / STAGE 6.5 CONTRACT
+==================================================
+
+Baseline: `87b9993d9d0a6bb76d6eb88b3909f90591750ff0`
+
+Stage 6.5: Account Security & Password Recovery
+
+Goal contract:
+
+- Add Forgot Password and Reset Password UI/routes using Auth.js, canonical
+  User identity, and separate `user_credentials` persistence.
+- Return account-independent forgot responses; only active users with active
+  credentials are eligible to receive a reset message.
+- Generate cryptographically strong one-time tokens, persist only SHA-256
+  token hashes, expire them after 30 minutes, replace/invalidate earlier
+  tokens, and define explicit idempotent unique/TTL index setup.
+- Deliver branded transactional email with server-only Brevo using
+  `BREVO_API_KEY`, `BREVO_SENDER_EMAIL`, `BREVO_SENDER_NAME`, and
+  `NEXT_PUBLIC_SITE_URL`. No mock provider is selected in production.
+- Enforce the existing 15–128 password policy and Stage 6.2 Argon2id settings.
+  Consume the one-time token, update credentials, invalidate sibling tokens,
+  and increment a private security version atomically in Mongo transactions.
+- Auth.js invalidates previous JWT sessions after reset without exposing
+  securityVersion, Mongo `_id`, reset tokens, or password hashes publicly.
+
+Excluded: email verification, OAuth/social/Clerk, signed-in password change,
+profile changes, support override, Stage 6.6, orders, Checkout, payments, and
+unrelated Owner/local changes.
+
+Verification contract: parser/domain tests; dedicated Mongo CRUD/index/expiry,
+one-time/concurrent consumption, password and session revocation tests; browser
+forgot/reset flow; prior-stage regressions; TypeScript, ESLint, production
+build attribution, and git diff check. Only `athar_stage55_test` may receive
+test writes. Live Brevo delivery is unverified unless approved test-mailbox
+delivery is actually observed. No commit or push; Stage 6.6 stays NOT STARTED.
+
+Current verification evidence (2026-09-24): `.env.local` loads the expected
+dedicated test DB and Mongo mode without exposing credentials. Earlier TLS
+failures followed a switch from mobile hotspot to hotel Wi-Fi while the active
+network IP was not on Atlas IP Access List. The owner subsequently reported two
+consecutive `MONGO_PING: PASS` results on the same hotel Wi-Fi. The live Stage
+6.5 focused auth/Mongo tests passed 8/8, including indexes, strict parsing,
+hash-only token persistence, replacement/expiry, concurrent single-use
+consumption, credential update, and `securityVersion` increment. The Browser
+E2E passed the protected test-mail flow through password replacement, old
+password rejection, new password acceptance, prior-session invalidation, and
+reused-token rejection; unknown/disabled accounts remained generic and sent no
+mail. A confirmed forgot-route input-shape defect was fixed and has a focused
+regression. Post-run cleanup found zero disposable users, credentials, or reset
+tokens in `athar_stage55_test`. Prior-stage domain/auth regression passed 36
+tests with one live Mongo case run separately; Stage 6.1, 6.2, and 6.4 live
+Mongo regressions passed individually. Full TypeScript and ESLint passed (one
+existing `SignInForm.tsx` warning). After the route fix, clean baseline and
+baseline plus Stage-6.5-only production builds passed. Current-tree build
+remains attributed to preserved Owner Header/Wishlist request-time data outside
+Stage 6.5. Brevo live delivery remains NOT YET VERIFIED. Stage 6.5 is COMPLETE
+LOCALLY; Stage 6.6 is NOT STARTED.

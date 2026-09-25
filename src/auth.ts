@@ -5,6 +5,7 @@ import { authorizeCredentials } from "@/server/auth/credentials";
 import { mergeGuestCommerceForUser } from "@/server/commerce/reconciliation";
 import { readGuestCartId } from "@/server/commerce/guest-cookie";
 import { readGuestWishlistId } from "@/server/commerce/guest-wishlist-cookie";
+import { MongoCredentialRepository } from "@/server/identity/credential-repository";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   trustHost: true,
@@ -32,12 +33,23 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         return false;
       }
     },
-    jwt({ token, user }) {
-      if (user?.id) token.sub = user.id;
+    async jwt({ token, user }) {
+      if (user?.id) {
+        token.sub = user.id;
+        token.securityVersion = typeof user.securityVersion === "number" ? user.securityVersion : 0;
+      }
+      if (token.sub) {
+        const current = await new MongoCredentialRepository().isSessionCurrent(token.sub, typeof token.securityVersion === "number" ? token.securityVersion : 0);
+        if (!current) {
+          delete token.sub;
+          delete token.securityVersion;
+          token.invalidated = true;
+        }
+      }
       return token;
     },
     session({ session, token }) {
-      if (session.user && token.sub) session.user.id = token.sub;
+      if (session.user && token.sub && token.invalidated !== true) session.user.id = token.sub;
       return session;
     },
   },

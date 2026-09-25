@@ -2,7 +2,7 @@
 
 ## Stage 3.1 status
 
-**IMPLEMENTED — LIVE DATABASE CONNECTIVITY NOT YET VERIFIED.** MongoDB Atlas is the approved direction. The repository contains a server-only connection contract and catalog persistence layer, but no Atlas credentials are committed or configured for this verification run.
+**Stage 3.1 historical status:** Atlas credentials were not configured during the original Stage 3.1 verification. Stage 6.5 later verified password-reset persistence and transactions against the dedicated non-production `athar_stage55_test` database. Live production Atlas persistence remains **NOT VERIFIED**; no credentials are committed.
 
 ## Connection contract
 
@@ -77,3 +77,19 @@ Dedicated `athar_stage55_test` verification proved durable user-owned Cart and
 Wishlist merge, canonical re-resolution, quantity cap 12, retry/concurrency
 idempotency, and guest-state zeroing after success. No live production Atlas
 database was used.
+
+## Stage 6.5 password recovery
+
+`password_reset_tokens` contains `userId` (public opaque ID), unique SHA-256
+`tokenHash`, `createdAt`, and `expiresAt`; it never stores a raw reset token or
+reset URL. `ensurePasswordResetIndexes()` explicitly creates unique indexes on
+`userId` and `tokenHash` plus a TTL index on `expiresAt`. A Mongo transaction
+consumes a non-expired token and updates the matching enabled
+`user_credentials` record's Argon2id hash and private `securityVersion`; sibling
+reset tokens are removed atomically. Live verification against
+`athar_stage55_test` passed all 8 focused Stage 6.5 tests, including index,
+token persistence, concurrent one-time consumption, credential update,
+security-version increment, and fixture cleanup. Browser E2E verified protected
+test-mail capture, password replacement, prior-session invalidation, and token
+replay rejection. Post-run cleanup found no disposable users, credentials, or
+reset-token documents. Live production Atlas persistence is not verified.
