@@ -2,3 +2,4 @@
 @media (max-width: 760px) { .page,.empty { padding: 7rem 0 4rem; }.layout { grid-template-columns: 1fr; }.summary { position: static; }.line { grid-template-columns: 5.5rem minmax(0,1fr); }.media,.placeholder { min-height: 6.5rem; }.controls { grid-column: 1 / -1; grid-template-columns: 1fr auto; justify-items: start; min-width: 0; }.lineStatus { grid-column: 1 / -1; text-align: left; }.summary small { text-align: left; width: 100%; } }
 .detail p { color: #705921; }
 .quantity button:disabled { color: var(--color-text-muted); opacity: 1; }
+.empty .explore { border: 0; justify-self: center; margin-top: var(--space-3); padding-bottom: 0; text-decoration: none; }

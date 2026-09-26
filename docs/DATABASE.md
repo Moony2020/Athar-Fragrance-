@@ -104,3 +104,13 @@ Disposable fixtures were audited and cleaned; a final direct audit found zero
 matching users, credentials, reset tokens, user commerce records, merge
 markers, or targeted guest fixtures. Live production Atlas persistence remains
 **NOT VERIFIED**.
+
+## Stage 7.1 checkout boundary
+
+Stage 7.1 adds no Mongo collection, index, checkout draft, payment attempt, or
+order record. `/checkout` reads the existing owner-bound Cart through the
+server-only commerce read path, then uses canonical catalog values for a
+transient, read-only projection. The persisted Cart remains identity and
+quantity only; no checkout-specific durable data is written. Any later Mongo
+integration tests must use only `athar_stage55_test` and remove disposable
+fixtures.

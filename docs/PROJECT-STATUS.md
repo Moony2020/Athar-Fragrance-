@@ -1,8 +1,24 @@
 # ATHAR Project Status
 
 **Last audited:** 2026-09-26
-**Current phase:** Phase 6 — Authentication and Customer Account
-**Overall status:** **PHASE 5 COMPLETE; PHASE 6 COMPLETE LOCALLY; STAGE 7 NOT STARTED.**
+**Current phase:** Phase 7 — Checkout Foundation
+**Overall status:** **PHASE 6 COMPLETE LOCALLY; STAGE 7.1 COMPLETE LOCALLY; STAGE 7.2+ NOT STARTED.**
+
+## Stage 7.1 current status
+
+Official Phase 7 baseline: `5c4ec8139a358568509bd1fffb6041d2925ac0e8`.
+Stage 7.1 is **COMPLETE LOCALLY — CHECKOUT DOMAIN & SERVER-AUTHORITATIVE
+FOUNDATION**. It adds a read-only checkout projection and server-first
+`/checkout` review route over the current session/guest-owner Cart and canonical
+catalog. Domain tests passed 6/6; dedicated-test-Mongo Browser E2E passed 2/2,
+including guest stale-line/current-price review, authenticated owner isolation,
+and disposable-fixture cleanup assertions. Phase 5/6 unit regressions passed
+42 with one separately gated Mongo transaction test skipped. TypeScript passed;
+full ESLint had zero errors and one existing `SignInForm.tsx` warning;
+`git diff --check` passed. Clean-baseline and baseline + Stage-7.1-only
+production builds passed. Agent Browser verified the empty-Cart state without
+browser errors. No checkout draft, collection, index, payment, or Order was
+added. Stage 7.2–7.6 remain not started. No commit or push was made.
 
 ## Stage 6.6 integration status
 

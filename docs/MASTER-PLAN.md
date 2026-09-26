@@ -19,7 +19,7 @@ Each phase has a goal contract, implementation ledger, evidence, documentation, 
 | 4 | Product detail and merchandising | Planned |
 | 5 | Cart and wishlist | Planned |
 | 6 | Authentication and customer account | Phase 6 complete locally |
-| 7 | Checkout foundation | Planned |
+| 7 | Checkout foundation | Stage 7.1 complete locally |
 | 8 | Stripe cards, direct PayPal, webhooks | Planned |
 | 9 | Canonical orders and transactional email | Planned |
 | 10 | Admin platform | Planned |
@@ -37,6 +37,37 @@ Each phase has a goal contract, implementation ledger, evidence, documentation, 
 | 6.4 | Guest-to-Account Commerce Reconciliation | Complete locally |
 | 6.5 | Account Security & Password Recovery | Complete locally |
 | 6.6 | Phase 6 Integration & Closure | Complete locally |
+
+### Phase 7 stage map
+
+| Stage | Scope | Status |
+| --- | --- | --- |
+| 7.1 | Checkout Domain & Server-Authoritative Foundation | Complete locally |
+| 7.2 | Contact & Shipping Address | Not started |
+| 7.3 | Shipping Methods / Delivery Selection | Not started |
+| 7.4 | Totals, VAT & Discount Contract | Not started |
+| 7.5 | Inventory Reservation / Checkout Concurrency | Not started |
+| 7.6 | Phase 7 Integration & Closure | Not started |
+
+### Phase 7 fixed boundaries
+
+- Checkout begins only from the current server-selected `CommerceOwner` Cart.
+- Product, Variant, availability, integer-minor-unit price, currency, and line
+  totals are resolved from the canonical server catalog; browser-supplied
+  commerce values never establish checkout state.
+- Stage 7.1 is a read-only checkout domain/read-model and `/checkout` review
+  route. It creates no checkout draft or new Mongo collection because no durable
+  checkout lifecycle is needed yet.
+- Empty, unavailable, stale, invalid, or mixed-currency carts cannot continue.
+  Stale/unavailable lines remain visible and are never counted as eligible.
+- No shipping, tax/VAT, discounts, address, inventory reservation, payment,
+  provider ID, payment attempt, order, or order email is introduced in 7.1.
+- Stage 7.1 baseline: `5c4ec8139a358568509bd1fffb6041d2925ac0e8`.
+- Stage 7.1 verification: domain 6/6; dedicated-test-Mongo Browser E2E 2/2
+  with disposable-fixture cleanup assertions; Phase 5/6 unit regressions 42
+  passed with one separately gated Mongo transaction test skipped; TypeScript,
+  ESLint (0 errors, one existing warning), diff check, clean-baseline build, and
+  Stage-7.1-only build passed. No checkout-specific persistence was introduced.
 
 ### Phase 6 fixed decisions
 

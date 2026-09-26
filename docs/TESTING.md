@@ -100,3 +100,24 @@ listed its tools, `get_compilation_issues` returned no compile issues, and
 rendered the Sign-in form and React tree inspection completed. MCP runtime
 diagnostics surfaced only the known preserved Header/`not-found` dynamic-value
 warning. The temporary server was stopped and its snapshot removed.
+
+## Stage 7.1 focused verification
+
+`tests/stage-07.1-domain.test.ts` passed 6/6 across empty/unavailable carts,
+canonical integer-minor-unit subtotal calculation, bounded quantities, stale
+and unavailable lines remaining visible but excluded from eligible subtotal,
+mixed-currency blocking, and allow-listed DTO output without owner/Mongo fields.
+The server route obtains data only from `readCurrentCommerceCart`; it accepts
+no browser owner, Cart, price, or total payload. Browser E2E passed 2/2 using
+disposable guest/user Cart fixtures only in `athar_stage55_test`; `finally`
+assertions verified fixture deletion. Phase 5/6 unit regressions passed 42 with
+one separately gated Mongo transaction test skipped. TypeScript, ESLint (zero
+errors and one existing warning), `git diff --check`, clean-baseline production
+build, and Stage-7.1-only production build passed. Agent Browser confirmed the
+empty Cart and Checkout states: both use one primary `/shop` action, and the
+empty Checkout no longer sends customers to the same empty Cart. Dependencies
+were restored with `npm ci` from the unchanged lock file using an isolated
+temporary npm cache. Next MCP reported no compilation
+issues; its runtime diagnostic remained the preserved Header/`not-found`
+dynamic-value issue outside Stage 7.1. Live production Atlas remains
+unverified; Stage 7.2+ remain not started.

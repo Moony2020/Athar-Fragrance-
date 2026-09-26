@@ -29,3 +29,16 @@ user-owned commerce mutations, repeated sign-in idempotency, password reset,
 and prior-session invalidation. Authenticated ownership is derived from the
 server-side Auth.js session public user ID; browser input cannot choose an
 owner. Live production Atlas and live Brevo delivery remain unverified.
+
+## Stage 7.1 checkout read route
+
+- `GET /checkout` is a server-rendered page; it has no browser-supplied Cart,
+  owner, price, or total input.
+- It reads the current server-selected guest or authenticated Cart, resolves
+  current Product/Variant price and availability through the canonical catalog,
+  and presents an allow-listed checkout read model.
+- Empty, unavailable, stale, invalid, or mixed-currency Cart states do not
+  permit proceeding. Stale/unavailable lines remain visible and are excluded
+  from the eligible subtotal.
+- No Checkout POST/action, draft, address, shipping/tax/discount calculation,
+  inventory reservation, payment, payment attempt, or Order exists in Stage 7.1.

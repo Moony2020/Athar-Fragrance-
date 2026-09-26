@@ -61,3 +61,14 @@ reset-token, Cart/Wishlist, and merge fixtures were audited and cleaned in the
 dedicated test database. The preserved Owner Header/Wishlist prerender issue
 is outside Stage 6.6. Live Brevo delivery remains **NOT YET VERIFIED**; live
 production Atlas remains **NOT VERIFIED**.
+
+## Stage 7.1 checkout boundary
+
+The checkout page takes no browser-owned Cart or owner values. The server
+selects the `CommerceOwner` from the Auth.js session public `userId`, or from
+the existing opaque guest cookie when no session exists. It reads only stored
+Cart identity/quantity, then re-resolves catalog name, active Product/Variant,
+availability, current integer-minor-unit price, and currency server-side. The
+public checkout projection is allow-listed and omits owner identity, Mongo
+`_id`, persistence metadata, and credentials. No checkout mutation, draft,
+payment credential, or new attack surface is introduced in Stage 7.1.

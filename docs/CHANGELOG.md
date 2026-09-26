@@ -1,5 +1,21 @@
 # Changelog
 
+## 2026-09-26 — Phase 7 / Stage 7.1 completed locally
+
+- Accepted baseline `5c4ec8139a358568509bd1fffb6041d2925ac0e8` and recorded the
+  Phase 7 stage map. Stage 7.1 adds a read-only, server-authoritative Cart
+  checkout projection and `/checkout` review route; no draft/Mongo collection,
+  shipping, tax, discount, inventory reservation, payment, or Order is added.
+- Domain tests passed 6/6. Dedicated-test-Mongo Browser E2E passed 2/2 for
+  guest stale/current-price Cart review, authenticated owner isolation, and
+  ignored browser owner/price inputs; disposable-fixture cleanup assertions
+  passed. Phase 5/6 unit regressions passed 42 with one separately gated Mongo
+  transaction test skipped. TypeScript, full ESLint (zero errors; one existing
+  warning), diff check, clean-baseline build, and baseline plus Stage-7.1-only
+  build passed. Agent Browser verified empty Cart with no browser errors.
+  Checkout remains read-only with no checkout persistence. Stage 7.2–7.6
+  remain not started.
+
 ## 2026-09-26 — Phase 6 / Stage 6.6 integration closed locally
 
 - Resumed verification from baseline `34fc73b0f69a1c04670840bfbe3c782e8a7f6c0e`

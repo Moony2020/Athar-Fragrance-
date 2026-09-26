@@ -1287,3 +1287,53 @@ preserved Header/Wishlist request-time reads outside Stage 6.6; no Owner code
 was changed. Live production Atlas remains NOT VERIFIED; live Brevo delivery
 remains NOT YET VERIFIED and neither blocks local closure. No commit/push was
 made. Stage 7 has not started.
+
+==================================================
+ATHAR — PHASE 7 / STAGE 7.1 CHECKOUT FOUNDATION
+==================================================
+
+Official baseline: `5c4ec8139a358568509bd1fffb6041d2925ac0e8`.
+
+Phase 7 stage map:
+
+- 7.1 — Checkout Domain & Server-Authoritative Foundation (COMPLETE LOCALLY)
+- 7.2 — Contact & Shipping Address (NOT STARTED)
+- 7.3 — Shipping Methods / Delivery Selection (NOT STARTED)
+- 7.4 — Totals, VAT & Discount Contract (NOT STARTED)
+- 7.5 — Inventory Reservation / Checkout Concurrency (NOT STARTED)
+- 7.6 — Phase 7 Integration & Closure (NOT STARTED)
+
+Stage 7.1 contract:
+
+- Checkout reads only the current server-selected CommerceOwner Cart. A signed-in
+  user resolves to the session's public `userId`; a guest resolves to the
+  existing opaque guest owner. Browser input cannot choose an owner.
+- Every line is based on stored public Product/Variant identity and bounded
+  quantity, then resolved against the canonical server Product/Variant,
+  current availability, integer-minor-unit price, and currency.
+- The read-model distinguishes eligible lines from stale/unavailable/invalid
+  lines, subtotal, currency consistency, checkout status, and safe block reasons.
+  Stale or unavailable lines remain visible, are excluded from eligible totals,
+  and block continuing; empty/unavailable/mixed-currency carts also block.
+- `/checkout` is a server-first review route. No checkout draft is created
+  because Stage 7.1 has no durable checkout lifecycle requirement.
+- No browser-provided name, price, quantity, subtotal, discount, shipping, or
+  total is trusted. Money uses integer minor units only.
+- No address/contact collection, shipping rates, VAT/tax, discounts, inventory
+  reservation/decrement, payment provider integration, payment attempt, Order,
+  order number, webhook, or order email is implemented in Stage 7.1.
+- No Mongo checkout collection, repository, index, or durable draft is added;
+  existing Cart persistence and canonical catalog reads remain the boundary.
+
+Verification evidence: domain tests passed 6/6; dedicated-Mongo Browser E2E
+passed 2/2 for guest stale/current-price review, authenticated user-owner
+isolation, and ignored browser owner/price parameters. E2E `finally` assertions
+verified deletion of the disposable guest Cart, two user Carts, two credentials,
+and two Users from `athar_stage55_test`. Phase 5/6 unit regression set passed
+42 with one separately gated Mongo transaction test skipped. TypeScript, full
+ESLint (0 errors; one existing SignInForm warning), `git diff --check`, clean
+baseline production build, and baseline plus Stage-7.1-only production build
+passed. Agent Browser confirmed the empty-Cart state without browser errors.
+No checkout-specific Mongo collection, draft, or index was added. Any future
+Mongo tests must continue to use only `athar_stage55_test` and disposable data.
+Stage 7.2+ are out of scope.

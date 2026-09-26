@@ -89,3 +89,16 @@ through dedicated-test Mongo regressions and Browser E2E. No Phase 6.6
 production/runtime source change was needed. Live production Atlas and Brevo
 delivery remain unverified. The preserved Owner Header/Wishlist prerender issue
 is an external local-source build blocker, not a Phase 6 integration failure.
+
+## Phase 7 — Checkout Foundation
+
+Stage 7.1 uses a server-only checkout read-model over `readCurrentCommerceCart`.
+That existing boundary selects `CommerceOwner` from the Auth.js session or the
+opaque guest cookie and re-resolves Product/Variant data and current prices
+through the canonical catalog. `/checkout` is a Server Component with an
+`io()` request-time boundary below Suspense so Auth.js, owner, cookie, and Cart
+reads do not run in the prerendered shell. The read-only DTO contains no owner
+identity or Mongo metadata. No draft is
+persisted until a later stage defines a checkout lifecycle that requires it.
+Contact/address, shipping, tax/discount rules, inventory reservation, payments,
+and orders are outside Stage 7.1.
