@@ -10,9 +10,11 @@
 - Live Stage 6.5 Mongo checks passed against `athar_stage55_test` (5/5). The
   earlier TLS failure followed a switch from mobile hotspot to hotel Wi-Fi
   while the active IP was not on Atlas IP Access List; the owner then reported
-  two consecutive successful pings on hotel Wi-Fi. Browser reset-flow E2E was
-  attempted but active-account forgot produced no captured test-mail message;
-  reset and session revocation remain unverified. Disposable fixtures were
+  two consecutive successful pings on hotel Wi-Fi. The initial Browser
+  reset-flow attempt did not capture a test-mail message. After fixing the
+  forgot-route input shape, the final protected test-mail Browser E2E passed
+  through password reset, old-password rejection, new-password acceptance,
+  prior-session invalidation, and replay rejection. Disposable fixtures were
   confirmed cleaned. Brevo live delivery remains unverified; no live message
   was sent.
 
