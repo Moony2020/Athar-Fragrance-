@@ -1251,4 +1251,39 @@ existing `SignInForm.tsx` warning). After the route fix, clean baseline and
 baseline plus Stage-6.5-only production builds passed. Current-tree build
 remains attributed to preserved Owner Header/Wishlist request-time data outside
 Stage 6.5. Brevo live delivery remains NOT YET VERIFIED. Stage 6.5 is COMPLETE
-LOCALLY; Stage 6.6 is NOT STARTED.
+LOCALLY; Stage 6.6 is NOT STARTED as of this Stage 6.5 closure record.
+
+==================================================
+ATHAR — PHASE 6 / STAGE 6.6 INTEGRATION STATUS
+==================================================
+
+Official Stage 6.6 baseline: `34fc73b0f69a1c04670840bfbe3c782e8a7f6c0e`.
+
+Current state: `STAGE 6.6 COMPLETE — PHASE 6 INTEGRATION & CLOSURE`;
+`PHASE 6 COMPLETE LOCALLY — AUTHENTICATION & CUSTOMER ACCOUNT`.
+
+Final verification resumed on 2026-09-26 after the network/session interruption.
+The focused Phase 6/Phase 5 regression bundle passed 40/40, including live
+Mongo verification against only `athar_stage55_test`. Full Browser E2E passed
+8/8 across registration/sign-in/out, profile read/update, new and existing-user
+guest Cart/Wishlist merge, authenticated owner resolution and mutations,
+repeated sign-in idempotency, password reset, old-password rejection,
+new-password acceptance, and old-session invalidation. Cart/Wishlist remained
+available after reset. The direct cleanup audit confirmed zero disposable
+users, credentials, reset tokens, user-owned commerce fixtures, merge markers,
+and targeted guest fixtures. Eleven abandoned test accounts from earlier
+interrupted attempts were removed using explicit test-only prefixes, with a
+zero-result follow-up audit.
+
+Security review confirmed session/public DTOs expose only public `userId`,
+server session determines commerce ownership, disabled/unknown account handling
+stays generic, and test-mail capture is non-production-only and secret
+protected. Full TypeScript passed. Full ESLint passed with zero errors and one
+existing warning in `SignInForm.tsx`; `git diff --check` passed. Isolated clean
+baseline production build passed. Stage 6.6 introduced no production/runtime
+source changes, so its production source set is identical to that baseline.
+The current Owner/local-source snapshot still fails at `/_not-found` due
+preserved Header/Wishlist request-time reads outside Stage 6.6; no Owner code
+was changed. Live production Atlas remains NOT VERIFIED; live Brevo delivery
+remains NOT YET VERIFIED and neither blocks local closure. No commit/push was
+made. Stage 7 has not started.

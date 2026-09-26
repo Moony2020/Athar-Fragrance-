@@ -48,3 +48,16 @@ reset tokens/URLs and provider credentials are never logged or returned. Brevo
 credentials are server-only. Password resets increment a private credential
 security version checked by Auth.js to invalidate prior JWT sessions; the
 version is not part of public DTO/session data.
+
+## Stage 6.6 integration verification status
+
+The final Phase 6/Phase 5 regression set passed 40/40, and Browser E2E passed
+8/8. Authenticated commerce ownership is selected from the server session;
+public session data contains the public user ID only, not Mongo `_id`, password
+hashes, or the private credential security version. Unknown/disabled account
+responses remain generic. The test-mail adapter is non-production-only and the
+capture endpoint requires a per-run secret. Disposable account, credential,
+reset-token, Cart/Wishlist, and merge fixtures were audited and cleaned in the
+dedicated test database. The preserved Owner Header/Wishlist prerender issue
+is outside Stage 6.6. Live Brevo delivery remains **NOT YET VERIFIED**; live
+production Atlas remains **NOT VERIFIED**.

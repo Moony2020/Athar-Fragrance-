@@ -1,8 +1,28 @@
 # ATHAR Project Status
 
-**Last audited:** 2026-09-25
+**Last audited:** 2026-09-26
 **Current phase:** Phase 6 — Authentication and Customer Account
-**Overall status:** **PHASE 5 COMPLETE; PHASE 6 IN PROGRESS — STAGE 6.5 COMPLETE LOCALLY; STAGE 6.6 NOT STARTED.**
+**Overall status:** **PHASE 5 COMPLETE; PHASE 6 COMPLETE LOCALLY; STAGE 7 NOT STARTED.**
+
+## Stage 6.6 integration status
+
+Baseline: `34fc73b0f69a1c04670840bfbe3c782e8a7f6c0e`.
+
+Stage 6.6 closed locally from baseline `34fc73b0f69a1c04670840bfbe3c782e8a7f6c0e`.
+Phase 6/Phase 5 domain, auth, and dedicated-Mongo regression tests passed
+40/40; Browser E2E passed 8/8 across registration, profile read/update,
+guest-to-account Cart/Wishlist merge and ownership, repeated sign-in, and
+password reset with prior-session invalidation. Post-run audit confirmed zero
+disposable users, credentials, reset tokens, user-owned commerce fixtures,
+merge markers, and targeted guest fixtures in `athar_stage55_test`. Full
+TypeScript passed; full ESLint had zero errors and one existing
+`SignInForm.tsx` warning. Isolated clean-baseline production build passed.
+Stage 6.6 added no production/runtime source changes, so its production source
+set matches that baseline. Current Owner/local-source build remains blocked at
+`/_not-found` by preserved Header/Wishlist request-time data reads; no Owner
+code was changed. Live Brevo delivery is **NOT YET VERIFIED** and live
+production Atlas is **NOT VERIFIED**. No commit or push was made. Stage 7 has
+not started.
 
 ## Stage 6.5 current status
 
@@ -37,7 +57,9 @@ Stage-6.5-only production builds passed after the route fix. Full TypeScript and
 full ESLint passed; ESLint retains one warning in `SignInForm.tsx`. Current-tree
 build remains attributed to preserved Owner Header/Wishlist runtime access,
 outside Stage 6.5. Live Brevo delivery is **NOT YET VERIFIED** and is not a
-closure blocker. Stage 6.6 has not started. No commit or push was made.
+closure blocker. Stage 6.6 had not started at the time of the Stage 6.5
+checkpoint record; the current Phase 6 closure status is recorded above. No
+commit or push was made for this Stage 6.6 verification.
 
 Historical TLS path isolation: explicit SNI and no-SNI Node TLS probes failed identically
 for all three Atlas hosts under TLS 1.2 and TLS 1.3 before any peer

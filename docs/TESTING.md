@@ -70,3 +70,33 @@ Post-run fixture audit found zero disposable users, credentials, and reset
 tokens. Live Brevo delivery is not claimed and is not required for Stage 6.5
 closure. Clean baseline and Stage-6.5-only production builds passed after the
 route fix; full TypeScript, full ESLint, and `git diff --check` passed.
+
+## Stage 6.6 integration and closure (2026-09-26)
+
+Baseline: `34fc73b0f69a1c04670840bfbe3c782e8a7f6c0e`. After resuming on the
+available network, the Phase 6/Phase 5 focused regression bundle passed 40/40,
+including live Mongo User/credential, merge, and password-reset transaction
+tests against `athar_stage55_test`. Full Browser E2E passed 8/8 across Stages
+6.2–6.6: registration, sign-in/out, profile update, guest Cart/Wishlist merge,
+authenticated user ownership and repeated sign-in, two-account Cart/Wishlist
+isolation, password reset, and prior-session invalidation. Cart and Wishlist
+remain available after password reset.
+The direct test-database audit found zero disposable test records after cleanup;
+11 abandoned prior-run accounts and their dependent records were removed by
+explicit test-only prefixes and rechecked to zero.
+
+Full TypeScript passed. Full ESLint passed with zero errors and one existing
+`SignInForm.tsx` warning. `git diff --check` passed. Isolated clean-baseline
+production build passed; no Stage 6.6 production/runtime source changed, so the
+Stage-6.6-only production source set is identical to the baseline. The current
+Owner/local-source snapshot fails at `/_not-found` due preserved Header/Wishlist
+request-time data access; this was not modified. Live Brevo delivery and live
+production Atlas remain unverified. Stage 6.6 and Phase 6 are complete locally;
+Stage 7 has not started.
+
+The Next dev-loop preflight was also completed on an isolated port: Next MCP
+listed its tools, `get_compilation_issues` returned no compile issues, and
+`get_routes` listed the account/cart/wishlist routes. Agent Browser 0.38.1
+rendered the Sign-in form and React tree inspection completed. MCP runtime
+diagnostics surfaced only the known preserved Header/`not-found` dynamic-value
+warning. The temporary server was stopped and its snapshot removed.

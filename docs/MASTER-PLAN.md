@@ -18,7 +18,7 @@ Each phase has a goal contract, implementation ledger, evidence, documentation, 
 | 3 | Catalog, brands, collections, discovery | Stages 3.1–3.5 implemented locally; live Atlas execution and Stage 3.6 final integration/QA pending |
 | 4 | Product detail and merchandising | Planned |
 | 5 | Cart and wishlist | Planned |
-| 6 | Authentication and customer account | Stages 6.1–6.5 complete locally; Stage 6.6 not started |
+| 6 | Authentication and customer account | Phase 6 complete locally |
 | 7 | Checkout foundation | Planned |
 | 8 | Stripe cards, direct PayPal, webhooks | Planned |
 | 9 | Canonical orders and transactional email | Planned |
@@ -36,7 +36,7 @@ Each phase has a goal contract, implementation ledger, evidence, documentation, 
 | 6.3 | Customer Account Shell & Profile | Complete locally |
 | 6.4 | Guest-to-Account Commerce Reconciliation | Complete locally |
 | 6.5 | Account Security & Password Recovery | Complete locally |
-| 6.6 | Phase 6 Integration & Closure | Not started |
+| 6.6 | Phase 6 Integration & Closure | Complete locally |
 
 ### Phase 6 fixed decisions
 
@@ -92,6 +92,23 @@ Each phase has a goal contract, implementation ledger, evidence, documentation, 
   previously identified preserved Owner Header/Wishlist runtime-read issue,
   outside Stage 6.5. Live Brevo delivery remains unverified and is not a
   closure blocker. Stage 6.5 is complete locally; Stage 6.6 is not started.
+
+- Stage 6.6 integration and closure (2026-09-26), baseline
+  `34fc73b0f69a1c04670840bfbe3c782e8a7f6c0e`: the interrupted network/session
+  was resumed and `athar_stage55_test` was reachable. Required Phase 6/Phase 5
+  regressions passed 40/40 and full Browser E2E passed 8/8, including account
+  profile, guest Cart/Wishlist merge and repeated sign-in, authenticated owner
+  reads/mutations, password reset, session revocation, and commerce preservation
+  after reset. Direct cleanup verification found zero disposable records; 11
+  abandoned test accounts from earlier attempts were removed by explicit
+  test-only prefixes and re-audited to zero. TypeScript passed; ESLint had zero
+  errors and one existing `SignInForm.tsx` warning. Isolated baseline production
+  build passed. Stage 6.6 introduced no production/runtime source changes, so
+  the Stage-only production source set is identical. The current Owner/local
+  source build fails at `/_not-found` due preserved Header/Wishlist request-time
+  reads outside this stage; no Owner code was changed. Live production Atlas
+  remains unverified and live Brevo delivery is not yet verified. **Stage 6.6
+  and Phase 6 are complete locally; Stage 7 has not started.**
 
 ### Stage 6.5 contract and current implementation
 

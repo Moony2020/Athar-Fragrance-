@@ -20,3 +20,12 @@ Future route contracts will be defined alongside their feature phases with Zod v
 - Tokens never appear in logs or API responses. Reset links are delivered by
   the server-only Brevo adapter. A successful reset requires a subsequent
   sign-in with the new password.
+
+## Phase 6 integration status
+
+No endpoint contract changed in Stage 6.6. Browser E2E verified registration,
+profile read/update, guest Cart/Wishlist reconciliation, authenticated
+user-owned commerce mutations, repeated sign-in idempotency, password reset,
+and prior-session invalidation. Authenticated ownership is derived from the
+server-side Auth.js session public user ID; browser input cannot choose an
+owner. Live production Atlas and live Brevo delivery remain unverified.

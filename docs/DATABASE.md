@@ -93,3 +93,14 @@ security-version increment, and fixture cleanup. Browser E2E verified protected
 test-mail capture, password replacement, prior-session invalidation, and token
 replay rejection. Post-run cleanup found no disposable users, credentials, or
 reset-token documents. Live production Atlas persistence is not verified.
+
+## Stage 6.6 integration verification status
+
+The final live regression pass used only the dedicated non-production
+`athar_stage55_test` database. User/credential, commerce merge, and password
+reset transaction cases passed. Browser integration exercised authenticated
+user-owned Cart/Wishlist mutations and preservation through password reset.
+Disposable fixtures were audited and cleaned; a final direct audit found zero
+matching users, credentials, reset tokens, user commerce records, merge
+markers, or targeted guest fixtures. Live production Atlas persistence remains
+**NOT VERIFIED**.

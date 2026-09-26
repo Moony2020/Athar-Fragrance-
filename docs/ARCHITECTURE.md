@@ -79,3 +79,13 @@ The static prototype is visual reference material, not production architecture. 
 ## Design-system ownership
 
 The App Router stays thin. Reusable visual primitives live in `src/components/ui`; future homepage sections belong in dedicated feature/component folders and may consume these primitives. `src/styles` provides global tokens, typography, base rules, and motion only. Tailwind v4 is installed for routine utilities, while CSS Modules own component-specific and editorial styling.
+
+## Phase 6 integration status
+
+The Auth.js/Credentials, canonical public User, session-owned profile,
+user-owned Cart/Wishlist reconciliation, and password-recovery boundaries are
+implemented in Stages 6.1–6.5. Stage 6.6 integration verified those boundaries
+through dedicated-test Mongo regressions and Browser E2E. No Phase 6.6
+production/runtime source change was needed. Live production Atlas and Brevo
+delivery remain unverified. The preserved Owner Header/Wishlist prerender issue
+is an external local-source build blocker, not a Phase 6 integration failure.

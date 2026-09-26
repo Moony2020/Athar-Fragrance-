@@ -1,5 +1,42 @@
 # Changelog
 
+## 2026-09-26 — Phase 6 / Stage 6.6 integration closed locally
+
+- Resumed verification from baseline `34fc73b0f69a1c04670840bfbe3c782e8a7f6c0e`
+  after the network/session interruption. Phase 6/Phase 5 focused regressions
+  passed 40/40; Browser E2E passed 8/8, including profile, guest Cart/Wishlist
+  merge, authenticated ownership, two-account isolation, repeated sign-in,
+  password reset, and old-session invalidation. The Stage 6.6 isolation Browser
+  test was then rerun separately and passed 1/1.
+- Direct cleanup audit found zero disposable account, credential, reset-token,
+  Cart/Wishlist, merge-marker, or targeted guest fixtures in
+  `athar_stage55_test`; abandoned prior-run fixtures were removed using explicit
+  test-only prefixes and re-audited.
+- TypeScript passed; ESLint passed with zero errors and one existing
+  `SignInForm.tsx` warning. Isolated baseline production build passed. Stage 6.6
+  changed no production/runtime source; the current Owner/local-source build
+  remains blocked at `/_not-found` by preserved Header/Wishlist request-time
+  data access, outside Stage 6.6.
+- Stage 6.6 and Phase 6 are complete locally. Live Brevo delivery is
+  **NOT YET VERIFIED**; live production Atlas is **NOT VERIFIED**. No commit or
+  push was made; Stage 7 has not started.
+
+## 2026-09-26 — Phase 6 / Stage 6.6 integration gate started
+
+- Baseline `34fc73b0f69a1c04670840bfbe3c782e8a7f6c0e` confirmed. Local
+  Phase 6/Phase 5 domain/auth regressions passed 36/40; four live Mongo cases
+  failed before fixture writes because Atlas TLS server selection returned
+  `ERR_SSL_TLSV1_ALERT_INTERNAL_ERROR` for the dedicated `athar_stage55_test`
+  database. No other database was used.
+- Browser checks for the unauthenticated account redirect and registration
+  password minimum passed. Full registration/profile, commerce merge, and
+  password-reset integration flows remain pending stable test Mongo access;
+  the loaded environment lacks test-mail adapter settings. TypeScript passed;
+  ESLint had zero errors and one existing `SignInForm.tsx` warning. No Stage
+  6.6 production code changed; the active user dev server owns `.next`, so build
+  attribution was not rerun. Stage 6.6 remains in progress; Stage 7 is not
+  started. No commit or push was made.
+
 ## 2026-09-24 — Phase 6 / Stage 6.5 verification update
 
 - Fixed the reset page's Cache Components boundary by awaiting request-time
